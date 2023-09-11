@@ -1,19 +1,14 @@
 import {LitElement, html, css} from 'lit';
-import {customElement, state} from 'lit/decorators.js';
 import dayjs from 'dayjs';
 
-@customElement('date-and-time')
 export class DateAndTimeElement extends LitElement {
-  @state()
-  private _date:String = '';
-
-  @state()
-  private _time:String = '';
-
-  @state()
-  private _meridian:String = '';
-
-  private _interval:ReturnType<typeof setInterval> | undefined;
+  static get properties() {
+    return {
+      _date: { type: String, state: true },
+      _time: { type: String, state: true },
+      _meridian: { type: String, state: true }
+    }
+  }
 
   connectedCallback() {
     super.connectedCallback()
@@ -32,11 +27,11 @@ export class DateAndTimeElement extends LitElement {
     this._meridian = m;
   }
 
-  setConfig(config:any) {
+  setConfig(config) {
     console.log(config);
   }
 
-  set hass(hass:any) {
+  set hass(hass) {
     console.log(hass);
   }
 
@@ -94,3 +89,5 @@ export class DateAndTimeElement extends LitElement {
     `;
   }
 }
+
+window.customElements.define('date-and-time', DateAndTimeElement)

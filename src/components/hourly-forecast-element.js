@@ -1,17 +1,16 @@
 import {LitElement, html, css} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import {customElement, property} from 'lit/decorators.js';
 import sun from './../assets/sun.svg?raw';
 
-@customElement('hourly-forecast')
 export class HourlyForecastElement extends LitElement {
-  @property({ type: Object })
-  hass:any = {};
+  static get properties() {
+    return {
+      hass: { type: Object },
+      config: { type: Object }
+    }
+  }
 
-  @property({ type: Object })
-  config:any = {};
-
-  setConfig(config:any) {
+  setConfig(config) {
     if (!config.entity) {
       throw new Error("You need to define an entity");
     }
@@ -124,3 +123,5 @@ export class HourlyForecastElement extends LitElement {
     `;
   }
 }
+
+window.customElements.define('hourly-forecast', HourlyForecastElement)

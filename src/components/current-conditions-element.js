@@ -1,18 +1,15 @@
 import {LitElement, html, css} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
 
-@customElement('current-conditions')
 export class CurrentConditionsElement extends LitElement {
-  @property({ type: Object })
-  hass:any = {};
+  static get properties() {
+    return {
+      hass: { type: Object },
+      config: { type: Object },
+      unit: { type: String }
+    }
+  }
 
-  @property({ type: Object })
-  config:any = {};
-
-  @property()
-  unit:String | undefined;
-
-  setConfig(config:any) {
+  setConfig(config) {
     if (!config.entity) {
       throw new Error("You need to define an entity");
     }
@@ -75,3 +72,5 @@ export class CurrentConditionsElement extends LitElement {
     `;
   }
 }
+
+window.customElements.define('current-conditions', CurrentConditionsElement)
