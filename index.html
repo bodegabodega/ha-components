@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Components</title>
+    <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="/src/hourly-forecast.ts"></script>
+    <script type="module" src="/src/current-conditions.ts"></script>
+    <script type="module" src="/src/date-and-time-element.ts"></script>
+  </head>
+  <body>
+      <div class="parent"> 
+        <date-and-time class="div1"></date-and-time>
+        <date-and-time class="div2"></date-and-time>
+        <date-and-time class="div3"></date-and-time>
+        <current-conditions class="div4" config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
+        <current-conditions class="div5" config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
+        <current-conditions class="div6" unit='°' config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
+        <hourly-forecast class="div7"></hourly-forecast>
+        <hourly-forecast class="div8"></hourly-forecast>
+        <hourly-forecast class="div9"></hourly-forecast>
+      </div>
+  </body>
+</html>
