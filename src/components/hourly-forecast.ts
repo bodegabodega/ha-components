@@ -1,7 +1,7 @@
 import {LitElement, html, css} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {customElement, property} from 'lit/decorators.js';
-import sun from './assets/sun.svg?raw';
+import sun from './../assets/sun.svg?raw';
 
 @customElement('hourly-forecast')
 export class HourlyForecastElement extends LitElement {
@@ -75,8 +75,8 @@ export class HourlyForecastElement extends LitElement {
     return css`
       :host {
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
 
         min-height: 150px;
 
@@ -92,22 +92,20 @@ export class HourlyForecastElement extends LitElement {
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;
       }
+      .outer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
       .feather {
         stroke: #ffffff;
         height: 16px;
         width: 16px;
       }
-      .outer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
       .prediction {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding-bottom: 5px;
       }
       .icon {
         padding-bottom: 5px;
