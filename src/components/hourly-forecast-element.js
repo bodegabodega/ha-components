@@ -1,73 +1,57 @@
 import {LitElement, html, css} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import sun from './../assets/sun.svg?raw';
+import {forEntityFromState} from './../lib/hourly-forecast';
+import sample from './../../data/hass.json';
 
 export class HourlyForecastElement extends LitElement {
   static get properties() {
     return {
-      hass: { type: Object },
-      config: { type: Object }
+      config: { type: Object },
+      forecast: { type: Array, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
+  }
+  defaultConfig = {
+    numPredictions: 7
+  }
+
+  set hass(h) {
+    this._hass = h;
+    if (this.config && this.config.entity) {
+      this.forecast = forEntityFromState(this.config.entity, this._hass, this.numPredictions);
+    }
+  }
+  get hass() {
+    return this._hass;
+  }
+
+  constructor() {
+    super();
+  
+    this.config = { entity: "weather.forecast_garden_street_hourly" }
+    this.hass = sample;
   }
 
   setConfig(config) {
     if (!config.entity) {
       throw new Error("You need to define an entity");
     }
-    this.config = config;
+    this.config = Object.assign(this.defaultConfig, config);
   }
 
   render() {
-    console.log(this.hass)
-    console.log(this.config)
-    const entityState = this.hass && this.hass.states ? this.hass.states[this.config.entity] : undefined;
-    // return entityState
-    //   ? html`
-    //   <div class="outer">
-
-    //   </div>
-    //   `
-    //   : html` <div class="not-found">Entity ${this.config.entity} not found.</div> `;
-    return html`
-    <div class="outer">
-      <div class="prediction">
-        <div class="hour">NOW</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
+    return this.forecast
+      ? html`
+      <div class="outer">
+        ${this.forecast.map(i => html`
+        <div class="prediction">
+          <div class="hour">${unsafeHTML(i.hour)}</div>
+          <div class="icon">${unsafeHTML(i.condition)}</div>
+          <div class="temperature">${i.temperature}°</div>
+        </div>
+        `)}
       </div>
-
-      <div class="prediction">
-        <div class="hour">&nbsp;</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-      <div class="prediction">
-        <div class="hour">2</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-      <div class="prediction">
-        <div class="hour">&nbsp;</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-      <div class="prediction">
-        <div class="hour">4</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-      <div class="prediction">
-        <div class="hour">&nbsp;</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-      <div class="prediction">
-        <div class="hour">6</div>
-        <div class="icon">${unsafeHTML(sun)}</div>
-        <div class="temperature">78</div>
-      </div>
-    </div>
-    `
+      `
+      : html` <div class="not-found">No forecast found.</div> `;
   }
 
   static get styles() {
@@ -83,7 +67,7 @@ export class HourlyForecastElement extends LitElement {
 
         color: #666666;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 400;
         
         font-synthesis: none;
         text-rendering: optimizeLegibility;
@@ -115,6 +99,7 @@ export class HourlyForecastElement extends LitElement {
       }
       .temperature {
         text-align: center;
+        font-weight: 700;
       }
       .not-found {
         font-size: .3em;
