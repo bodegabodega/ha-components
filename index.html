@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Components</title>
     <link rel="stylesheet" href="./src/index.css" />
+    <script type="module" src="/src/components/daily-forecast-element.js"></script>
     <script type="module" src="/src/components/hourly-forecast-element.js"></script>
     <script type="module" src="/src/components/current-conditions-element.js"></script>
     <script type="module" src="/src/components/date-and-time-element.js"></script>
@@ -18,9 +19,12 @@
         <current-conditions class="div4" config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
         <current-conditions class="div5" config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
         <current-conditions class="div6" unit='°' config='{"entity":"demo"}' hass='{"states": { "demo": { "attributes": { "temperature": "68", "temperature_unit": "°F"}}}}'></current-conditions> 
-        <hourly-forecast class="div7" numPredictions="6"></hourly-forecast>
-        <hourly-forecast class="div8" numPredictions="8"></hourly-forecast>
-        <hourly-forecast class="div9" numPredictions="12"></hourly-forecast>
+        <hourly-forecast class="div7"></hourly-forecast>
+        <hourly-forecast class="div8"></hourly-forecast>
+        <hourly-forecast class="div9"></hourly-forecast>
+        <daily-forecast class="div10"></daily-forecast>
+        <daily-forecast class="div11"></daily-forecast>
+        <daily-forecast class="div12"></daily-forecast>
       </div>
   </body>
 </html>

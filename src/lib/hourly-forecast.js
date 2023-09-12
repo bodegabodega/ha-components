@@ -2,7 +2,7 @@ import { forCondition } from "./weather-icons";
 import dayjs from "dayjs";
 
 const prediction = ( hour, condition, temperature ) => {
-  return { condition: condition, hour, temperature }
+  return { condition, hour, temperature }
 }
 
 export const forEntityFromState = (entityName, hass, numPredictions = 7) => {
@@ -15,9 +15,13 @@ export const forEntityFromState = (entityName, hass, numPredictions = 7) => {
   const forecast = stateObject.attributes.forecast;
   const length = Math.min(numPredictions, forecast.length);
   for (let i = 0; i < length; i++) {
-    const item = forecast[i];
-    const hour = i % 2 == 1 ? dayjs(item.datetime).format('h') : '&nbsp;';
-    predictions.push(prediction(hour, forCondition(item.condition), item.temperature));
+    const { datetime, condition, temperature } = forecast[i];
+    const hour = i % 2 == 1 ? dayjs(datetime).format('h') : '&nbsp;';
+    predictions.push({
+      hour,
+      condition: forCondition(condition),
+      temperature: temperature
+    });
   }
   return predictions;
 }
