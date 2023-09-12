@@ -1,9 +1,11 @@
 import { forCondition } from "./weather-icons";
 import dayjs from "dayjs";
+import ColorScale from "color-scales";
 
 const getHighestHigh = ( ranges ) => ranges.reduce((acc, curr) => curr.temperature > acc ? curr.temperature : acc, Number.MIN_VALUE);
 const getLowestLow = ( ranges ) => ranges.reduce((acc, curr) => curr.templow < acc ? curr.templow : acc, Number.MAX_VALUE);
 const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+const colors = new ColorScale(0, 100, ["#0018ff", "#00eaff", "#fcff00", "#ff7800", "#ff0000"]);
 
 export const forEntityFromState = (entityName, hass, gaugeHeight = 80) => {
   const stateObject = hass && hass.states ? hass.states[entityName] : undefined;
@@ -27,7 +29,9 @@ export const forEntityFromState = (entityName, hass, gaugeHeight = 80) => {
     return {
       day: days[dayjs(datetime).day()],
       high: temperature,
+      highHex: colors.getColor(Math.min(temperature, 100)).toHexString(),
       low: templow,
+      lowHex: colors.getColor(Math.max(templow, 0)).toHexString(),
       offset,
       height,
       condition: forCondition(condition)

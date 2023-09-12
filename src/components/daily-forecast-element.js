@@ -2,7 +2,6 @@ import {LitElement, html, css} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {forEntityFromState} from '../lib/daily-forecast';
-import sun from './../assets/sun.svg?raw';
 import sample from '../../data/hass.json';
 
 export class DailyForecastElement extends LitElement {
@@ -51,7 +50,8 @@ export class DailyForecastElement extends LitElement {
             <div class="temperature">
               <div class="range" style=${styleMap({
                 top: `${i.offset}px`,
-                height: `${i.height}px`
+                height: `${i.height}px`,
+                backgroundImage: `linear-gradient(0deg, ${i.lowHex}, ${i.highHex})`
               })}></div>
             </div>
             <div class="low">${i.low}°</div>

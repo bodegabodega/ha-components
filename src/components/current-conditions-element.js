@@ -59,9 +59,9 @@ export class CurrentConditionsElement extends LitElement {
         line-height: normal;
       }
       .degree {
-        font-weight: 300;
-        font-size: 48px;
-        vertical-align: super;
+        font-weight: 400;
+        font-size: 68px;
+        vertical-align: baseline;
 
         display: inline-block;
         line-height: normal;
