@@ -1,8 +1,8 @@
 {
   "events": [
     {
-      "start": "2023-09-12T15:15:00-04:00",
-      "end": "2023-09-12T16:15:00-04:00",
+      "start": "2023-09-13T15:15:00-04:00",
+      "end": "2023-09-13T16:15:00-04:00",
       "summary": "Maddie: Gymnastics class",
       "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
     },
@@ -12,14 +12,14 @@
       "summary": "Club Lottery results posted!"
     },
     {
-      "start": "2023-09-13T15:30:00-04:00",
-      "end": "2023-09-13T16:30:00-04:00",
+      "start": "2023-09-14T15:30:00-04:00",
+      "end": "2023-09-14T16:30:00-04:00",
       "summary": "Max: Hip Hop Drop off",
       "location": "Garden Street School of the Performing Arts\n1018 Washington St, FL 2, Hoboken, NJ  07030, United States"
     },
     {
-      "start": "2023-09-13T15:30:00-04:00",
-      "end": "2023-09-13T16:30:00-04:00",
+      "start": "2023-09-14T15:30:00-04:00",
+      "end": "2023-09-14T16:30:00-04:00",
       "summary": "Maddie: Pinta Big Kids (drop off)",
       "location": "Garden Street School of the Performing Arts\n1018 Washington St, FL 2, Hoboken, NJ  07030, United States"
     }
