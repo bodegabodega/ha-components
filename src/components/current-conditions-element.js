@@ -1,23 +1,36 @@
 import {LitElement, html, css} from 'lit';
+import sample from './../../data/hass.json';
 
 export class CurrentConditionsElement extends LitElement {
   static get properties() {
     return {
+      mode: { type: String },
       hass: { type: Object },
       config: { type: Object },
       unit: { type: String }
     }
   }
-
+  static getStubConfig() {
+    return {}
+  }
+  set mode(m) {
+    if (m == 'development') {
+      this.setConfig(Object.assign(CurrentConditionsElement.getStubConfig(), {
+        mode: 'development',
+        entity: "weather.forecast_garden_street"
+      }))
+      this.hass = sample;
+    }
+  }
   setConfig(config) {
-    if (!config.entity) {
+    if (!config.entity && this.config.mode !== 'development') {
       throw new Error("You need to define an entity");
     }
     this.config = config;
   }
 
   render() {
-    const entityState = this.hass && this.hass.states ? this.hass.states[this.config.entity] : undefined;
+    const entityState = this.hass.states[this.config.entity];
     return entityState
       ? html`
       <div class="outer">

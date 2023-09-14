@@ -7,12 +7,25 @@ import sample from '../../data/hass.json';
 export class DailyForecastElement extends LitElement {
   static get properties() {
     return {
+      mode: { type: String },
       config: { type: Object },
       forecast: { type: Array, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
-  defaultConfig = {
-    numPredictions: 7
+  static getStubConfig() {
+    return {
+      numPredictions: 7
+    }
+  }
+  set mode(m) {
+    if (m == 'development') {
+      this.setConfig(Object.assign(DailyForecastElement.getStubConfig(), {
+        mode: 'development',
+        numPredictions: 7,
+        entity: "weather.forecast_garden_street"
+      }))
+      this.hass = sample;
+    }
   }
 
   set hass(h) {
@@ -21,24 +34,12 @@ export class DailyForecastElement extends LitElement {
       this.forecast = forEntityFromState(this.config.entity, this._hass);
     }
   }
-  get hass() {
-    return this._hass;
-  }
-
-  constructor() {
-    super();
-  
-    this.config = { entity: "weather.forecast_garden_street" }
-    this.hass = sample;
-  }
-
   setConfig(config) {
-    if (!config.entity) {
+    if (!config.entity && config.mode != 'development') {
       throw new Error("You need to define an entity");
     }
-    this.config = Object.assign(this.defaultConfig, config);
+    this.config = config;
   }
-
   render() {
     return this.forecast
       ? html`
@@ -128,8 +129,9 @@ export class DailyForecastElement extends LitElement {
         padding-top: 5px;
       }
       .not-found {
-        font-size: .3em;
-        color: red;
+        font-size: 24px;
+        color: #666666;
+        text-align: center;
       }
     `;
   }

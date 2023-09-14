@@ -5,40 +5,42 @@ export class CalendarEventsElement extends LitElement {
   static get properties() {
     return {
       config: { type: Object },
+      mode: { type: String },
       events: { type: Object, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
-  defaultConfig = {
-    minimumUpdateTime: 1000
+  static getStubConfig() {
+    return {
+      updateFrequency: 60 * 60 * 1000
+    }
   }
-  lastUpdateTime;
-
+  set mode(m) {
+    if (m == 'development') {
+      this.setConfig(Object.assign(CalendarEventsElement.getStubConfig(), {
+        mode: 'development',
+        updateFrequency: 1000
+      }))
+    }
+  }
   set hass(h) {
     this._hass = h;
-    if (this.config && this.config.entity && (!this.lastUpdateTime || (Date.now() - this.lastUpdateTime) > this.config.minimumUpdateTime )) {
-      this.synchronize()
-    }
   }
-  get hass() {
-    return this._hass;
-  }
-
-  constructor() {
-    super();
-  
-    this.config = { entity: "weather.forecast_garden_street_hourly" }
-    this.hass = {};
-  }
-
   setConfig(config) {
-    if (!config.entity) {
+    if (!config.entity && config.mode != 'development') {
       throw new Error("You need to define an entity");
     }
-    this.config = Object.assign(this.defaultConfig, config);
+    this.config = config;
   }
-  synchronize() {
-    this.events = getEvents();
-    console.log(this.events);
+  connectedCallback() {
+    super.connectedCallback()
+    this._interval = setInterval(this.updateState.bind(this), this.config.updateFrequency);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    clearInterval(this._interval)
+  }
+  async updateState() {
+    this.events = await getEvents(this._hass, this.config);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -80,10 +82,9 @@ export class CalendarEventsElement extends LitElement {
   }
 
   render() {
-    
     return this.events
       ? html`${this.getEventList('Today', this.events.today)}${this.getEventList('Tomorrow', this.events.tomorrow)}`
-      : html` <div class="not-found">No events found.</div> `;
+      : html` <h3>No events found</h3> `;
   }
 
   static get styles() {

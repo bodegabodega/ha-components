@@ -27,6 +27,5 @@ const conditionMap = {
 }
 
 export const forCondition = condition => {
-  // console.log(condition)
   return condition in conditionMap ? conditionMap[condition] : '?';
 }

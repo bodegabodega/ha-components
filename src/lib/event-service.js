@@ -5,10 +5,17 @@ import isTomorrow from 'dayjs/plugin/isTomorrow';
 dayjs.extend(isToday);
 dayjs.extend(isTomorrow);
 
-export const getEvents = () => {
+export const getEvents = async (hass, config) => {
+  let events;
+  if(config.mode == 'development') {
+    events = sample.events;
+  } else {
+    const start = dayjs().startOf('day');
+    const end = dayjs().add(1, 'day').endOf('day');
+    events = await hass.callApi('get', `calendars/calendar.famalam?start=${start}&end=${end}`);
+  }
   let today = [];
   let tomorrow = [];
-  const events = sample.events;
   events.forEach(event => {
     const evt = {};
     const start = dayjs(event.start);
@@ -35,14 +42,3 @@ export const getEvents = () => {
   })
   return { today, tomorrow }
 }
-
-/*
-{
-  "events": [
-    {
-      "start": "2023-09-12T15:15:00-04:00",
-      "end": "2023-09-12T16:15:00-04:00",
-      "summary": "Maddie: Gymnastics class",
-      "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
-    },
-    */

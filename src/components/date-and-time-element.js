@@ -27,13 +27,8 @@ export class DateAndTimeElement extends LitElement {
     this._meridian = m;
   }
 
-  setConfig(config) {
-    console.log(config);
-  }
-
-  set hass(hass) {
-    console.log(hass);
-  }
+  setConfig(config) {}
+  set hass(hass) {}
 
   render() {
     return html`
