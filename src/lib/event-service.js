@@ -10,8 +10,8 @@ export const getEvents = async (hass, config) => {
   if(config.mode == 'development') {
     events = sample.events;
   } else {
-    const start = dayjs().startOf('day');
-    const end = dayjs().add(1, 'day').endOf('day');
+    const start = dayjs().startOf('day').toISOString();
+    const end = dayjs().add(1, 'day').endOf('day').toISOString();
     events = await hass.callApi('get', `calendars/calendar.famalam?start=${start}&end=${end}`);
   }
   let today = [];
