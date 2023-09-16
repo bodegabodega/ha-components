@@ -17,6 +17,11 @@ export class DailyForecastElement extends LitElement {
       numPredictions: 7
     }
   }
+  static getDefaults() {
+    return {
+      numPredictions: 7
+    }
+  }
   set mode(m) {
     if (m == 'development') {
       this.setConfig(Object.assign(DailyForecastElement.getStubConfig(), {
@@ -38,7 +43,7 @@ export class DailyForecastElement extends LitElement {
     if (!config.entity && config.mode != 'development') {
       throw new Error("You need to define an entity");
     }
-    this.config = config;
+    this.config = Object.assign(DailyForecastElement.getDefaults(), config);
   }
   render() {
     return this.forecast

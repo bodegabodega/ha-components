@@ -16,6 +16,11 @@ export class HourlyForecastElement extends LitElement {
       numPredictions: 7
     }
   }
+  static getDefaults() {
+    return {
+      numPredictions: 7
+    }
+  }
   set mode(m) {
     if (m == 'development') {
       this.setConfig(Object.assign(HourlyForecastElement.getStubConfig(), {
@@ -36,7 +41,7 @@ export class HourlyForecastElement extends LitElement {
     if (!config.entity) {
       throw new Error("You need to define an entity");
     }
-    this.config = config;
+    this.config = Object.assign(HourlyForecastElement.getDefaults(), config);
   }
 
   render() {

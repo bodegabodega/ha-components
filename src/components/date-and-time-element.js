@@ -9,9 +9,16 @@ export class DateAndTimeElement extends LitElement {
       _meridian: { type: String, state: true }
     }
   }
+  static getStubConfig() {
+    return {}
+  }
+  static getDefaults() {
+    return {}
+  }
 
   connectedCallback() {
     super.connectedCallback()
+    this.updateState();
     this._interval = setInterval(this.updateState.bind(this), 1000)
   }
 
@@ -27,7 +34,9 @@ export class DateAndTimeElement extends LitElement {
     this._meridian = m;
   }
 
-  setConfig(config) {}
+  setConfig(config) {
+    this.config = Object.assign(DateAndTimeElement.getDefaults(), config);
+  }
   set hass(hass) {}
 
   render() {

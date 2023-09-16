@@ -13,7 +13,7 @@ export const forEntityFromState = (entityName, hass, numPredictions = 7) => {
   const predictions = [];
   predictions.push(prediction('NOW', forCondition(stateObject.state), stateObject.attributes.temperature))
   const forecast = stateObject.attributes.forecast;
-  const length = Math.min(numPredictions, forecast.length);
+  const length = Math.min((numPredictions - 1), forecast.length);
   for (let i = 0; i < length; i++) {
     const { datetime, condition, temperature } = forecast[i];
     const hour = i % 2 == 1 ? dayjs(datetime).format('h') : '&nbsp;';

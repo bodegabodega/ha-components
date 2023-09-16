@@ -1,27 +1,92 @@
-{
-  "events": [
-    {
-      "start": "2023-09-13T15:15:00-04:00",
-      "end": "2023-09-13T16:15:00-04:00",
-      "summary": "Maddie: Gymnastics class",
-      "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
-    },
-    {
-      "start": "2023-09-13T13:00:00-04:00",
-      "end": "2023-09-13T14:00:00-04:00",
-      "summary": "Club Lottery results posted!"
-    },
-    {
-      "start": "2023-09-14T15:30:00-04:00",
-      "end": "2023-09-14T16:30:00-04:00",
-      "summary": "Max: Hip Hop Drop off",
-      "location": "Garden Street School of the Performing Arts\n1018 Washington St, FL 2, Hoboken, NJ  07030, United States"
-    },
-    {
-      "start": "2023-09-14T15:30:00-04:00",
-      "end": "2023-09-14T16:30:00-04:00",
-      "summary": "Maddie: Pinta Big Kids (drop off)",
-      "location": "Garden Street School of the Performing Arts\n1018 Washington St, FL 2, Hoboken, NJ  07030, United States"
-    }
-  ]
-}
+[{
+  "start": {
+      "dateTime": "2023-09-15T12:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-15T13:00:00-04:00"
+  },
+  "summary": "Daddy: Wonder Lofts visit",
+  "description": null,
+  "location": "720 Clinton St\nHoboken, NJ, United States",
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-15T15:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-15T16:00:00-04:00"
+  },
+  "summary": "Morelias free Paletas!",
+  "description": null,
+  "location": null,
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-16T10:45:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-16T11:45:00-04:00"
+  },
+  "summary": "Max: Hip Hop trial class",
+  "description": null,
+  "location": "Mile Square Theatre\n1408 Clinton St, Hoboken, NJ  07030, United States",
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-16T09:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-16T10:00:00-04:00"
+  },
+  "summary": "Maddie Ballet/Tap class!",
+  "description": null,
+  "location": "Mile Square Theatre\n1408 Clinton St, Hoboken, NJ  07030, United States",
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-16T13:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-16T14:00:00-04:00"
+  },
+  "summary": "Open house! ",
+  "description": null,
+  "location": "210 11th St\nHoboken, NJ, United States",
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-16T14:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-16T16:00:00-04:00"
+  },
+  "summary": "Max: Augie’s bday party! (Snacks tee & Bring grip socks!",
+  "description": null,
+  "location": "Gravity Vault\n1423 Clinton St, Hoboken, NJ  07030, United States",
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}, {
+  "start": {
+      "dateTime": "2023-09-16T17:00:00-04:00"
+  },
+  "end": {
+      "dateTime": "2023-09-16T20:00:00-04:00"
+  },
+  "summary": "Family Nite w/The Clarkes! (Pizza & Movie)",
+  "description": null,
+  "location": null,
+  "uid": null,
+  "recurrence_id": null,
+  "rrule": null
+}]

@@ -14,11 +14,16 @@ export class CalendarEventsElement extends LitElement {
       updateFrequency: 60 * 60 * 1000
     }
   }
+  static getDefaults() {
+    return {
+      updateFrequency: 60 * 60 * 1000
+    }
+  }
   set mode(m) {
     if (m == 'development') {
       this.setConfig(Object.assign(CalendarEventsElement.getStubConfig(), {
         mode: 'development',
-        updateFrequency: 1000
+        updateFrequency: 60 * 1000
       }))
     }
   }
@@ -29,10 +34,11 @@ export class CalendarEventsElement extends LitElement {
     if (!config.entity && config.mode != 'development') {
       throw new Error("You need to define an entity");
     }
-    this.config = config;
+    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
   }
   connectedCallback() {
     super.connectedCallback()
+    this.updateState().then(_ => { /* do nothing */})
     this._interval = setInterval(this.updateState.bind(this), this.config.updateFrequency);
   }
   disconnectedCallback() {
