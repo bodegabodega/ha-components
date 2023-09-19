@@ -63,11 +63,12 @@ export class HourlyForecastElement extends LitElement {
   static get styles() {
     return css`
       :host {
+        margin: 0 !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
 
-        min-height: 150px;
+        min-height: 160px;
 
         background-color: #111111;
 

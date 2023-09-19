@@ -35,10 +35,10 @@ export class CalendarEventsElement extends LitElement {
       throw new Error("You need to define an entity");
     }
     this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
+    this.updateState().then(_ => { /* do nothing */})
   }
   connectedCallback() {
     super.connectedCallback()
-    this.updateState().then(_ => { /* do nothing */})
     this._interval = setInterval(this.updateState.bind(this), this.config.updateFrequency);
   }
   disconnectedCallback() {
@@ -96,6 +96,7 @@ export class CalendarEventsElement extends LitElement {
   static get styles() {
     return css`
       :host {
+        margin: 0 !important;
         padding: 10px;
         min-height: 150px;
 

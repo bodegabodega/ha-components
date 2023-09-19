@@ -68,11 +68,12 @@ export class CurrentConditionsElement extends LitElement {
   static get styles() {
     return css`
       :host {
+        margin: 0 !important;
         display: flex;
         justify-content: center;
         align-items: center;
 
-        min-height: 150px;
+        min-height: 240px;
 
         background-color: #111111;
 
@@ -113,6 +114,7 @@ export class CurrentConditionsElement extends LitElement {
       }
       .condition {
         font-size: 42px;
+        line-height: 48px;
         color: #ffffff;
         text-align: center;
       }
