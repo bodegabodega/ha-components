@@ -1,17 +1,12 @@
-import {LitElement, html, css, nothing} from 'lit';
+import { html, css, nothing} from 'lit';
 import { getEvents } from '../lib/event-service';
+import { BaseComponent } from './base-component';
 
-export class CalendarEventsElement extends LitElement {
+export class CalendarEventsElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      mode: { type: String },
       events: { type: Object, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
-    }
-  }
-  static getStubConfig() {
-    return {
-      updateFrequency: 60 * 60 * 1000
     }
   }
   static getDefaults() {
@@ -19,34 +14,29 @@ export class CalendarEventsElement extends LitElement {
       updateFrequency: 60 * 60 * 1000
     }
   }
-  set mode(m) {
-    if (m == 'development') {
-      this.setConfig(Object.assign(CalendarEventsElement.getStubConfig(), {
-        mode: 'development',
-        updateFrequency: 60 * 1000
-      }))
-    }
+  set config(config) {
+    this.setConfig(config);
   }
   set hass(h) {
     this._hass = h;
   }
   setConfig(config) {
-    if (!config.entity && config.mode != 'development') {
-      throw new Error("You need to define an entity");
-    }
-    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
+    this._config = Object.assign(CalendarEventsElement.getDefaults(), config);
+    this.log('Setting Config', this._config)
+    if (!config.entity) throw new Error("You need to define an entity");
+    if (this._interval) clearInterval(this._interval)
+    this._interval = setInterval(this.updateState.bind(this), this._config.updateFrequency);
     this.updateState().then(_ => { /* do nothing */})
   }
-  connectedCallback() {
-    super.connectedCallback()
-    this._interval = setInterval(this.updateState.bind(this), this.config.updateFrequency);
-  }
   disconnectedCallback() {
+    this.log('Disconnected Callback')
     super.disconnectedCallback()
     clearInterval(this._interval)
   }
   async updateState() {
-    this.events = await getEvents(this._hass, this.config);
+    this.log('Updating State')
+    this.events = await getEvents(this._hass, this._config);
+    this.log('Received State', this.events);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -88,6 +78,7 @@ export class CalendarEventsElement extends LitElement {
   }
 
   render() {
+    this.log('Rendering?', !!this.events);
     return this.events
       ? html`${this.getEventList('Today', this.events.today)}${this.getEventList('Tomorrow', this.events.tomorrow)}`
       : html` <h3>No events found</h3> `;

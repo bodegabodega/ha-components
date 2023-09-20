@@ -1,7 +1,8 @@
-import {LitElement, html, css} from 'lit';
+import { html, css} from 'lit';
+import { BaseComponent } from './base-component';
 import dayjs from 'dayjs';
 
-export class DateAndTimeElement extends LitElement {
+export class DateAndTimeElement extends BaseComponent {
   static get properties() {
     return {
       _date: { type: String, state: true },
@@ -9,25 +10,26 @@ export class DateAndTimeElement extends LitElement {
       _meridian: { type: String, state: true }
     }
   }
-  static getStubConfig() {
-    return {}
-  }
   static getDefaults() {
     return {}
   }
 
   connectedCallback() {
+    this.log('Connected Callback')
     super.connectedCallback()
-    this.updateState();
+    if (this._interval) clearInterval(this._interval);
     this._interval = setInterval(this.updateState.bind(this), 1000)
+    this.updateState();
   }
 
   disconnectedCallback() {
+    this.log('Disconnected Callback')
     super.disconnectedCallback()
     clearInterval(this._interval)
   }
 
   updateState() {
+    this.log('Updating State')
     const [d, t, m] = dayjs().format('dddd, MMMM D|h:mm|a').split('|');
     this._date = d;
     this._time = t;

@@ -1,42 +1,31 @@
 import {LitElement, html, css} from 'lit';
+import { BaseComponent } from './base-component';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
 import sample from './../../data/hass.json';
 
-export class CurrentConditionsElement extends LitElement {
+export class CurrentConditionsElement extends BaseComponent {
   static get properties() {
     return {
-      mode: { type: String },
       hass: { type: Object },
-      config: { type: Object },
-      unit: { type: String }
+      config: { type: Object }
     }
-  }
-  static getStubConfig() {
-    return {}
   }
   static getDefaults() {
     return {}
   }
-  set mode(m) {
-    if (m == 'development') {
-      this.setConfig(Object.assign(CurrentConditionsElement.getStubConfig(), {
-        mode: 'development',
-        entity: "weather.forecast_garden_street"
-      }))
-      this.hass = sample;
-    }
+  set config(config) {
+    this.setConfig(config);
   }
   setConfig(config) {
-    if (!config.entity && this.config.mode !== 'development') {
-      throw new Error("You need to define an entity");
-    }
-    this.config = Object.assign(CurrentConditionsElement.getDefaults(), config);
+    this._config = Object.assign(CurrentConditionsElement.getDefaults(), config);
+    this.log('Setting Config', this._config)
+    if (!config.entity) throw new Error("You need to define an entity");
+    if (this._config.mode == 'development') this.hass = sample;
   }
-
   render() {
-    const entityState = this.hass.states[this.config.entity];
+    const entityState = this.hass.states[this._config.entity];
     const current = entityState.attributes.temperature;
     const low = entityState.attributes.forecast[0].templow;
     const high = entityState.attributes.forecast[0].temperature;
@@ -45,7 +34,7 @@ export class CurrentConditionsElement extends LitElement {
       ? html`
       <div class="outer">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree">${this.unit || entityState.attributes.temperature_unit}</span>
+          <span class="number">${current}</span><span class="degree">${this._config.unit || entityState.attributes.temperature_unit}</span>
         </div>
         <div class="condition">${asAdjective(entityState.state)}</div>
         <div class="lowhigh">
@@ -62,7 +51,7 @@ export class CurrentConditionsElement extends LitElement {
         </div>
       </div>
       `
-      : html` <div class="not-found">Entity ${this.config.entity} not found.</div> `;
+      : html` <div class="not-found">Entity ${this._config.entity} not found.</div> `;
   }
 
   static get styles() {

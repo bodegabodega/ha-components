@@ -1,19 +1,14 @@
-import {LitElement, html, css} from 'lit';
+import { html, css} from 'lit';
+import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
 import sample from './../../data/hass.json';
 
-export class HourlyForecastElement extends LitElement {
+export class HourlyForecastElement extends BaseComponent {
   static get properties() {
     return {
-      mode: { type: String },
       config: { type: Object },
       forecast: { type: Array, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
-    }
-  }
-  static getStubConfig() {
-    return {
-      numPredictions: 7
     }
   }
   static getDefaults() {
@@ -21,30 +16,24 @@ export class HourlyForecastElement extends LitElement {
       numPredictions: 7
     }
   }
-  set mode(m) {
-    if (m == 'development') {
-      this.setConfig(Object.assign(HourlyForecastElement.getStubConfig(), {
-        mode: 'development',
-        numPredictions: 7,
-        entity: "weather.forecast_garden_street_hourly"
-      }))
-      this.hass = sample;
-    }
+  set config(config) {
+    this.setConfig(config);
   }
   set hass(h) {
-    this._hass = h;
-    if (this.config && this.config.entity) {
-      this.forecast = forEntityFromState(this.config.entity, this._hass, this.config.numPredictions);
+    if (this._config && this._config.entity) {
+      this.log('Getting Forecast from Entity State');
+      this.forecast = forEntityFromState(this._config.entity, h, this._config.numPredictions);
     }
   }
   setConfig(config) {
-    if (!config.entity) {
-      throw new Error("You need to define an entity");
-    }
-    this.config = Object.assign(HourlyForecastElement.getDefaults(), config);
+    this._config = Object.assign(HourlyForecastElement.getDefaults(), config);
+    this.log('Setting Config', this._config)
+    if (!config.entity) throw new Error("You need to define an entity");
+    if (this._config.mode == 'development') this.hass = sample;
   }
 
   render() {
+    this.log('Rendering?', !!this.forecast);
     return this.forecast
       ? html`
       <div class="outer">
