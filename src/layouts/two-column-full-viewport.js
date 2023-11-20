@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-class TwoColumnFullViewport extends LitElement {
+export class TwoColumnFullViewport extends LitElement {
   setConfig(config) {
       this._config = config;
   }
