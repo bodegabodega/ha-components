@@ -55,25 +55,13 @@ export class CurrentConditionsElement extends BaseComponent {
   }
 
   static get styles() {
-    return css`
+    return [
+      BaseComponent.styles,
+      css`
       :host {
-        margin: 0 !important;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        min-height: 240px;
-
-        background-color: #111111;
-
-        color: #666666;
-        font-weight: 400;
-        
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
       }
       .outer {
         display: flex;
@@ -81,33 +69,38 @@ export class CurrentConditionsElement extends BaseComponent {
         justify-content: center;
         align-items: center;
 
+        margin: 20px 0;
       }
       .temperature {
         margin: 0 auto;
       }
       .temperature .number {
-        color: #ffffff;
-        font-size: 124px;
+        color: var(--color-text-primary);
+        font-size: 96px;
 
         display: inline-block;
         vertical-align: middle;
-        line-height: 100px;
+        line-height: 84px;
       }
       .degree {
+        color: var(--color-text-tertiary);
+
         font-weight: 400;
-        font-size: 68px;
+        font-size: 54px;
         vertical-align: baseline;
 
         display: inline-block;
         line-height: normal;
       }
       .condition {
-        font-size: 42px;
-        line-height: 48px;
-        color: #ffffff;
+        font-size: 28px;
+        line-height: 36px;
+        color: var(--color-text-primary);
         text-align: center;
       }
       .lowhigh {
+        color: var(--color-text-secondary);
+
         display: flex;
         justify-content: center;
         gap: 8px;
@@ -126,7 +119,7 @@ export class CurrentConditionsElement extends BaseComponent {
       .gauge .point {
         position: relative;
         top: 25%;
-        background-color: #ffffff;
+        background-color: var(--color-fg);
         height: 5px;
         width: 5px;
         border-radius: 10px;
@@ -134,7 +127,7 @@ export class CurrentConditionsElement extends BaseComponent {
       .not-found {
         color: red;
       }
-    `;
+    `];
   }
 }
 

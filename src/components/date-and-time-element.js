@@ -1,17 +1,23 @@
 import { html, css} from 'lit';
 import { BaseComponent } from './base-component';
+import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
 export class DateAndTimeElement extends BaseComponent {
   static get properties() {
     return {
+      config: { type: Object },
       _date: { type: String, state: true },
       _time: { type: String, state: true },
       _meridian: { type: String, state: true }
     }
   }
   static getDefaults() {
-    return {}
+    return {
+    }
+  }
+  set config(config) {
+    this.setConfig(config);
   }
 
   connectedCallback() {
@@ -37,7 +43,7 @@ export class DateAndTimeElement extends BaseComponent {
   }
 
   setConfig(config) {
-    this.config = Object.assign(DateAndTimeElement.getDefaults(), config);
+    this._config = Object.assign(DateAndTimeElement.getDefaults(), config);
   }
   set hass(hass) {}
 
@@ -51,49 +57,38 @@ export class DateAndTimeElement extends BaseComponent {
   }
 
   static get styles() {
-    return css`
+    return [
+      BaseComponent.styles,
+      css`
       :host {
-        margin: 0 !important;
         display: flex;
         justify-content: center;
         align-items: center;
-
-        min-height: 180px;
-
-        background-color: #111111;
-
-        font-weight: 400;
-        
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
       }
       .outer {
-
+        margin: 20px 0 10px 0;
       }
       .date {
-        color: #666666;
-        font-size: 16px;
+        color: var(--color-text-secondary);
+        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
       }
       .time {
-        font-size: 72px;
-        line-height: 64px;
-        color: #ffffff;
+        font-size: 48px;
+        line-height: 40px;
+        color: var(--color-text-primary);
 
         display: inline-block;
       }
       .meridian {
-        color: #666666;
+        color: var(--color-text-tertiary);
         font-weight: 300;
         text-transform: uppercase;
 
         display: inline-block;
       }
-    `;
+    `];
   }
 }
 

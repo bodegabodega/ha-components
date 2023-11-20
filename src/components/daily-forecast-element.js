@@ -15,16 +15,6 @@ export class DailyForecastElement extends BaseComponent {
   static getDefaults() {
     return { }
   }
-  // set mode(m) {
-  //   if (m == 'development') {
-  //     this.setConfig(Object.assign(DailyForecastElement.getStubConfig(), {
-  //       mode: 'development',
-  //       numPredictions: 7,
-  //       entity: "weather.forecast_garden_street"
-  //     }))
-  //     this.hass = sample;
-  //   }
-  // }
   set config(config) {
     this.setConfig(config);
   }
@@ -66,34 +56,25 @@ export class DailyForecastElement extends BaseComponent {
   }
 
   static get styles() {
-    return css`
+    return [
+      BaseComponent.styles,
+      css`
       :host {
-        margin: 0 !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
 
-        min-height: 200px;
-
-        background-color: #111111;
-
-        color: #666666;
         font-size: 12px;
         font-weight: 400;
-        
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
       }
       .outer {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
+        margin: 14px 0;
       }
       .feather {
-        stroke: #ffffff;
+        stroke: var(--color-text-primary);
         height: 16px;
         width: 16px;
       }
@@ -101,6 +82,8 @@ export class DailyForecastElement extends BaseComponent {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        color: var(--color-text-secondary)
       }
       .icon {
         padding-bottom: 5px;
@@ -110,7 +93,7 @@ export class DailyForecastElement extends BaseComponent {
         padding-bottom: 5px;
       }
       .temperature {
-        background-color: #666666;
+        background-color: var(--color-text-tertiary);
         border-radius: 20px;
         width: 7px;
         height: 80px;
@@ -135,7 +118,7 @@ export class DailyForecastElement extends BaseComponent {
         color: #666666;
         text-align: center;
       }
-    `;
+    `];
   }
 }
 

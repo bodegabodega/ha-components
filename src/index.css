@@ -1,46 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
 
-:root {
-  font-family: 'Montserrat', sans-serif;
-  /* font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+* {
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%; */
-}
-
-/* a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-} */
+.container {
+  height: 100vh;
 
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+.sidebar {
+  display: grid;
+  place-items: stretch;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.column > * {
+  flex-grow: 1;
+}
+
+/*
 .parent { 
   display: grid; 
   grid-template-columns: repeat(6, 1fr); 
@@ -59,4 +52,4 @@ body {
   .div9 { grid-area: 3 / 4 / 4 / 7; } 
   .div10 { grid-area: 4 / 1 / 5 / 2; } 
   .div11 { grid-area: 4 / 2 / 5 / 4; } 
-  .div12 { grid-area: 4 / 4 / 5 / 7; } 
+  .div12 { grid-area: 4 / 4 / 5 / 7; } */

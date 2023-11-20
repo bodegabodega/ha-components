@@ -12,8 +12,20 @@
     <script type="module" src="/src/components/date-and-time-element.js"></script>
   </head>
   <body>
+    <div class="container">
+      <div class="sidebar">
+        <date-and-time config='{"mode": "development", "debug": true, "entity": "none"}'></date-and-time>
+        <current-conditions config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street", "unit": "°"}'></current-conditions> 
+        <hourly-forecast config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street_hourly"}'></hourly-forecast>
+        <daily-forecast config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street"}'></daily-forecast>
+      </div>
+      <div class="column">
+        <calendar-events config='{"mode": "development", "debug": true, "entity": "none"}'></calendar-events>
+      </div>
+    </div>
+    <!--
       <div class="parent"> 
-        <date-and-time class="div1"></date-and-time>
+        <date-and-time class="div1" config='{"mode": "development", "debug": true, "entity": "none"}'></date-and-time>
         <calendar-events class="div2" config='{"mode": "development", "debug": true, "entity": "none"}'></calendar-events>
         <calendar-events class="div3" config='{"mode": "development", "debug": true, "entity": "none"}'></calendar-events>
         <current-conditions class="div4" config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street", "unit": "°"}'></current-conditions> 
@@ -26,5 +38,6 @@
         <daily-forecast class="div11" config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street"}'></daily-forecast>
         <daily-forecast class="div12" config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street"}'></daily-forecast>
       </div>
+      -->
   </body>
 </html>

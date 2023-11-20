@@ -50,34 +50,25 @@ export class HourlyForecastElement extends BaseComponent {
   }
 
   static get styles() {
-    return css`
+    return [
+      BaseComponent.styles,
+      css`
       :host {
-        margin: 0 !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
 
-        min-height: 160px;
-
-        background-color: #111111;
-
-        color: #666666;
         font-size: 12px;
-        font-weight: 400;
-        
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
       }
       .outer {
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
+
+        margin: 10px 0;
       }
       .feather {
-        stroke: #ffffff;
+        stroke: var(--color-text-primary);
         height: 16px;
         width: 16px;
       }
@@ -94,6 +85,7 @@ export class HourlyForecastElement extends BaseComponent {
         padding-bottom: 5px;
       }
       .temperature {
+        color: var(--color-text-secondary);
         text-align: center;
         font-weight: 700;
       }
@@ -102,7 +94,7 @@ export class HourlyForecastElement extends BaseComponent {
         font-size: 24px;
         color: #666666;
       }
-    `;
+    `];
   }
 }
 

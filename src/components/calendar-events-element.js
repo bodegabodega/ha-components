@@ -19,59 +19,70 @@ export class CalendarEventsElement extends BaseComponent {
   }
   set hass(h) {
     this._hass = h;
+    this.log('Setting Hass', h)
+    if (!this._lastUpdate || (Date.now() - this._lastUpdate) > this._config.updateFrequency) {
+      this.log('Requesting State Update')
+      this.updateState().then(() => { /* do nothing */ });
+    }
+  }
+  constructor() {
+    super();
+    this._lastUpdate = null;
+  }
+  connectedCallback() {
+    super.connectedCallback()
+    if( this._config.mode == "development" ) {
+      this.hass = {};
+    }
   }
   setConfig(config) {
     this._config = Object.assign(CalendarEventsElement.getDefaults(), config);
     this.log('Setting Config', this._config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._interval) clearInterval(this._interval)
-    this._interval = setInterval(this.updateState.bind(this), this._config.updateFrequency);
-    this.updateState().then(_ => { /* do nothing */})
-  }
-  disconnectedCallback() {
-    this.log('Disconnected Callback')
-    super.disconnectedCallback()
-    clearInterval(this._interval)
   }
   async updateState() {
-    this.log('Updating State')
+    if(!this._hass || !this._config) return;
+    this.log('Updating State') 
     this.events = await getEvents(this._hass, this._config);
+    this._lastUpdate = Date.now();
     this.log('Received State', this.events);
   }
   getEventList(label, events) {
     return events && events.length > 0
     ? html`
-      <h3>${label}</h3>
-        <div class="event-list">
-        ${events.map(event => html`
-        <div class="event">
-        ${event.time
-          ? html`
-          <div>
-            <span class="time">${event.time}</span><span class="meridian">${event.meridian}</span>
-          </div>
-          `
-          : nothing
-        }
-          <div class="details">
-            <div class="summary">${event.summary}</div>
-            ${event.location
+      <div class="event-list-container">
+        <h3>${label}</h3>
+          <div class="event-list">
+          ${events.map(event => html`
+          <div class="event">
+            <div class="start-time">
+            ${event.time
               ? html`
-              <div class="location">${event.location}</div>
+                <span class="time">${event.time}</span><span class="meridian">${event.meridian}</span>
               `
               : nothing
             }
-          </div>
-          ${event.duration
-            ? html`
-            <div class="duration">
-              <span class="hours">${event.duration}</span><span class="unit">${event.duration_unit}</span>
             </div>
-            `
-            : nothing
-          }
-        </div>
-        `)}
+            <div class="details">
+              <div class="summary">${event.summary}</div>
+              ${event.location
+                ? html`
+                <div class="location">${event.location}</div>
+                `
+                : nothing
+              }
+            </div>
+            <div class="duration">
+              ${event.duration
+                ? html`
+                  <span class="hours">${event.duration}</span><span class="unit">${event.duration_unit}</span>
+                `
+                : nothing
+              }
+            </div>
+          </div>
+          `)}
+          </div>
         </div>
       `
     : nothing;
@@ -85,27 +96,21 @@ export class CalendarEventsElement extends BaseComponent {
   }
 
   static get styles() {
-    return css`
+    return [
+      BaseComponent.styles,
+      css`
       :host {
-        margin: 0 !important;
-        padding: 10px;
-        min-height: 150px;
-
-        background-color: #FFFFFF;
-
-        color: #666666;
         font-size: 18px;
-        font-weight: 400;
-        
-        font-synthesis: none;
-        text-rendering: optimizeLegibility;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-text-size-adjust: 100%;
+
+        background-color: var(--color-bg-secondary);
+      }
+      .event-list-container {
+        padding: 10px;
       }
       h3 {
         margin: 0 0 10px 0;
 
+        color: var(--color-text-secondary);
         font-size: 24px;
         text-transform: uppercase;
       }
@@ -117,15 +122,21 @@ export class CalendarEventsElement extends BaseComponent {
         padding: 10px;
         margin-bottom: 10px;
 
-        background-color: #f5f5f5;
-        background-image: linear-gradient(172deg, #fafafa, #ffffff);
-        border: 1px solid #ededed;
-        filter: drop-shadow(5px 5px 6px #f5f5f5);
+        background-color: var(--color-bg-secondary);
+        background-image: linear-gradient(172deg, var(--color-bg), var(--color-bg-secondary));
+        border: 1px solid var(--color-bg);
+        filter: drop-shadow(5px 5px 6px var(--color-bg));
 
         border-radius: 8px;
       }
       .meridian, .unit {
         font-weight: 300;
+      }
+      .start-time, .duration {
+        width: 7%;
+      }
+      .duration {
+        text-align: right;
       }
       .details {
         width: 75%;
@@ -142,7 +153,7 @@ export class CalendarEventsElement extends BaseComponent {
         font-size: .3em;
         color: red;
       }
-    `;
+    `];
   }
 }
 
