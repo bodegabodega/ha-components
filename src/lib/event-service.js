@@ -1,14 +1,15 @@
-import sample from './../../data/calendar-list-events-response.json';
+import sample from '../../data/calendar-list-events-response';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isTomorrow from 'dayjs/plugin/isTomorrow';
+import relativeTime  from 'dayjs/plugin/relativeTime';
 dayjs.extend(isToday);
 dayjs.extend(isTomorrow);
+dayjs.extend(relativeTime);
 
 const compare = ( a, b ) => {
   return ( a.timestamp < b.timestamp ) ? -1 : ( a.timestamp > b.timestamp ) ? 1 : 0;
 }
-
 
 export const getEvents = async (hass, config) => {
   let events;
@@ -16,19 +17,22 @@ export const getEvents = async (hass, config) => {
     events = sample;
   } else {
     const start = dayjs().startOf('day').toISOString();
-    const end = dayjs().add(1, 'day').endOf('day').toISOString();
+    const end = dayjs().add(config.dayLookahead, 'day').endOf('day').toISOString();
     events = await hass.callApi('get', `calendars/calendar.famalam?start=${start}&end=${end}`);
   }
+  console.log(events)
   let today = [];
   let tomorrow = [];
+  let upcoming = [];
   events.forEach(event => {
     const evt = {};
-    const start = dayjs(event.start.dateTime);
-    const end = dayjs(event.end.dateTime);
+    evt.isAllDay = !!event.start.date;
+    const start = evt.isAllDay ? dayjs(`${event.start.date}T00:00:00`) : dayjs(event.start.dateTime);
+    const end = evt.isAllDay ? dayjs(`${event.end.date}T23:59:59`) : dayjs(event.end.dateTime);
     const duration = end.diff(start, 'minutes');
-    if( duration < 720 ) { // less than 12 hours
-      evt.time = start.format('h:mm');
-      evt.meridian = start.format('A');
+    if( !evt.isAllDay ) {
+      evt.time = start.isToday() || start.isTomorrow() ? start.format('h:mm') : start.format('dddd').toUpperCase();
+      evt.meridian = start.isToday() || start.isTomorrow() ? start.format('A') : null;
       if( duration % 60 == 0) {
         evt.duration = duration / 60;
         evt.duration_unit = evt.duration == 1 ? 'HR' : 'HRS';
@@ -36,6 +40,9 @@ export const getEvents = async (hass, config) => {
         evt.duration = duration;
         evt.duration_unit = 'MIN';
       }
+    } else {
+      evt.duration = end.diff(start, 'day');
+      evt.duration_unit = evt.duration == 1 ? 'DAY' : 'DAYS';
     }
     evt.summary = event.summary;
     evt.location = event.location;
@@ -44,11 +51,14 @@ export const getEvents = async (hass, config) => {
       today.push(evt);
     } else if (start.isTomorrow()) {
       tomorrow.push(evt);
+    } else {
+      upcoming.push(evt);
     }
   })
   today.sort(compare);
   tomorrow.sort(compare);
-  return { today, tomorrow };
+  upcoming.sort(compare);
+  return { today, tomorrow, upcoming };
 }
 
 /**

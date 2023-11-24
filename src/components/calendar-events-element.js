@@ -11,7 +11,8 @@ export class CalendarEventsElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      updateFrequency: 60 * 60 * 1000
+      updateFrequency: 60 * 60 * 1000,
+      dayLookahead: 7
     }
   }
   set config(config) {
@@ -60,7 +61,9 @@ export class CalendarEventsElement extends BaseComponent {
               ? html`
                 <span class="time">${event.time}</span><span class="meridian">${event.meridian}</span>
               `
-              : nothing
+              : html`
+                <span class="all-day">ALL DAY</span>
+              `
             }
             </div>
             <div class="details">
@@ -91,7 +94,11 @@ export class CalendarEventsElement extends BaseComponent {
   render() {
     this.log('Rendering?', !!this.events);
     return this.events
-      ? html`${this.getEventList('Today', this.events.today)}${this.getEventList('Tomorrow', this.events.tomorrow)}`
+      ? html`
+        ${this.getEventList('Today', this.events.today)}
+        ${this.getEventList('Tomorrow', this.events.tomorrow)}
+        ${this.getEventList('Upcoming', this.events.upcoming)}
+      `
       : html` <h3>No events found</h3> `;
   }
 

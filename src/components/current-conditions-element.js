@@ -1,6 +1,7 @@
-import {LitElement, html, css} from 'lit';
+import { html, css} from 'lit';
 import { BaseComponent } from './base-component';
 import { styleMap } from 'lit-html/directives/style-map.js';
+import { currentConditionsForState } from '../lib/current-conditions';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
 import sample from './../../data/hass.json';
@@ -26,17 +27,15 @@ export class CurrentConditionsElement extends BaseComponent {
   }
   render() {
     const entityState = this.hass.states[this._config.entity];
-    const current = entityState.attributes.temperature;
-    const low = entityState.attributes.forecast[0].templow;
-    const high = entityState.attributes.forecast[0].temperature;
+    const { current, low, high, unit, description } = currentConditionsForState(entityState);
     const currentPercentage = Math.round(((current - low) / (high - low)) * 95); // 95 is a magic number because gauge is 100px and size of point is 5px .. could be better
     return entityState
       ? html`
       <div class="outer">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree">${this._config.unit || entityState.attributes.temperature_unit}</span>
+          <span class="number">${current}</span><span class="degree">${this._config.unit || unit}</span>
         </div>
-        <div class="condition">${asAdjective(entityState.state)}</div>
+        <div class="condition">${asAdjective(description)}</div>
         <div class="lowhigh">
           <div>${low}°</div>
           <div class="gauge">
