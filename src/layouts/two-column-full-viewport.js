@@ -48,6 +48,8 @@ export class TwoColumnFullViewport extends LitElement {
               display: flex;
               flex-direction: column;
               justify-content: center;
+              height: 100vh;
+              overflow: scroll;
           }
           .main > * {
               flex-grow: 1;
