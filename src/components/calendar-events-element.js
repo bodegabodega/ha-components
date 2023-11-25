@@ -1,12 +1,12 @@
 import { html, css, nothing} from 'lit';
-import { getEvents } from '../lib/event-service';
+import { getDays } from '../lib/event-service';
 import { BaseComponent } from './base-component';
 
 export class CalendarEventsElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      events: { type: Object, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      days: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
   static getDefaults() {
@@ -44,9 +44,9 @@ export class CalendarEventsElement extends BaseComponent {
   async updateState() {
     if(!this._hass || !this._config) return;
     this.log('Updating State') 
-    this.events = await getEvents(this._hass, this._config);
+    this.days = await getDays(this._hass, this._config);
     this._lastUpdate = Date.now();
-    this.log('Received State', this.events);
+    this.log('Received State', this.days);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -55,35 +55,26 @@ export class CalendarEventsElement extends BaseComponent {
         <h3>${label}</h3>
           <div class="event-list">
           ${events.map(event => html`
-          <div class="event">
-            <div class="start-time">
-            ${event.time
-              ? html`
-                <span class="time">${event.time}</span><span class="meridian">${event.meridian}</span>
-              `
-              : html`
-                <span class="all-day">ALL DAY</span>
-              `
-            }
-            </div>
-            <div class="details">
-              <div class="summary">${event.summary}</div>
-              ${event.location
-                ? html`
-                <div class="location">${event.location}</div>
-                `
-                : nothing
+            <div class="event${event.isAllDay ? ' all-day' : ''}">
+              <div class="start-time">
+              ${event.startTime
+                ? html`<span class="time">${event.startTime}</span><span class="meridian">${event.startMeridian}</span>`
+                : html`<span class="all-day">ALL DAY</span>`
               }
+              </div>
+              <div class="details">
+                <div class="summary">${event.summary}</div>
+                ${event.location
+                  ? html`<div class="location">${event.location}</div>` : nothing
+                }
+              </div>
+              <div class="duration">
+                ${event.duration
+                  ? html`<span class="hours">${event.duration}</span><span class="unit">${event.durationUnit}</span>`
+                  : nothing
+                }
+              </div>
             </div>
-            <div class="duration">
-              ${event.duration
-                ? html`
-                  <span class="hours">${event.duration}</span><span class="unit">${event.duration_unit}</span>
-                `
-                : nothing
-              }
-            </div>
-          </div>
           `)}
           </div>
         </div>
@@ -92,14 +83,12 @@ export class CalendarEventsElement extends BaseComponent {
   }
 
   render() {
-    this.log('Rendering?', !!this.events);
-    return this.events
-      ? html`
-        ${this.getEventList('Today', this.events.today)}
-        ${this.getEventList('Tomorrow', this.events.tomorrow)}
-        ${this.getEventList('Upcoming', this.events.upcoming)}
-      `
-      : html` <h3>No events found</h3> `;
+    this.log('Rendering?', !!this.days);
+    return this.days
+      ? this.days.map(day => this.getEventList(day.label, day.events))
+      : !this._lastUpdate
+      ? html` <h3>Loading</h3> `
+      : html` <h3>No upcoming events</h3> `;
   }
 
   static get styles() {
@@ -135,6 +124,14 @@ export class CalendarEventsElement extends BaseComponent {
         filter: drop-shadow(5px 5px 6px var(--color-bg));
 
         border-radius: 8px;
+      }
+      .event.all-day {
+        font-size: 12px;
+        padding: 5px;
+        margin-bottom: 3px;
+
+        background: transparent;
+        border: none;
       }
       .meridian, .unit {
         font-weight: 300;

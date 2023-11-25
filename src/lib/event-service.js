@@ -11,7 +11,7 @@ const compare = ( a, b ) => {
   return ( a.timestamp < b.timestamp ) ? -1 : ( a.timestamp > b.timestamp ) ? 1 : 0;
 }
 
-export const getEvents = async (hass, config) => {
+const fetch = async config => {
   let events;
   if(config.mode == 'development') {
     events = sample;
@@ -20,45 +20,69 @@ export const getEvents = async (hass, config) => {
     const end = dayjs().add(config.dayLookahead, 'day').endOf('day').toISOString();
     events = await hass.callApi('get', `calendars/calendar.famalam?start=${start}&end=${end}`);
   }
-  console.log(events)
-  let today = [];
-  let tomorrow = [];
-  let upcoming = [];
-  events.forEach(event => {
-    const evt = {};
-    evt.isAllDay = !!event.start.date;
-    const start = evt.isAllDay ? dayjs(`${event.start.date}T00:00:00`) : dayjs(event.start.dateTime);
-    const end = evt.isAllDay ? dayjs(`${event.end.date}T23:59:59`) : dayjs(event.end.dateTime);
-    const duration = end.diff(start, 'minutes');
-    if( !evt.isAllDay ) {
-      evt.time = start.isToday() || start.isTomorrow() ? start.format('h:mm') : start.format('dddd').toUpperCase();
-      evt.meridian = start.isToday() || start.isTomorrow() ? start.format('A') : null;
-      if( duration % 60 == 0) {
-        evt.duration = duration / 60;
-        evt.duration_unit = evt.duration == 1 ? 'HR' : 'HRS';
+  return events;
+}
+
+export const getDays = async (hass, config) => {
+  const rawEvents = await fetch(config);
+  const days = [];
+
+  // Transform and normalize events
+  const events = []; 
+  rawEvents.forEach(rawEvent => {
+    const event = {};
+    event.isAllDay = !!rawEvent.start.date;
+    event.summary = rawEvent.summary;
+    event.location = rawEvent.location;
+    event.startDateTime = event.isAllDay ? dayjs(`${rawEvent.start.date}T00:00:00`) : dayjs(rawEvent.start.dateTime);
+    event.endDateTime = event.isAllDay ? dayjs(`${rawEvent.end.date}T23:59:59`) : dayjs(rawEvent.end.dateTime);
+    event.durationInMinutes = event.endDateTime.diff(event.startDateTime, 'minutes');
+    if( !event.isAllDay ) {
+      event.startTime = event.startDateTime.format('h:mm');
+      event.startMeridian = event.startDateTime.format('A');
+      if( event.durationInMinutes % 60 == 0) {
+        event.duration = event.durationInMinutes / 60;
+        event.durationUnit = event.duration == 1 ? 'HR' : 'HRS';
       } else {
-        evt.duration = duration;
-        evt.duration_unit = 'MIN';
+        event.duration = durationInMinutes;
+        event.durationUnit = 'MIN';
       }
     } else {
-      evt.duration = end.diff(start, 'day');
-      evt.duration_unit = evt.duration == 1 ? 'DAY' : 'DAYS';
+      event.duration = event.endDateTime.diff(event.startDateTime, 'day');
+      event.durationUnit = event.duration == 1 ? 'DAY' : 'DAYS';
     }
-    evt.summary = event.summary;
-    evt.location = event.location;
-    evt.timestamp = start.unix();
-    if(start.isToday()) {
-      today.push(evt);
-    } else if (start.isTomorrow()) {
-      tomorrow.push(evt);
-    } else {
-      upcoming.push(evt);
+    event.timestamp = event.startDateTime.unix();
+    events.push(event);
+  })
+  // Clone and duplicate all day events
+  events.forEach(event => {
+    if( event.isAllDay ) {
+      let numDays = event.endDateTime.diff(event.startDateTime, 'day');
+      while( numDays > 1 ) {
+        const clone = Object.assign({}, event);
+        clone.startDateTime = clone.startDateTime.add(numDays - 1, 'day');
+        clone.timestamp = clone.startDateTime.unix();
+        events.push(clone);
+        numDays--;
+      }
     }
   })
-  today.sort(compare);
-  tomorrow.sort(compare);
-  upcoming.sort(compare);
-  return { today, tomorrow, upcoming };
+  // Sort events by timestamp
+  events.sort(compare);
+  // Pack events into days
+  const today = dayjs().startOf('day');
+  events.forEach(event => {
+    const dayIntoFuture = event.startDateTime.diff(today, 'day');
+    if( !days[dayIntoFuture] ) {
+      const day = {
+        label: dayIntoFuture == 0 ? 'Today' : dayIntoFuture == 1 ? 'Tomorrow' : event.startDateTime.format('dddd'),
+        events: []
+      }
+      days[dayIntoFuture] = day;
+    }
+    days[dayIntoFuture].events.push(event);
+  })
+  return days;
 }
 
 /**
