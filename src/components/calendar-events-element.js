@@ -39,7 +39,7 @@ export class CalendarEventsElement extends BaseComponent {
   setConfig(config) {
     this._config = Object.assign(CalendarEventsElement.getDefaults(), config);
     this.log('Setting Config', this._config)
-    if (!config.entity) throw new Error("You need to define an entity");
+    if (!config.entities) throw new Error("You need to define at least one entity");
   }
   async updateState() {
     if(!this._hass || !this._config) return;
@@ -101,7 +101,7 @@ export class CalendarEventsElement extends BaseComponent {
         background-color: var(--color-bg-secondary);
       }
       .event-list-container {
-        padding: 10px;
+        margin: 10px 10px 15px 10px;
       }
       h3 {
         margin: 0 0 10px 0;
@@ -127,7 +127,7 @@ export class CalendarEventsElement extends BaseComponent {
       }
       .event.all-day {
         font-size: 12px;
-        padding: 5px;
+        padding: 5px inherit;
         margin-bottom: 3px;
 
         background: transparent;
@@ -137,13 +137,13 @@ export class CalendarEventsElement extends BaseComponent {
         font-weight: 300;
       }
       .start-time, .duration {
-        width: 7%;
+        width: 10%;
       }
       .duration {
         text-align: right;
       }
       .details {
-        width: 75%;
+        width: 80%;
       }
       .location {
         font-size: 12px;

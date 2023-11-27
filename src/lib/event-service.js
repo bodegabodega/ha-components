@@ -11,20 +11,22 @@ const compare = ( a, b ) => {
   return ( a.timestamp < b.timestamp ) ? -1 : ( a.timestamp > b.timestamp ) ? 1 : 0;
 }
 
-const fetch = async config => {
+const fetch = async (hass, config) => {
   let events;
   if(config.mode == 'development') {
     events = sample;
   } else {
     const start = dayjs().startOf('day').toISOString();
     const end = dayjs().add(config.dayLookahead, 'day').endOf('day').toISOString();
-    events = await hass.callApi('get', `calendars/calendar.famalam?start=${start}&end=${end}`);
+    const promises = config.entities.map(entity => hass.callApi('get', `calendars/${entity}?start=${start}&end=${end}`))
+    const allEvents = await Promise.all(promises);
+    events = allEvents.flat();
   }
   return events;
 }
 
 export const getDays = async (hass, config) => {
-  const rawEvents = await fetch(config);
+  const rawEvents = await fetch(hass, config);
   const days = [];
 
   // Transform and normalize events
@@ -61,6 +63,8 @@ export const getDays = async (hass, config) => {
       while( numDays > 1 ) {
         const clone = Object.assign({}, event);
         clone.startDateTime = clone.startDateTime.add(numDays - 1, 'day');
+        clone.duration = clone.endDateTime.diff(clone.startDateTime, 'day');
+        clone.durationUnit = clone.duration == 1 ? 'DAY LEFT' : 'DAYS LEFT';
         clone.timestamp = clone.startDateTime.unix();
         events.push(clone);
         numDays--;

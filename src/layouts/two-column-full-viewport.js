@@ -47,7 +47,6 @@ export class TwoColumnFullViewport extends LitElement {
           .main {
               display: flex;
               flex-direction: column;
-              justify-content: center;
               height: 100vh;
               overflow: scroll;
           }
