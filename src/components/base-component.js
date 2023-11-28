@@ -9,25 +9,25 @@ export class BaseComponent extends LitElement {
 
   static styles = css`
     :host {
-      --color-bg: hsl(0, 0%, 98%);
-      --color-bg-secondary: hsl(0, 0%, 95%);
-      --color-fg: hsl(0, 0%, 7%);
-      --color-fg-secondary: hsl(0, 0%, 10%);
+      --color-bg: hsl(0, 0%, 7%);
+      --color-bg-secondary: hsl(0, 0%, 10%);
+      --color-fg: hsl(0, 0%, 98%);
+      --color-fg-secondary: hsl(0, 0%, 95%);
 
-      --color-text-primary: hsl(0, 0%, 40%);
+      --color-text-primary: hsl(0, 0%, 98%);
       --color-text-secondary: hsl(0, 0%, 50%);
-      --color-text-tertiary: hsl(0, 0%, 80%);
+      --color-text-tertiary: hsl(0, 0%, 40%);
     }
-    @media (prefers-color-scheme: dark) {
+    @media (prefers-color-scheme: light) {
       :host {
-        --color-bg: hsl(0, 0%, 7%);
-        --color-bg-secondary: hsl(0, 0%, 10%);
-        --color-fg: hsl(0, 0%, 98%);
-        --color-fg-secondary: hsl(0, 0%, 95%);
+        --color-bg: hsl(0, 0%, 98%);
+        --color-bg-secondary: hsl(0, 0%, 95%);
+        --color-fg: hsl(0, 0%, 7%);
+        --color-fg-secondary: hsl(0, 0%, 10%);
 
-        --color-text-primary: hsl(0, 0%, 98%);
+        --color-text-primary: hsl(0, 0%, 40%);
         --color-text-secondary: hsl(0, 0%, 50%);
-        --color-text-tertiary: hsl(0, 0%, 40%);
+        --color-text-tertiary: hsl(0, 0%, 80%);
       }
     }
     :host {
