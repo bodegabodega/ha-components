@@ -1,4 +1,51 @@
-{
+import dayjs from "dayjs";
+
+const earliestEvent = ( entities, hass ) => {
+  return entities.reduce(
+    (earliest, entity) => {
+      const event = hass.states[entity];
+      if (!event) return earliest;
+      if (!earliest) return event;
+      return dayjs(event.attributes.date).isBefore(dayjs(earliest.attributes.date)) ? event : earliest;
+    },
+    null
+  );
+}
+
+export const forEntitiesFromState = ( entities, hass ) => {
+  const event = earliestEvent(entities, hass);
+  const { state, attributes } = event;
+  const out = {
+    date: dayjs(attributes.date).format('MMM, D • h:mmA'),
+    league: attributes.league,
+    location: `${attributes.venue} • ${attributes.location}`,
+    clock: state == 'PRE' ? '' : `${attributes.clock}`
+  }
+  const goodGuys = {
+    name: attributes.team_name,
+    abbreviation: attributes.team_abbr,
+    record: attributes.team_record.replace(/-/g, ' • '),
+  }
+  const badGuys = {
+    name: attributes.opponent_name,
+    abbreviation: attributes.opponent_abbr,
+    record: attributes.opponent_record.replace(/-/g, ' • '),
+  }
+  if (attributes.team_homeaway == 'home') {
+    out.home = { color: attributes.team_colors[0], ...goodGuys };
+    out.away = { color: attributes.opponent_colors[1], ...badGuys };
+    out.score = state == 'PRE' ? '' : `${attributes.team_score} • ${attributes.opponent_score}`;
+  } else {
+    out.home = { color: attributes.opponent_colors[0], ...badGuys };
+    out.away = { color: attributes.team_colors[1], ...goodGuys };
+    out.score = state == 'PRE' ? '' : `${attributes.opponent_score} • ${attributes.team_score}`;
+  }
+  return out;
+}
+
+
+/**
+ * {
   "entity_id": "sensor.arsenal_cl_team_tracker",
   "state": "PRE",
   "attributes": {
@@ -72,3 +119,4 @@
   "last_changed": "2023-11-24T05:09:02.454Z",
   "last_updated": "2023-11-27T20:39:05.443Z"
 }
+ */
