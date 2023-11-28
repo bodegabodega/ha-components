@@ -10,6 +10,7 @@
     <script type="module" src="/src/components/hourly-forecast-element.js"></script>
     <script type="module" src="/src/components/current-conditions-element.js"></script>
     <script type="module" src="/src/components/date-and-time-element.js"></script>
+    <script type="module" src="/src/components/team-tracker-element.js"></script>
     <script type="module" src="/src/layouts/two-column-full-viewport.js"></script>
   </head>
   <body>
@@ -21,6 +22,7 @@
         <daily-forecast config='{"mode": "development", "debug": true, "entity": "weather.forecast_garden_street"}'></daily-forecast>
       </div>
       <div class="column">
+        <team-tracker config='{"mode": "development", "debug": true, "entities": "none"}'></team-tracker>
         <calendar-events config='{"mode": "development", "debug": true, "entity": "none"}'></calendar-events>
       </div>
     </div>
