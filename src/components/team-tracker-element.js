@@ -78,8 +78,6 @@ export class TeamTrackerElement extends BaseComponent {
         display: flex;
         flex-direction: column;
         justify-content: center;
-
-        background-color: var(--color-bg-secondary);
       }
       .outer {
         margin: 10px;
@@ -94,6 +92,8 @@ export class TeamTrackerElement extends BaseComponent {
       .opponents {
         font-size: 48px;
         line-height: 32px;
+
+        color: var(--color-text-primary);
       }
       .opponents > div {
         padding-top: 12px;

@@ -97,8 +97,6 @@ export class CalendarEventsElement extends BaseComponent {
       css`
       :host {
         font-size: 18px;
-
-        background-color: var(--color-bg-secondary);
       }
       .event-list-container {
         margin: 10px 10px 15px 10px;
@@ -118,9 +116,8 @@ export class CalendarEventsElement extends BaseComponent {
         padding: 10px;
         margin-bottom: 10px;
 
-        background-color: var(--color-bg-secondary);
-        background-image: linear-gradient(172deg, var(--color-bg), var(--color-bg-secondary));
-        border: 1px solid var(--color-bg);
+        background-image: var(--color-glass-gradient);
+        border: 1px solid var(--color-glass-stroke);
         filter: drop-shadow(5px 5px 6px var(--color-bg));
 
         border-radius: 8px;
