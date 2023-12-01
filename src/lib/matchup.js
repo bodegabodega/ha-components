@@ -6,7 +6,8 @@ const earliestEvent = ( entities, hass ) => {
       const event = hass.states[entity];
       if (!event) return earliest;
       if (!earliest) return event;
-      return dayjs(event.attributes.date).isBefore(dayjs(earliest.attributes.date)) ? event : earliest;
+      const now = dayjs();
+      return Math.abs(dayjs(event.attributes.date).diff(now)) < Math.abs(dayjs(earliest.attributes.date).diff(now)) ? event : earliest;
     },
     null
   );

@@ -137,13 +137,13 @@ export class CalendarEventsElement extends BaseComponent {
         font-weight: 300;
       }
       .start-time, .duration {
-        width: 10%;
+        width: 15%;
       }
       .duration {
         text-align: right;
       }
       .details {
-        width: 80%;
+        width: 70%;
       }
       .location {
         font-size: 12px;
