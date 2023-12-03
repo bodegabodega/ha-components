@@ -1,5 +1,5 @@
 import { html, css, nothing} from 'lit';
-import { getDays } from '../lib/event-service';
+import CalendarEventsService, * as events from '../lib/calendar-events-service';
 import { BaseComponent } from './base-component';
 
 export class CalendarEventsElement extends BaseComponent {
@@ -21,14 +21,12 @@ export class CalendarEventsElement extends BaseComponent {
   set hass(h) {
     this._hass = h;
     this.log('Setting Hass', h)
-    if (!this._lastUpdate || (Date.now() - this._lastUpdate) > this._config.updateFrequency) {
-      this.log('Requesting State Update')
-      this.updateState().then(() => { /* do nothing */ });
-    }
+    this.updateState().then(() => { /* do nothing */ });
   }
   constructor() {
     super();
     this._lastUpdate = null;
+    this._service = null;
   }
   connectedCallback() {
     super.connectedCallback()
@@ -43,10 +41,9 @@ export class CalendarEventsElement extends BaseComponent {
   }
   async updateState() {
     if(!this._hass || !this._config) return;
+    if(!this._service) this._service = new CalendarEventsService(this._hass, this._config);
     this.log('Updating State') 
-    this.days = await getDays(this._hass, this._config);
-    this._lastUpdate = Date.now();
-    this.log('Received State', this.days);
+    this.days = await this._service.getEvents(this._hass, this._config);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -86,9 +83,9 @@ export class CalendarEventsElement extends BaseComponent {
     this.log('Rendering?', !!this.days);
     return this.days
       ? this.days.map(day => this.getEventList(day.label, day.events))
-      : !this._lastUpdate
-      ? html` <h3>Loading</h3> `
-      : html` <h3>No upcoming events</h3> `;
+      : this.days && this.days.length == 0
+      ? html` <h3>No upcoming events</h3> `
+      : html` <h3>${this._service.status}</h3> `;
   }
 
   static get styles() {
