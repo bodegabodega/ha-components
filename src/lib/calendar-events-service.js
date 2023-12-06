@@ -1,4 +1,3 @@
-import sample from '../../data/calendar-list-events-response';
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import isTomorrow from 'dayjs/plugin/isTomorrow';
@@ -34,29 +33,25 @@ export default class CalendarEventsService {
   async fetch() {
     this._status = FETCHING;
     let events;
-    if(this._config.mode == 'development') {
-      events = sample;
-    } else {
-      const start = dayjs().startOf('day').toISOString();
-      const end = dayjs().add(this._config.dayLookahead, 'day').endOf('day').toISOString();
-      const promises = this._config.entities.map(entity => this._hass.callApi('get', `calendars/${entity}?start=${start}&end=${end}`))
-      try {
-        const allEvents = await Promise.all(promises);
-        events = allEvents.flat();
-        this._lastFetchedTimestamp = Date.now();
-        this._retryCount = 0;
-        this._errorMessage = null;
-        this._status = LOADED;
-      } catch (error) {
-        this._errorMessage = error.message;
-        if( this._retryCount > this._maxRetries ) {
-          this._status = RETRYING;
-          this._retryCount++;
-          const timeout = Math.pow(2, this._retryCount) * 1000;
-          this.setTimeout(this.fetch, timeout);
-        } else {
-          this._status = ERRORED;
-        }
+    const start = dayjs().startOf('day').toISOString();
+    const end = dayjs().add(this._config.dayLookahead, 'day').endOf('day').toISOString();
+    const promises = this._config.entities.map(entity => this._hass.callApi('get', `calendars/${entity}?start=${start}&end=${end}`))
+    try {
+      const allEvents = await Promise.all(promises);
+      events = allEvents.flat();
+      this._lastFetchedTimestamp = Date.now();
+      this._retryCount = 0;
+      this._errorMessage = null;
+      this._status = LOADED;
+    } catch (error) {
+      this._errorMessage = error.message;
+      if( this._retryCount > this._maxRetries ) {
+        this._status = RETRYING;
+        this._retryCount++;
+        const timeout = Math.pow(2, this._retryCount) * 1000;
+        this.setTimeout(this.fetch, timeout);
+      } else {
+        this._status = ERRORED;
       }
     }
     return events;

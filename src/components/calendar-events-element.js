@@ -15,9 +15,6 @@ export class CalendarEventsElement extends BaseComponent {
       dayLookahead: 7
     }
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   set hass(h) {
     this._hass = h;
     this.log('Setting Hass', h)
@@ -28,22 +25,16 @@ export class CalendarEventsElement extends BaseComponent {
     this._lastUpdate = null;
     this._service = null;
   }
-  connectedCallback() {
-    super.connectedCallback()
-    if( this._config.mode == "development" ) {
-      this.hass = {};
-    }
-  }
   setConfig(config) {
-    this._config = Object.assign(CalendarEventsElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
+    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
     if (!config.entities) throw new Error("You need to define at least one entity");
   }
   async updateState() {
-    if(!this._hass || !this._config) return;
-    if(!this._service) this._service = new CalendarEventsService(this._hass, this._config);
+    if(!this._hass || !this.config) return;
+    if(!this._service) this._service = new CalendarEventsService(this._hass, this.config);
     this.log('Updating State') 
-    this.days = await this._service.getEvents(this._hass, this._config);
+    this.days = await this._service.getEvents(this._hass, this.config);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -85,7 +76,7 @@ export class CalendarEventsElement extends BaseComponent {
       ? this.days.map(day => this.getEventList(day.label, day.events))
       : this.days && this.days.length == 0
       ? html` <h3>No upcoming events</h3> `
-      : html` <h3>${this._service.status}</h3> `;
+      : html` <h3>${this._service ? this._service.status : 'INITIALIZING'}</h3> `;
   }
 
   static get styles() {

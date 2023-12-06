@@ -2,7 +2,6 @@ import { html, css} from 'lit';
 import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
-import sample from './../../data/hass.json';
 
 export class HourlyForecastElement extends BaseComponent {
   static get properties() {
@@ -16,9 +15,6 @@ export class HourlyForecastElement extends BaseComponent {
       numPredictions: 7
     }
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   set hass(h) {
     if (this._config && this._config.entity) {
       this.log('Getting Forecast from Entity State');
@@ -29,7 +25,6 @@ export class HourlyForecastElement extends BaseComponent {
     this._config = Object.assign(HourlyForecastElement.getDefaults(), config);
     this.log('Setting Config', this._config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._config.mode == 'development') this.hass = sample;
   }
 
   render() {

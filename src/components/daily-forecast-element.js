@@ -3,7 +3,6 @@ import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {forEntityFromState} from '../lib/daily-forecast';
-import sample from '../../data/hass.json';
 
 export class DailyForecastElement extends BaseComponent {
   static get properties() {
@@ -15,20 +14,16 @@ export class DailyForecastElement extends BaseComponent {
   static getDefaults() {
     return { }
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   set hass(h) {
-    if (this._config && this._config.entity) {
+    if (this.config && this.config.entity) {
       this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(this._config.entity, h);
+      this.forecast = forEntityFromState(this.config.entity, h);
     }
   }
   setConfig(config) {
-    this._config = Object.assign(DailyForecastElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
+    this.config = Object.assign(DailyForecastElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._config.mode == 'development') this.hass = sample;
   }
   render() {
     this.log('Rendering?', !!this.forecast);

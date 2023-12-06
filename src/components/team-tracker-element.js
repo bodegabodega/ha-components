@@ -2,7 +2,6 @@ import { html, css, nothing} from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { BaseComponent } from './base-component';
 import {forEntitiesFromState} from './../lib/matchup';
-import sample from './../../data/hass.json';
 
 export class TeamTrackerElement extends BaseComponent {
   static get properties() {
@@ -16,23 +15,16 @@ export class TeamTrackerElement extends BaseComponent {
       
     }
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   set hass(h) {
-    if (this._config && this._config.entities) {
+    if (this.config && this.config.entities) {
       this.log('Getting Matchup for Entities State');
-      this.matchup = forEntitiesFromState(this._config.entities, h);
+      this.matchup = forEntitiesFromState(this.config.entities, h);
     }
   }
   setConfig(config) {
-    this._config = Object.assign(TeamTrackerElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
+    this.config = Object.assign(TeamTrackerElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
     if (!config.entities) throw new Error("You need to define entities");
-    if (this._config.mode == 'development') {
-      this._config.entities = ["sensor.arsenal_cl_team_tracker", "sensor.arsenal_team_tracker"];
-      this.hass = sample;
-    }
   }
 
   render() {
