@@ -18,8 +18,9 @@ export class BaseComponent extends LitElement {
       --color-text-secondary: hsl(0, 0%, 50%);
       --color-text-tertiary: hsl(0, 0%, 40%);
 
-      --color-glass-gradient: linear-gradient(172deg, rgba(100, 100, 100, 0.1), rgba(200, 200, 200, 0.1));
-      --color-glass-stroke: rgba(0, 0, 0, .5);
+      --color-glass: rgba(100, 100, 100, 0.2);
+
+      --color-blue: #189aba;
     }
     @media (prefers-color-scheme: light) {
       :host {
@@ -32,8 +33,7 @@ export class BaseComponent extends LitElement {
         --color-text-secondary: hsl(0, 0%, 50%);
         --color-text-tertiary: hsl(0, 0%, 80%);
 
-        --color-glass-gradient: linear-gradient(172deg, rgba(200, 200, 200, 0.1), rgba(100, 100, 100, 0.1));
-        --color-glass-stroke: rgba(255, 255, 255, 0.5);
+        --color-glass: rgba(200, 200, 200, 0.2);
       }
     }
     :host {

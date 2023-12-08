@@ -1,5 +1,5 @@
 import { html, css, nothing} from 'lit';
-import CalendarEventsService, * as events from '../lib/calendar-events-service';
+import { forEntityFromState } from '../lib/calendar-events';
 import { BaseComponent } from './base-component';
 
 export class CalendarEventsElement extends BaseComponent {
@@ -11,14 +11,12 @@ export class CalendarEventsElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      updateFrequency: 60 * 60 * 1000,
-      dayLookahead: 7
     }
   }
   set hass(h) {
     this._hass = h;
     this.log('Setting Hass', h)
-    this.updateState().then(() => { /* do nothing */ });
+    this.days = forEntityFromState(h, this.config);
   }
   constructor() {
     super();
@@ -28,13 +26,7 @@ export class CalendarEventsElement extends BaseComponent {
   setConfig(config) {
     this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
     this.log('Setting Config', this.config)
-    if (!config.entities) throw new Error("You need to define at least one entity");
-  }
-  async updateState() {
-    if(!this._hass || !this.config) return;
-    if(!this._service) this._service = new CalendarEventsService(this._hass, this.config);
-    this.log('Updating State') 
-    this.days = await this._service.getEvents(this._hass, this.config);
+    if (!config.entity) throw new Error("You need to define a sensor entity");
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -76,7 +68,7 @@ export class CalendarEventsElement extends BaseComponent {
       ? this.days.map(day => this.getEventList(day.label, day.events))
       : this.days && this.days.length == 0
       ? html` <h3>No upcoming events</h3> `
-      : html` <h3>${this._service ? this._service.status : 'INITIALIZING'}</h3> `;
+      : html` <h3>INITIALIZING</h3> `;
   }
 
   static get styles() {
@@ -87,14 +79,16 @@ export class CalendarEventsElement extends BaseComponent {
         font-size: 18px;
       }
       .event-list-container {
-        margin: 10px 10px 15px 10px;
+        margin: 10px 10px 20px 10px;
       }
       h3 {
-        margin: 0 0 10px 0;
+        margin: 0 0 3px 0;
 
         color: var(--color-text-secondary);
         font-size: 24px;
         text-transform: uppercase;
+
+        border-bottom: 1px solid var(--color-glass);
       }
       .event {
         display: flex;
@@ -104,16 +98,14 @@ export class CalendarEventsElement extends BaseComponent {
         padding: 10px;
         margin-bottom: 10px;
 
-        background-image: var(--color-glass-gradient);
-        border: 1px solid var(--color-glass-stroke);
-        filter: drop-shadow(5px 5px 6px var(--color-bg));
+        background-color: var(--color-glass);
 
         border-radius: 8px;
       }
       .event.all-day {
         font-size: 12px;
         padding: 5px inherit;
-        margin-bottom: 3px;
+        margin: 0;
 
         background: transparent;
         border: none;

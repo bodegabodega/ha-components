@@ -139,6 +139,385 @@ window.hass = {
     return apiResponses[type];
   },
   "states": {
+    "sensor.dashboard_calendar_events" : {
+      "entity_id": "sensor.dashboard_calendar_events",
+      "state": "2023-12-08T08:30:00.727525-05:00",
+      "attributes": {
+        "calendars": {
+          "calendar.famalam": {
+            "events": [
+              {
+                "start": today.hour(9).format(),
+                "end": today.hour(10).format(),
+                "summary": "Maddie: Gymnastics class",
+                "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
+              },
+              {
+                "start": today.hour(12).format(),
+                "end": today.hour(13).format(),
+                "summary": "Maddie Ballet/Tap class!",
+                "location": "Mile Square Theatre\n1408 Clinton St, Hoboken, NJ  07030, United States"
+              },
+              {
+                "start": today.format('YYYY-MM-DD'),
+                "end": today.format('YYYY-MM-DD'),
+                "summary": "Rosmar Babysitting tonight "
+              },
+              {
+                "start": tomorrow.hour(9).format(),
+                "end": tomorrow.hour(11).format(),
+                "summary": "Mommy: Dinner w/Sandy & Serena",
+                "location": "Edgewater\nUnited States"
+              },
+              {
+                "start": tomorrow.hour(17).format(),
+                "end": tomorrow.hour(20).format(),
+                "summary": "DFR Holiday Dinner"
+              },
+              {
+                "start": future.hour(9).format(),
+                "end": future.hour(10).format(),
+                "summary": "Hugs & Bugs Santa @the park (hot cocoa & activities- bring unwrapped toys!)",
+                "location": "Church Square Park\n400 Garden St, Hoboken, NJ 07030, United States"
+              },
+              {
+                "start": future.hour(12).format(),
+                "end": future.hour(14).format(),
+                "summary": "Max: Sarah Kelly Bday party!",
+                "location": "Meadowlands Gymnastics Academy\n69 NJ-17 S, Hasbrouck Heights, NJ  07604, United States"
+              },
+              {
+                "start": tomorrow.format('YYYY-MM-DD'),
+                "end": tomorrow.format('YYYY-MM-DD'),
+                "summary": "Mommy: Covid/Flu shots",
+                "description": "Next steps: Please check in at the pharmacy area inside the store when you arrive. Bring your ID and insurance card, voucher or other coverage. Don't forget a face covering. Wearing it throughout your visit is required. What to do if you're feeling sick or experiencing COVID-19 symptoms: Don't go to the pharmacy. Contact your primary care provider for next steps. CVS tips for vaccine shots: Did you know wearing short sleeves makes getting a shot easier and faster? If you must wear long sleeves, dress in layers with the short sleeves underneath. Review your patient fact sheet for up-to-date, vaccine-specific information about side effects, risks and more.",
+                "location": "CVS Pharmacy\n210 14th St, Hoboken, NJ  07030, United States"
+              },
+              {
+                "start": tomorrow.format('YYYY-MM-DD'),
+                "end": tomorrow.format('YYYY-MM-DD'),
+                "summary": "Maddie: Parent/adult viewing @gymnastics!",
+                "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
+              },
+              {
+                "start": future.format('YYYY-MM-DD'),
+                "end": future.format('YYYY-MM-DD'),
+                "summary": "Max: Publishing party!",
+                "location": "Hoboken Charter School\n713 Washington St, Hoboken, NJ  07030, United States"
+              },
+              {
+                "start": future.format('YYYY-MM-DD'),
+                "end": future.format('YYYY-MM-DD'),
+                "summary": "Maddie: Parent/Teacher conference ",
+                "location": "Annex room 001"
+              },
+              {
+                "start": future.hour(16).format(),
+                "end": future.hour(18).format(),
+                "summary": "Mommy: Dinner w/Anne & Ange",
+                "location": "Nyc "
+              },
+              {
+                "start": future.hour(12).minute(30).format(),
+                "end": future.hour(13).minute(30).format(),
+                "summary": "Max: HCS Winter Concert day! (Wear Dress shirt)"
+              }
+            ]
+          },
+          "calendar.lava_visitors": {
+            "events": []
+          }
+        },
+        "friendly_name": "Dashboard Calendar Events"
+      },
+      "context": {
+        "id": "01HH4SXTMQ475HZ6RKDEW65PMY",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-08T13:30:00.727Z",
+      "last_updated": "2023-12-08T13:30:00.727Z"
+    },
+    "sensor.tomorrow_io_garden_street_hourly": {
+      "entity_id": "sensor.tomorrow_io_garden_st_weather_forecast_hourly",
+      "state": "2023-12-07T09:15:00.207579-05:00",
+      "attributes": {
+        "friendly_name": "Tomorrow IO Garden St Weather Forecast Hourly",
+        "forecast": [
+          {
+            "datetime": "2023-12-07T13:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 233.88,
+            "temperature": 33,
+            "dew_point": 23,
+            "wind_speed": 2.93,
+            "precipitation": 0,
+            "humidity": 57
+          },
+          {
+            "datetime": "2023-12-07T14:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 239.77,
+            "temperature": 34,
+            "dew_point": 23,
+            "wind_speed": 7.2,
+            "precipitation": 0,
+            "humidity": 64
+          },
+          {
+            "datetime": "2023-12-07T15:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 237.93,
+            "temperature": 36,
+            "dew_point": 24,
+            "wind_speed": 8.48,
+            "precipitation": 0,
+            "humidity": 62
+          },
+          {
+            "datetime": "2023-12-07T16:00:00+00:00",
+            "condition": "snowy",
+            "precipitation_probability": 12,
+            "wind_bearing": 237.4,
+            "temperature": 37,
+            "dew_point": 25,
+            "wind_speed": 8.99,
+            "precipitation": 0.01,
+            "humidity": 62
+          },
+          {
+            "datetime": "2023-12-07T17:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 235.66,
+            "temperature": 37,
+            "dew_point": 27,
+            "wind_speed": 8.97,
+            "precipitation": 0,
+            "humidity": 67
+          },
+          {
+            "datetime": "2023-12-07T18:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 230.01,
+            "temperature": 37,
+            "dew_point": 28,
+            "wind_speed": 8.79,
+            "precipitation": 0,
+            "humidity": 71
+          },
+          {
+            "datetime": "2023-12-07T19:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 231.58,
+            "temperature": 39,
+            "dew_point": 30,
+            "wind_speed": 9.08,
+            "precipitation": 0,
+            "humidity": 73
+          },
+          {
+            "datetime": "2023-12-07T20:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 233.69,
+            "temperature": 40,
+            "dew_point": 31,
+            "wind_speed": 8.66,
+            "precipitation": 0,
+            "humidity": 73
+          },
+          {
+            "datetime": "2023-12-07T21:00:00+00:00",
+            "condition": "sunny",
+            "precipitation_probability": 0,
+            "wind_bearing": 240.32,
+            "temperature": 40,
+            "dew_point": 32,
+            "wind_speed": 7.2,
+            "precipitation": 0,
+            "humidity": 75
+          },
+          {
+            "datetime": "2023-12-07T22:00:00+00:00",
+            "condition": "partlycloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 226.58,
+            "temperature": 38,
+            "dew_point": 32,
+            "wind_speed": 5.99,
+            "precipitation": 0,
+            "humidity": 78
+          },
+          {
+            "datetime": "2023-12-07T23:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 223.48,
+            "temperature": 37,
+            "dew_point": 32,
+            "wind_speed": 5.64,
+            "precipitation": 0,
+            "humidity": 79
+          },
+          {
+            "datetime": "2023-12-08T00:00:00+00:00",
+            "condition": "partlycloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 218.15,
+            "temperature": 36,
+            "dew_point": 32,
+            "wind_speed": 5.77,
+            "precipitation": 0,
+            "humidity": 84
+          },
+          {
+            "datetime": "2023-12-08T01:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 227.33,
+            "temperature": 35,
+            "dew_point": 31,
+            "wind_speed": 6.2,
+            "precipitation": 0,
+            "humidity": 84
+          },
+          {
+            "datetime": "2023-12-08T02:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 232.62,
+            "temperature": 34,
+            "dew_point": 31,
+            "wind_speed": 6.02,
+            "precipitation": 0,
+            "humidity": 83
+          },
+          {
+            "datetime": "2023-12-08T03:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 236.23,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 5.88,
+            "precipitation": 0,
+            "humidity": 83
+          },
+          {
+            "datetime": "2023-12-08T04:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 242.33,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 5.57,
+            "precipitation": 0,
+            "humidity": 83
+          },
+          {
+            "datetime": "2023-12-08T05:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 245.99,
+            "temperature": 34,
+            "dew_point": 29,
+            "wind_speed": 5.17,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T06:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 249.46,
+            "temperature": 35,
+            "dew_point": 31,
+            "wind_speed": 5.26,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T07:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 253.2,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 5.37,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T08:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 260.37,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 5.1,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T09:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 271.25,
+            "temperature": 34,
+            "dew_point": 29,
+            "wind_speed": 4.7,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T10:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 277.36,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 4.61,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T11:00:00+00:00",
+            "condition": "clear-night",
+            "precipitation_probability": 0,
+            "wind_bearing": 286.19,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 4.61,
+            "precipitation": 0,
+            "humidity": 82
+          },
+          {
+            "datetime": "2023-12-08T12:00:00+00:00",
+            "condition": "cloudy",
+            "precipitation_probability": 0,
+            "wind_bearing": 282.96,
+            "temperature": 34,
+            "dew_point": 30,
+            "wind_speed": 4.65,
+            "precipitation": 0,
+            "humidity": 81
+          }
+        ]
+      },
+      "context": {
+        "id": "01HH2A3FVG52W4WVGMQ07K8EPW",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-07T14:15:00.208Z",
+      "last_updated": "2023-12-07T14:15:00.208Z"
+    },
     "weather.tomorrow_io_garden_street_daily" : {
       "entity_id": "weather.tomorrow_io_garden_street_daily",
       "state": "cloudy",
@@ -714,3 +1093,4 @@ window.hass = {
     }
   }
 }
+

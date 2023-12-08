@@ -1,4 +1,4 @@
-import { html, css} from 'lit';
+import { html, css, nothing } from 'lit';
 import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
@@ -37,6 +37,10 @@ export class HourlyForecastElement extends BaseComponent {
           <div class="hour">${unsafeHTML(i.hour)}</div>
           <div class="icon">${unsafeHTML(i.condition)}</div>
           <div class="temperature">${i.temperature}°</div>
+          ${i.precipitationProbability > 0
+              ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
+              : nothing
+          }
         </div>
         `)}
       </div>
@@ -71,18 +75,23 @@ export class HourlyForecastElement extends BaseComponent {
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
+        font-weight: 700;
+        color: var(--color-text-secondary);
       }
       .icon {
         padding-bottom: 5px;
       }
       .hour {
-        text-align: center;
         padding-bottom: 5px;
       }
       .temperature {
         color: var(--color-text-secondary);
-        text-align: center;
         font-weight: 700;
+      }
+      .precipitation-probability {
+        color: var(--color-blue);
+        font-size: 10px;
       }
       .not-found {
         text-align: center;
