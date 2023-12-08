@@ -549,7 +549,7 @@ window.hass = {
           {
             "datetime": "2023-11-23T11:00:00+00:00",
             "condition": "sunny",
-            "precipitation_probability": 0,
+            "precipitation_probability": 20,
             "wind_bearing": 277.57,
             "temperature": 48,
             "templow": 36,

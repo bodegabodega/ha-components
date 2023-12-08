@@ -88,6 +88,7 @@ export class HourlyForecastElement extends BaseComponent {
       .temperature {
         color: var(--color-text-secondary);
         font-weight: 700;
+        padding-bottom: 5px;
       }
       .precipitation-probability {
         color: var(--color-blue);
