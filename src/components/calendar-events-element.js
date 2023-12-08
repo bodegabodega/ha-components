@@ -87,8 +87,6 @@ export class CalendarEventsElement extends BaseComponent {
         color: var(--color-text-secondary);
         font-size: 24px;
         text-transform: uppercase;
-
-        border-bottom: 1px solid var(--color-glass);
       }
       .event {
         display: flex;
