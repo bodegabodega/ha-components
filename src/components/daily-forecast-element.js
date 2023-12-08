@@ -86,9 +86,6 @@ export class DailyForecastElement extends BaseComponent {
         text-align: center;
         font-weight: 700;
       }
-      .icon {
-        padding-bottom: 5px;
-      }
       .day {
         text-align: center;
         padding-bottom: 5px;
