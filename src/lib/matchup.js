@@ -1,12 +1,21 @@
 import dayjs from "dayjs";
 
 const earliestEvent = ( entities, hass ) => {
-  return entities.reduce(
+  const considerable = entities.filter(entity => {
+    const event = hass.states[entity];
+    return !(event.state == 'NOT_FOUND' || !event.attributes.date);
+  });
+  if (!considerable.length) return null;
+  if (considerable.length == 1) return hass.states[considerable[0]];
+  return considerable.reduce(
     (earliest, entity) => {
       const event = hass.states[entity];
       if (!event) return earliest;
       if (!earliest) return event;
       const now = dayjs();
+      console.log('event diff', Math.abs(dayjs(event.attributes.date).diff(now)))
+      console.log('earliest diff', Math.abs(dayjs(earliest.attributes.date).diff(now)))
+      console.log('earliest is not', entity )
       return Math.abs(dayjs(event.attributes.date).diff(now)) < Math.abs(dayjs(earliest.attributes.date).diff(now)) ? event : earliest;
     },
     null
@@ -15,6 +24,7 @@ const earliestEvent = ( entities, hass ) => {
 
 export const forEntitiesFromState = ( entities, hass ) => {
   const event = earliestEvent(entities, hass);
+  if (!event) return null;
   const { state, attributes } = event;
   const out = {
     date: dayjs(attributes.date).format('MMM, D • h:mmA'),

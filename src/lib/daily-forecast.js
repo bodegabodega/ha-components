@@ -37,7 +37,6 @@ export const forEntityFromState = (entityName, hass, gaugeHeight = 80) => {
       precipitationProbability: precipitation_probability,
     }
   })
-  console.log(predictions)
   return predictions;
 }
 
