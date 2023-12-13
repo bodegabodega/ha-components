@@ -22,12 +22,14 @@ const earliestEvent = ( entities, hass ) => {
   );
 }
 
-export const forEntitiesFromState = ( entities, hass ) => {
-  const event = earliestEvent(entities, hass);
+export const forEntitiesFromState = ( config, hass ) => {
+  const event = earliestEvent(config.entities, hass);
   if (!event) return null;
   const { state, attributes } = event;
+  const eventDate = dayjs(attributes.date);
+  const shouldShowScore = (state != 'PRE' && config.spoilers) || (!config.spoilers && dayjs().isAfter(eventDate.endOf('day')));
   const out = {
-    date: dayjs(attributes.date).format('MMM, D • h:mmA'),
+    date: eventDate.format('MMM, D • h:mmA'),
     league: attributes.league,
     location: `${attributes.venue} • ${attributes.location}`,
     clock: state == 'PRE' ? '' : `${attributes.clock}`
@@ -45,11 +47,11 @@ export const forEntitiesFromState = ( entities, hass ) => {
   if (attributes.team_homeaway == 'home') {
     out.home = { color: attributes.team_colors[0], ...goodGuys };
     out.away = { color: attributes.opponent_colors[1], ...badGuys };
-    out.score = state == 'PRE' ? '' : `${attributes.team_score} • ${attributes.opponent_score}`;
+    out.score = shouldShowScore ? `${attributes.team_score} • ${attributes.opponent_score}` : '';
   } else {
     out.home = { color: attributes.opponent_colors[0], ...badGuys };
     out.away = { color: attributes.team_colors[1], ...goodGuys };
-    out.score = state == 'PRE' ? '' : `${attributes.opponent_score} • ${attributes.team_score}`;
+    out.score = shouldShowScore ? `${attributes.opponent_score} • ${attributes.team_score}` : '';
   }
   return out;
 }

@@ -12,13 +12,13 @@ export class TeamTrackerElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      
+      spoilers: true
     }
   }
   set hass(h) {
     if (this.config && this.config.entities) {
       this.log('Getting Matchup for Entities State');
-      this.matchup = forEntitiesFromState(this.config.entities, h);
+      this.matchup = forEntitiesFromState(this.config, h);
     }
   }
   setConfig(config) {

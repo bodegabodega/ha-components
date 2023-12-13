@@ -1089,7 +1089,7 @@ window.hass = {
     },
     "sensor.arsenal_cl_team_tracker": {
       "entity_id": "sensor.arsenal_cl_team_tracker",
-      "state": "PRE",
+      "state": "POST",
       "attributes": {
         "attribution": "Data provided by ESPN",
         "sport": "soccer",
