@@ -12,13 +12,14 @@ export class HourlyForecastElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      numPredictions: 7
+      numPredictions: 7,
+      includeSun: true
     }
   }
   set hass(h) {
     if (this._config && this._config.entity) {
       this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(this._config.entity, h, this._config.numPredictions);
+      this.forecast = forEntityFromState(h, this._config);
     }
   }
   setConfig(config) {
@@ -36,7 +37,7 @@ export class HourlyForecastElement extends BaseComponent {
         <div class="prediction">
           <div class="hour">${unsafeHTML(i.hour)}</div>
           <div class="icon">${unsafeHTML(i.condition)}</div>
-          <div class="temperature">${i.temperature}°</div>
+          <div class="temperature">${i.temperature}</div>
           ${i.precipitationProbability > 0
               ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
               : nothing

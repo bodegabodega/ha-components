@@ -4,141 +4,31 @@ const today = dayjs().minute(0);
 const tomorrow = today.add(1, 'day').minute(0);
 const future = today.add(3, 'day').minute(0);
 
-const apiResponses = {
-  "calendars": [{
-    "start": {
-      "date": today.format('YYYY-MM-DD')
-    },
-    "end": {
-      "date": future.format('YYYY-MM-DD')
-    },
-    "summary": "Rosmar: Taking Week off ",
-    "description": null,
-    "location": null,
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "date": tomorrow.format('YYYY-MM-DD')
-    },
-    "end": {
-      "date": future.format('YYYY-MM-DD')
-    },
-    "summary": "Max & Maddie- no school- Thanksgiving",
-    "description": null,
-    "location": null,
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": today.hour(9).format()
-    },
-    "end": {
-      "dateTime": today.hour(10).format()
-    },
-    "summary": "Daddy: Wonder Lofts visit",
-    "description": null,
-    "location": "720 Clinton St\nHoboken, NJ, United States",
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": today.hour(14).format()
-    },
-    "end": {
-      "dateTime": today.hour(15).format()
-    },
-    "summary": "Morelias free Paletas!",
-    "description": null,
-    "location": null,
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": today.hour(17).format()
-    },
-    "end": {
-      "dateTime": today.hour(18).format()
-    },
-    "summary": "Max: Hip Hop trial class",
-    "description": null,
-    "location": "Mile Square Theatre\n1408 Clinton St, Hoboken, NJ  07030, United States",
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": tomorrow.hour(8).format()
-    },
-    "end": {
-      "dateTime": tomorrow.hour(9).format()
-    },
-    "summary": "Maddie Ballet/Tap class!",
-    "description": null,
-    "location": "Mile Square Theatre\n1408 Clinton St, Hoboken, NJ  07030, United States",
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": tomorrow.hour(10).format()
-    },
-    "end": {
-      "dateTime": tomorrow.hour(14).format()
-    },
-    "summary": "Open house! ",
-    "description": null,
-    "location": "210 11th St\nHoboken, NJ, United States",
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": tomorrow.hour(8).format()
-    },
-    "end": {
-      "dateTime": tomorrow.hour(21).format()
-    },
-    "summary": "Max: Augie’s bday party! (Snacks tee & Bring grip socks!",
-    "description": null,
-    "location": "Gravity Vault\n1423 Clinton St, Hoboken, NJ  07030, United States",
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  },
-  {
-    "start": {
-      "dateTime": future.hour(8).format()
-    },
-    "end": {
-      "dateTime": tomorrow.hour(9).format()
-    },
-    "summary": "Family Nite w/The Clarkes! (Pizza & Movie)",
-    "description": null,
-    "location": null,
-    "uid": null,
-    "recurrence_id": null,
-    "rrule": null
-  }]
-}
-
 window.hass = {
-  "callApi": (method, path) => {
-    const type = /([a-z]+)\//.exec(path)[1];
-    return apiResponses[type];
-  },
   "states": {
+    "sun.sun": {
+      "entity_id": "sun.sun",
+      "state": "below_horizon",
+      "attributes": {
+        "next_dawn": "2023-12-15T11:40:58.860196+00:00",
+        "next_dusk": "2023-12-15T22:01:23.010303+00:00",
+        "next_midnight": "2023-12-15T04:51:13+00:00",
+        "next_noon": "2023-12-15T16:50:53+00:00",
+        "next_rising": today.hour(6).minute(32).format('YYYY-MM-DDTHH:mm:ss.SSSSSS-05:00'),
+        "next_setting": today.hour(21).minute(32).format('YYYY-MM-DDTHH:mm:ss.SSSSSS-05:00'),
+        "elevation": -8.9,
+        "azimuth": 246.94,
+        "rising": false,
+        "friendly_name": "Sun"
+      },
+      "context": {
+        "id": "01HHN6F97MQWYDZV9GNSF14JBS",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-14T21:33:44.687Z",
+      "last_updated": "2023-12-14T22:17:06.548Z"
+    },
     "sensor.dashboard_calendar_events" : {
       "entity_id": "sensor.dashboard_calendar_events",
       "state": "2023-12-08T08:30:00.727525-05:00",
@@ -245,7 +135,7 @@ window.hass = {
         "friendly_name": "Tomorrow IO Garden St Weather Forecast Hourly",
         "forecast": [
           {
-            "datetime": "2023-12-07T13:00:00+00:00",
+            "datetime": today.format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 233.88,
@@ -256,7 +146,7 @@ window.hass = {
             "humidity": 57
           },
           {
-            "datetime": "2023-12-07T14:00:00+00:00",
+            "datetime": today.add(1, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 239.77,
@@ -267,7 +157,7 @@ window.hass = {
             "humidity": 64
           },
           {
-            "datetime": "2023-12-07T15:00:00+00:00",
+            "datetime": today.add(2, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 237.93,
@@ -278,7 +168,7 @@ window.hass = {
             "humidity": 62
           },
           {
-            "datetime": "2023-12-07T16:00:00+00:00",
+            "datetime": today.add(3, 'hour').format(),
             "condition": "snowy",
             "precipitation_probability": 12,
             "wind_bearing": 237.4,
@@ -289,7 +179,7 @@ window.hass = {
             "humidity": 62
           },
           {
-            "datetime": "2023-12-07T17:00:00+00:00",
+            "datetime": today.add(4, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 235.66,
@@ -300,7 +190,7 @@ window.hass = {
             "humidity": 67
           },
           {
-            "datetime": "2023-12-07T18:00:00+00:00",
+            "datetime": today.add(5, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 230.01,
@@ -311,7 +201,7 @@ window.hass = {
             "humidity": 71
           },
           {
-            "datetime": "2023-12-07T19:00:00+00:00",
+            "datetime": today.add(6, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 231.58,
@@ -322,7 +212,7 @@ window.hass = {
             "humidity": 73
           },
           {
-            "datetime": "2023-12-07T20:00:00+00:00",
+            "datetime": today.add(7, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 233.69,
@@ -333,7 +223,7 @@ window.hass = {
             "humidity": 73
           },
           {
-            "datetime": "2023-12-07T21:00:00+00:00",
+            "datetime": today.add(8, 'hour').format(),
             "condition": "sunny",
             "precipitation_probability": 0,
             "wind_bearing": 240.32,
@@ -344,7 +234,7 @@ window.hass = {
             "humidity": 75
           },
           {
-            "datetime": "2023-12-07T22:00:00+00:00",
+            "datetime": today.add(9, 'hour').format(),
             "condition": "partlycloudy",
             "precipitation_probability": 0,
             "wind_bearing": 226.58,
@@ -355,7 +245,7 @@ window.hass = {
             "humidity": 78
           },
           {
-            "datetime": "2023-12-07T23:00:00+00:00",
+            "datetime": today.add(10, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 223.48,
@@ -366,7 +256,7 @@ window.hass = {
             "humidity": 79
           },
           {
-            "datetime": "2023-12-08T00:00:00+00:00",
+            "datetime": today.add(11, 'hour').format(),
             "condition": "partlycloudy",
             "precipitation_probability": 0,
             "wind_bearing": 218.15,
@@ -377,7 +267,7 @@ window.hass = {
             "humidity": 84
           },
           {
-            "datetime": "2023-12-08T01:00:00+00:00",
+            "datetime": today.add(12, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 227.33,
@@ -388,7 +278,7 @@ window.hass = {
             "humidity": 84
           },
           {
-            "datetime": "2023-12-08T02:00:00+00:00",
+            "datetime": today.add(13, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 232.62,
@@ -399,7 +289,7 @@ window.hass = {
             "humidity": 83
           },
           {
-            "datetime": "2023-12-08T03:00:00+00:00",
+            "datetime": today.add(14, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 236.23,
@@ -410,7 +300,7 @@ window.hass = {
             "humidity": 83
           },
           {
-            "datetime": "2023-12-08T04:00:00+00:00",
+            "datetime": today.add(15, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 242.33,
@@ -421,7 +311,7 @@ window.hass = {
             "humidity": 83
           },
           {
-            "datetime": "2023-12-08T05:00:00+00:00",
+            "datetime": today.add(16, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 245.99,
@@ -432,7 +322,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T06:00:00+00:00",
+            "datetime": today.add(17, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 249.46,
@@ -443,7 +333,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T07:00:00+00:00",
+            "datetime": today.add(18, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 253.2,
@@ -454,7 +344,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T08:00:00+00:00",
+            "datetime": today.add(19, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 260.37,
@@ -465,7 +355,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T09:00:00+00:00",
+            "datetime": today.add(20, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 271.25,
@@ -476,7 +366,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T10:00:00+00:00",
+            "datetime": today.add(21, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 277.36,
@@ -487,7 +377,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T11:00:00+00:00",
+            "datetime": today.add(22, 'hour').format(),
             "condition": "clear-night",
             "precipitation_probability": 0,
             "wind_bearing": 286.19,
@@ -498,7 +388,7 @@ window.hass = {
             "humidity": 82
           },
           {
-            "datetime": "2023-12-08T12:00:00+00:00",
+            "datetime": today.add(23, 'hour').format(),
             "condition": "cloudy",
             "precipitation_probability": 0,
             "wind_bearing": 282.96,
