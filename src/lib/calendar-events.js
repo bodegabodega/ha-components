@@ -13,6 +13,7 @@ export const forEntityFromState = (hass, config) => {
   if(!hass || !config || !config.entity || !hass.states || !hass.states[config.entity]) return null;
 
   const events = [];
+  const clones = [];
   const stateObject = hass.states[config.entity];
   for (const [name, calendar] of Object.entries(stateObject.attributes.calendars)) {
     const rawEvents = calendar.events;
@@ -39,13 +40,6 @@ export const forEntityFromState = (hass, config) => {
       } else {
         event.duration = event.endDateTime.diff(event.startDateTime, 'day');
         event.durationUnit = event.duration == 1 ? 'DAY' : 'DAYS';
-      }
-      event.timestamp = event.startDateTime.unix();
-      events.push(event);
-    })
-    // Clone and duplicate all day events
-    events.forEach(event => {
-      if( event.isAllDay ) {
         let numDays = event.endDateTime.diff(event.startDateTime, 'day');
         while( numDays > 1 ) {
           const clone = Object.assign({}, event);
@@ -53,12 +47,15 @@ export const forEntityFromState = (hass, config) => {
           clone.duration = clone.endDateTime.diff(clone.startDateTime, 'day');
           clone.durationUnit = clone.duration == 1 ? 'DAY LEFT' : 'DAYS LEFT';
           clone.timestamp = clone.startDateTime.unix();
-          events.push(clone);
+          clones.push(clone);
           numDays--;
         }
       }
-    })  
+      event.timestamp = event.startDateTime.unix();
+      events.push(event);
+    })
   }
+  events.push(...clones);
   // Sort events by timestamp
   events.sort(compare);
   // Pack events into days

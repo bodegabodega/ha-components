@@ -6,6 +6,25 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "sensor.weight_and_size_nikolai": {
+      "entity_id": "sensor.weight_and_size_nikolai",
+      "state": "195.6",
+      "attributes": {
+        "current": 195.6,
+        "bmi": 26.5,
+        "goal_weight": 180,
+        "muscle_mass": 36.3,
+        "water": 59.7,
+        "friendly_name": "Nikolai's Weight and Size"
+      },
+      "context": {
+        "id": "01HJE2B5S36KF8QFE7YFSKRHMB",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-24T14:05:58.435Z",
+      "last_updated": "2023-12-24T14:05:58.435Z"
+    },
     "sun.sun": {
       "entity_id": "sun.sun",
       "state": "below_horizon",
@@ -90,7 +109,7 @@ window.hass = {
                 "location": "Diamond Gymnastics\n738 Willow Ave, Hoboken, NJ  07030, United States"
               },
               {
-                "start": future.format('YYYY-MM-DD'),
+                "start": today.format('YYYY-MM-DD'),
                 "end": future.format('YYYY-MM-DD'),
                 "summary": "Max: Publishing party!",
                 "location": "Hoboken Charter School\n713 Washington St, Hoboken, NJ  07030, United States"
