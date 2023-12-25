@@ -7,3 +7,4 @@ import { TwoColumnFullViewport } from "./layouts/two-column-full-viewport";
 import { TeamTrackerElement } from "./components/team-tracker-element";
 import { WeightAndSizeElement } from "./components/weight-and-size-element";
 import { ActivityTrackerElement } from "./components/activity-tracker-element";
+import { QuitSmokingElement } from "./components/quit-smoking-element";

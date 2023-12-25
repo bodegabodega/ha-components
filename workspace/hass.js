@@ -6,6 +6,23 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "sensor.smoke_free_nikolai": {
+      "entity_id": "sensor.smoke_free_nikolai",
+      "state": "3 months & 1 day",
+      "attributes": {
+        "achievement": "The CO from smoking has been eliminated",
+        "next_achievement": "In 24 hours you will have expelled the nicotine from your body, and your taste and smell will return to normal",
+        "icon": "mdi:molecule-co",
+        "friendly_name": "Nikolai Smoke Free"
+      },
+      "context": {
+        "id": "01HJFCHHGWWBM7P0BH8W82QDEV",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-25T02:23:27.260Z",
+      "last_updated": "2023-12-25T02:23:27.260Z"
+    },
     "sensor.activity_nikolai": {
       "entity_id": "sensor.activity_nikolai",
       "state": "2023-12-24T21:24:00.485563-05:00",

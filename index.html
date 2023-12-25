@@ -13,6 +13,7 @@
     <script type="module" src="/src/components/team-tracker-element.js"></script>
     <script type="module" src="/src/components/weight-and-size-element.js"></script>
     <script type="module" src="/src/components/activity-tracker-element.js"></script>
+    <script type="module" src="/src/components/quit-smoking-element.js"></script>
     <script type="module" src="/src/layouts/two-column-full-viewport.js"></script>
     <!-- dev only assets -->
     <script type="module" src="/workspace/hass.js"></script>
@@ -25,7 +26,8 @@
         <weight-and-size class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.weight_and_size_nikolai"}'></weight-and-size>
         <!--current-conditions class="ha-component" config='{"mode": "development", "debug": true, "entity": "weather.tomorrow_io_garden_street_daily", "unit": "°"}'></current-conditions-->
         <activity-tracker class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.activity_nikolai", "energy_goal": 800, "step_goal": 12000, "exercise_goal": 30}'></activity-tracker> 
-        <hourly-forecast class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.tomorrow_io_garden_street_hourly"}'></hourly-forecast>
+        <!--hourly-forecast class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.tomorrow_io_garden_street_hourly"}'></hourly-forecast-->
+        <quit-smoking class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.smoke_free_nikolai"}'></quit-smoking>
         <daily-forecast class="ha-component" config='{"mode": "development", "debug": true, "entity": "weather.tomorrow_io_garden_street_daily"}'></daily-forecast>
       </div>
       <div class="column">

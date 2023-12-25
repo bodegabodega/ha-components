@@ -24,12 +24,7 @@ export class WeightAndSizeElement extends BaseComponent {
       this.weightAndSize = hass.states[this.config.entity].attributes;
     }
   }
-/*
-"current": 195.6,
-        "bmi": 26.5,
-        "goal_weight": 180,
-        "muscle_mass": 36.3,
-        "water": 59.7,*/
+  
   render() {
     this.log('Rendering?', !!this.weightAndSize);
     return this.weightAndSize
