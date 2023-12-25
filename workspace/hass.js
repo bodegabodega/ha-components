@@ -6,6 +6,26 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "sensor.activity_nikolai": {
+      "entity_id": "sensor.activity_nikolai",
+      "state": "2023-12-24T21:24:00.485563-05:00",
+      "attributes": {
+        "exercise": 16,
+        "exercise_goal": "30",
+        "energy": 547.8469999999999,
+        "energy_goal": "800",
+        "steps": 9466,
+        "step_goal": "10000",
+        "friendly_name": "Nikolai's Activity"
+      },
+      "context": {
+        "id": "01HJFCJHZ5J2QCR5FKGDD0EKHB",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2023-12-25T02:24:00.485Z",
+      "last_updated": "2023-12-25T02:24:00.485Z"
+    },
     "sensor.weight_and_size_nikolai": {
       "entity_id": "sensor.weight_and_size_nikolai",
       "state": "195.6",

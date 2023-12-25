@@ -5,3 +5,5 @@ import { DateAndTimeElement } from "./components/date-and-time-element";
 import { HourlyForecastElement } from "./components/hourly-forecast-element";
 import { TwoColumnFullViewport } from "./layouts/two-column-full-viewport";
 import { TeamTrackerElement } from "./components/team-tracker-element";
+import { WeightAndSizeElement } from "./components/weight-and-size-element";
+import { ActivityTrackerElement } from "./components/activity-tracker-element";

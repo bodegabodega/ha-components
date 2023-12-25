@@ -12,7 +12,8 @@
     "color-scales": "^3.0.2",
     "dayjs": "^1.11.9",
     "lit": "^2.7.6",
-    "lit-html": "^2.8.0"
+    "lit-html": "^2.8.0",
+    "svg-gauge": "^1.0.7"
   },
   "devDependencies": {
     "vite": "^4.4.5"
