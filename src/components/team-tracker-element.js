@@ -7,7 +7,7 @@ export class TeamTrackerElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      matchup: { type: Object, attribute: false }
+      matchup: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
   static getDefaults() {
