@@ -51,5 +51,9 @@ export class BaseComponent extends LitElement {
       -moz-osx-font-smoothing: grayscale;
       -webkit-text-size-adjust: 100%;
     }
+    .not-found {
+      font-size: 16px;
+      color: red;
+    }
   `;
 }

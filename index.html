@@ -14,6 +14,7 @@
     <script type="module" src="/src/components/weight-and-size-element.js"></script>
     <script type="module" src="/src/components/activity-tracker-element.js"></script>
     <script type="module" src="/src/components/quit-smoking-element.js"></script>
+    <script type="module" src="/src/components/todos-progress-element.js"></script>
     <script type="module" src="/src/layouts/two-column-full-viewport.js"></script>
     <!-- dev only assets -->
     <script type="module" src="/workspace/hass.js"></script>
@@ -32,7 +33,8 @@
       </div>
       <div class="column">
         <team-tracker class="ha-component" config='{"mode": "development", "debug": true, "spoilers": false, "entities": ["sensor.arsenal_team_tracker_not_found", "sensor.arsenal_cl_team_tracker"]}'></team-tracker>
-        <calendar-events class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.dashboard_calendar_events"}'></calendar-events>
+        <todos-progress class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.todos_progress"}'></todos-progress>
+        <!--calendar-events class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.dashboard_calendar_events"}'></calendar-events-->
       </div>
     </div>
   </body>
