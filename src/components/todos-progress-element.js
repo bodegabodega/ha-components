@@ -1,13 +1,15 @@
 import { html, css, nothing} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import check from './../assets/check.svg?raw';
+import { styleMap } from 'lit-html/directives/style-map.js';
 import { BaseComponent } from './base-component';
+import {forEntityFromState} from './../lib/todos-progress';
+import check from './../assets/check.svg?raw';
 
 export class TodosProgressElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      todos: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      tasks: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
   static getDefaults() {
@@ -17,7 +19,7 @@ export class TodosProgressElement extends BaseComponent {
   set hass(h) {
     this._hass = h;
     this.log('Setting Hass', h)
-    // this.days = forEntityFromState(h, this.config);
+    this.tasks = forEntityFromState(h, this.config);
   }
   setConfig(config) {
     this.config = Object.assign(TodosProgressElement.getDefaults(), config);
@@ -27,48 +29,42 @@ export class TodosProgressElement extends BaseComponent {
 
   render() {
     this.log('Rendering?', !!this.days);
-    // return this.todos
-    return true
+    return this.tasks
       ? html`
         <div class="outer">
-          <h3>TODO<span class="detail">3 Remaining</span></h3>
+          <h3>TODO<span class="detail">${this.tasks.remaining} Remaining</span></h3>
           <div class="progress">
             <div class="background" />
-            <div class="foreground" />
+            <div class="foreground" style=${styleMap({
+              width: `${this.tasks.percentComplete}%`
+            })} />
           </div>
           <div class="todo-list-container">
-            <div class="todo">
+            ${this.tasks.tasks.map(task => html`
+            <div class="todo${task.complete ? ' completed' : ''}">
               <div class="details">
-                <div class="summary">Buy Groceries</div>
-                <div class="list">Personal</div>
+                <div class="summary">${task.title}</div>
+                <div class="list">${task.list}</div>
               </div>
-              <div class="status">
-                <span class="top">Days</span>
-                <span class="middle">2</span>
-                <span class="bottom">Overdue</span>
-              </div>
+              ${task.complete ?
+                html`<div class="status"><div class="icon">${unsafeHTML(check)}</div></div>`
+                : nothing
+              }
+              ${!task.complete && task.daysOverdue > 0 ?
+                html`<div class="status">
+                  <span class="top">Days</span>
+                  <span class="middle">${task.daysOverdue}</span>
+                  <span class="bottom">Overdue</span>
+                </div>`
+                : nothing
+              }
             </div>
-            <div class="todo">
-              <div class="details">
-                <div class="summary">Do something really long to see how it wraps when it need to wrap but really does it ever get this long not really.</div>
-                <div class="list">Showtime</div>
-              </div>
-              <div class="status">
-              </div>
-            </div>
-            <div class="todo completed">
-              <div class="details">
-                <div class="summary">This one is completed</div>
-                <div class="list">Showtime</div>
-              </div>
-              <div class="status">
-                <div class="icon">${unsafeHTML(check)}</div>
-              </div>
-            </div>
+            `)}
+            <div class="last-updated">Updated ${this.tasks.lastUpdated}</div>
           </div>
         </div>
       `
-      : html` <h3>No upcoming events</h3> `
+      : html` <h3>Nothing To Do</h3> `
   }
 
   static get styles() {
@@ -94,12 +90,12 @@ export class TodosProgressElement extends BaseComponent {
         font-weight: 300;
       }
       .progress .background {
-        border-bottom: 1px solid var(--color-text-secondary);
+        border-bottom: 1px solid var(--color-text-tertiary);
         position: relative;
         height: 3px;
       }
       .progress .foreground {
-        background-color: var(--color-text-tertiary);
+        background-color: var(--color-text-primary);
         height: 7px;
         width: 80%;
       }
@@ -137,6 +133,14 @@ export class TodosProgressElement extends BaseComponent {
       .status .middle {
         font-size: 22px;
         line-height: 18px;
+      }
+      .status .icon {
+        margin-right: 15px;
+      }
+      .last-updated {
+        font-size: 12px;
+        color: var(--color-text-tertiary);
+        text-transform: uppercase;
       }
     `];
   }

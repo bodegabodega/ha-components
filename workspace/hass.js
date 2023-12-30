@@ -6,6 +6,47 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "my.todays_reminders": {
+      "entity_id": "my.todays_reminders",
+      "state": "2023-12-30T08:00:05.033865",
+      "attributes": {
+        "friendly_name": "Todays Reminders",
+        "updated_date": "2023-12-30T08:00:05.033865",
+        "data": [
+          {
+            "complete": false,
+            "due": "2023-12-30T00:00:00-05:00",
+            "list": "Garden Street",
+            "title": "Feed starter"
+          },
+          {
+            "complete": false,
+            "due": "2023-12-30T00:00:00-05:00",
+            "list": "Personal",
+            "title": "Brush & Floss 🦷"
+          },
+          {
+            "complete": false,
+            "due": "2023-12-27T00:00:00-05:00",
+            "list": "Showtime",
+            "title": "Prep that Comcast thing"
+          },
+          {
+            "complete": true,
+            "due": "2023-12-29T00:00:00-05:00",
+            "list": "Personal",
+            "title": "Watch Jacob's movie"
+          }
+        ]
+      },
+      "context": {
+        "id": "01HJXCYV1QCTGP6FC2D3V2K54F",
+        "parent_id": null,
+        "user_id": "f2a22e16e6034df9bc1e8cfb0277911b"
+      },
+      "last_changed": "2023-12-30T13:00:05.047Z",
+      "last_updated": "2023-12-30T13:00:05.047Z"
+    },
     "sensor.smoke_free_nikolai": {
       "entity_id": "sensor.smoke_free_nikolai",
       "state": "3 months & 1 day",
