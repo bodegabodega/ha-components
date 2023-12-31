@@ -1,39 +1,33 @@
-import { html, css} from 'lit';
+import { html, css, nothing} from 'lit';
 import { BaseComponent } from './base-component';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { currentConditionsForState } from '../lib/current-conditions';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
-import sample from './../../data/hass.json';
 
 export class CurrentConditionsElement extends BaseComponent {
   static get properties() {
     return {
-      hass: { type: Object },
-      config: { type: Object }
+      hass: { type: Object }
     }
   }
   static getDefaults() {
     return {}
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   setConfig(config) {
-    this._config = Object.assign(CurrentConditionsElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
+    this.config = Object.assign(CurrentConditionsElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._config.mode == 'development') this.hass = sample;
   }
   render() {
-    const entityState = this.hass.states[this._config.entity];
+    const entityState = this.hass.states[this.config.entity];
     const { current, low, high, unit, description } = currentConditionsForState(entityState);
     const currentPercentage = Math.round(((current - low) / (high - low)) * 95); // 95 is a magic number because gauge is 100px and size of point is 5px .. could be better
     return entityState
       ? html`
       <div class="outer">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree">${this._config.unit || unit}</span>
+          <span class="number">${current}</span><span class="degree">${this.config.unit || unit}</span>
         </div>
         <div class="condition">${asAdjective(description)}</div>
         <div class="lowhigh">
@@ -50,7 +44,7 @@ export class CurrentConditionsElement extends BaseComponent {
         </div>
       </div>
       `
-      : html` <div class="not-found">Entity ${this._config.entity} not found.</div> `;
+      : html` <div class="not-found">Entity ${this.config.entity} not found.</div> `;
   }
 
   static get styles() {

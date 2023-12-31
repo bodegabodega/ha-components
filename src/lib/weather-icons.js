@@ -7,6 +7,8 @@ import moon from './../assets/moon.svg?raw';
 import partlyCloudy from './../assets/partly-cloudy.svg?raw';
 import sun from './../assets/sun.svg?raw';
 import wind from './../assets/wind.svg?raw';
+import sunrise from './../assets/sunrise.svg?raw';
+import sunset from './../assets/sunset.svg?raw';
 
 const conditionMap = {
   "clear-night": moon,
@@ -23,7 +25,9 @@ const conditionMap = {
   "sunny": sun,
   "windy": wind,
   "windy-variant": wind,
-  "exceptional": sun
+  "exceptional": sun,
+  "sunrise": sunrise,
+  "sunset": sunset
 }
 
 export const forCondition = condition => {

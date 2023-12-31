@@ -19,8 +19,6 @@ export class TwoColumnFullViewport extends LitElement {
           const container = card.view_layout && card.view_layout.placement == 'sidebar' ? sidebar : main;
           container.push(this.cards[index]);
       });
-      console.log(this.cards[0].placement)
-      //return html`${this.cards.map((card) => html`<div>${card}</div>`)}`;
       return html`
           <div class="sidebar">
               ${sidebar.map((card) => html`<div>${card}</div>`)}

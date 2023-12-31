@@ -35,6 +35,26 @@ body {
   flex-grow: 1;
 }
 
+.sidebar {
+  background-color: hsl(0, 0%, 98%);;
+}
+
+.column {
+  background-color: hsl(0, 0%, 96%);;
+
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .sidebar {
+    background-color: hsl(0, 0%, 2%);;
+  }
+
+  .column {
+    background-color: hsl(0, 0%, 4%);;
+  }
+}
+
 /*
 .parent { 
   display: grid; 

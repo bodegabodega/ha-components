@@ -18,7 +18,7 @@ export const forEntityFromState = (entityName, hass, gaugeHeight = 80) => {
   // const tempsHeight = document.getElementById('temps').offsetHeight;
   const tickHeight = gaugeHeight / range;
   const predictions = forecast.map((prediction) => {
-    const { datetime, temperature, templow, condition } = prediction;
+    const { datetime, temperature, templow, condition, precipitation_probability } = prediction;
     const diff = temperature - templow;
     const offset = Math.round(( highestHigh - temperature ) * tickHeight);
     const height = diff * tickHeight;
@@ -33,7 +33,8 @@ export const forEntityFromState = (entityName, hass, gaugeHeight = 80) => {
       lowHex: hexForTemperature(templow),
       offset,
       height,
-      condition: forCondition(condition)
+      condition: forCondition(condition),
+      precipitationProbability: precipitation_probability,
     }
   })
   return predictions;

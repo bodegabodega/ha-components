@@ -1,9 +1,8 @@
-import { html, css} from 'lit';
+import { html, css, nothing } from 'lit';
 import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {forEntityFromState} from '../lib/daily-forecast';
-import sample from '../../data/hass.json';
 
 export class DailyForecastElement extends BaseComponent {
   static get properties() {
@@ -15,20 +14,16 @@ export class DailyForecastElement extends BaseComponent {
   static getDefaults() {
     return { }
   }
-  set config(config) {
-    this.setConfig(config);
-  }
   set hass(h) {
-    if (this._config && this._config.entity) {
+    if (this.config && this.config.entity) {
       this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(this._config.entity, h);
+      this.forecast = forEntityFromState(this.config.entity, h);
     }
   }
   setConfig(config) {
-    this._config = Object.assign(DailyForecastElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
+    this.config = Object.assign(DailyForecastElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._config.mode == 'development') this.hass = sample;
   }
   render() {
     this.log('Rendering?', !!this.forecast);
@@ -48,6 +43,10 @@ export class DailyForecastElement extends BaseComponent {
             </div>
             <div class="low">${i.low}°</div>
             <div class="icon">${unsafeHTML(i.condition)}</div>
+            ${i.precipitationProbability > 0
+              ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
+              : nothing
+            }
           </div>
         `)}
       </div>
@@ -83,10 +82,9 @@ export class DailyForecastElement extends BaseComponent {
         flex-direction: column;
         align-items: center;
 
-        color: var(--color-text-secondary)
-      }
-      .icon {
-        padding-bottom: 5px;
+        color: var(--color-text-secondary);
+        text-align: center;
+        font-weight: 700;
       }
       .day {
         text-align: center;
@@ -106,12 +104,14 @@ export class DailyForecastElement extends BaseComponent {
       }      
       .high,
       .low {
-        text-align: center;
-        font-weight: 700;
         padding-bottom: 5px;
       }
       .low {
         padding-top: 5px;
+      }
+      .precipitation-probability {
+        color: var(--color-blue);
+        font-size: 10px;
       }
       .not-found {
         font-size: 24px;

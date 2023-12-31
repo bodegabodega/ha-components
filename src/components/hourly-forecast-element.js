@@ -1,8 +1,7 @@
-import { html, css} from 'lit';
+import { html, css, nothing } from 'lit';
 import { BaseComponent } from './base-component';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
-import sample from './../../data/hass.json';
 
 export class HourlyForecastElement extends BaseComponent {
   static get properties() {
@@ -13,23 +12,20 @@ export class HourlyForecastElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      numPredictions: 7
+      numPredictions: 7,
+      includeSun: true
     }
-  }
-  set config(config) {
-    this.setConfig(config);
   }
   set hass(h) {
     if (this._config && this._config.entity) {
       this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(this._config.entity, h, this._config.numPredictions);
+      this.forecast = forEntityFromState(h, this._config);
     }
   }
   setConfig(config) {
     this._config = Object.assign(HourlyForecastElement.getDefaults(), config);
     this.log('Setting Config', this._config)
     if (!config.entity) throw new Error("You need to define an entity");
-    if (this._config.mode == 'development') this.hass = sample;
   }
 
   render() {
@@ -41,7 +37,11 @@ export class HourlyForecastElement extends BaseComponent {
         <div class="prediction">
           <div class="hour">${unsafeHTML(i.hour)}</div>
           <div class="icon">${unsafeHTML(i.condition)}</div>
-          <div class="temperature">${i.temperature}°</div>
+          <div class="temperature">${i.temperature}</div>
+          ${i.precipitationProbability > 0
+              ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
+              : nothing
+          }
         </div>
         `)}
       </div>
@@ -76,18 +76,24 @@ export class HourlyForecastElement extends BaseComponent {
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
+        font-weight: 700;
+        color: var(--color-text-secondary);
       }
       .icon {
         padding-bottom: 5px;
       }
       .hour {
-        text-align: center;
         padding-bottom: 5px;
       }
       .temperature {
         color: var(--color-text-secondary);
-        text-align: center;
         font-weight: 700;
+        padding-bottom: 5px;
+      }
+      .precipitation-probability {
+        color: var(--color-blue);
+        font-size: 10px;
       }
       .not-found {
         text-align: center;

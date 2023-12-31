@@ -1,5 +1,5 @@
 import { html, css, nothing} from 'lit';
-import { getDays } from '../lib/event-service';
+import { forEntityFromState } from '../lib/calendar-events';
 import { BaseComponent } from './base-component';
 
 export class CalendarEventsElement extends BaseComponent {
@@ -11,42 +11,22 @@ export class CalendarEventsElement extends BaseComponent {
   }
   static getDefaults() {
     return {
-      updateFrequency: 60 * 60 * 1000,
-      dayLookahead: 7
     }
-  }
-  set config(config) {
-    this.setConfig(config);
   }
   set hass(h) {
     this._hass = h;
     this.log('Setting Hass', h)
-    if (!this._lastUpdate || (Date.now() - this._lastUpdate) > this._config.updateFrequency) {
-      this.log('Requesting State Update')
-      this.updateState().then(() => { /* do nothing */ });
-    }
+    this.days = forEntityFromState(h, this.config);
   }
   constructor() {
     super();
     this._lastUpdate = null;
-  }
-  connectedCallback() {
-    super.connectedCallback()
-    if( this._config.mode == "development" ) {
-      this.hass = {};
-    }
+    this._service = null;
   }
   setConfig(config) {
-    this._config = Object.assign(CalendarEventsElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
-    if (!config.entities) throw new Error("You need to define at least one entity");
-  }
-  async updateState() {
-    if(!this._hass || !this._config) return;
-    this.log('Updating State') 
-    this.days = await getDays(this._hass, this._config);
-    this._lastUpdate = Date.now();
-    this.log('Received State', this.days);
+    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
+    this.log('Setting Config', this.config)
+    if (!config.entity) throw new Error("You need to define a sensor entity");
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -86,9 +66,9 @@ export class CalendarEventsElement extends BaseComponent {
     this.log('Rendering?', !!this.days);
     return this.days
       ? this.days.map(day => this.getEventList(day.label, day.events))
-      : !this._lastUpdate
-      ? html` <h3>Loading</h3> `
-      : html` <h3>No upcoming events</h3> `;
+      : this.days && this.days.length == 0
+      ? html` <h3>No upcoming events</h3> `
+      : html` <h3>INITIALIZING</h3> `;
   }
 
   static get styles() {
@@ -97,14 +77,12 @@ export class CalendarEventsElement extends BaseComponent {
       css`
       :host {
         font-size: 18px;
-
-        background-color: var(--color-bg-secondary);
       }
       .event-list-container {
-        margin: 10px 10px 15px 10px;
+        margin: 10px 10px 20px 10px;
       }
       h3 {
-        margin: 0 0 10px 0;
+        margin: 0 0 3px 0;
 
         color: var(--color-text-secondary);
         font-size: 24px;
@@ -118,17 +96,14 @@ export class CalendarEventsElement extends BaseComponent {
         padding: 10px;
         margin-bottom: 10px;
 
-        background-color: var(--color-bg-secondary);
-        background-image: linear-gradient(172deg, var(--color-bg), var(--color-bg-secondary));
-        border: 1px solid var(--color-bg);
-        filter: drop-shadow(5px 5px 6px var(--color-bg));
+        background-color: var(--color-glass);
 
         border-radius: 8px;
       }
       .event.all-day {
         font-size: 12px;
         padding: 5px inherit;
-        margin-bottom: 3px;
+        margin: 0;
 
         background: transparent;
         border: none;
@@ -137,13 +112,13 @@ export class CalendarEventsElement extends BaseComponent {
         font-weight: 300;
       }
       .start-time, .duration {
-        width: 10%;
+        width: 15%;
       }
       .duration {
         text-align: right;
       }
       .details {
-        width: 80%;
+        width: 70%;
       }
       .location {
         font-size: 12px;
