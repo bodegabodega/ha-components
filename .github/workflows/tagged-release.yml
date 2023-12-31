@@ -1,6 +1,6 @@
 ---
 name: "tagged-release"
-permissions: read-all
+permissions: write-all
 
 on:
   push:
