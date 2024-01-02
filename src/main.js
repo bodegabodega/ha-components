@@ -8,3 +8,4 @@ import { TeamTrackerElement } from "./components/team-tracker-element";
 import { WeightAndSizeElement } from "./components/weight-and-size-element";
 import { ActivityTrackerElement } from "./components/activity-tracker-element";
 import { QuitSmokingElement } from "./components/quit-smoking-element";
+import { TodosProgressElement } from "./components/todos-progress-element";
