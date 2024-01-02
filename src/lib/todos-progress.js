@@ -27,9 +27,10 @@ export const forEntityFromState = (hass, config) => {
     });
   });
   todos.sort((a, b) => a.timestamp - b.timestamp);
-  const remaining = todos.length;
+  const done = dones.length;
   const tasks = [...todos, ...dones];
-  const percentComplete = Math.round((dones.length / (remaining.length + dones.length)) * 100);
+  const total = tasks.length;
+  const percentComplete = Math.round((done / total) * 100);
   return {
     lastUpdated,
     remaining,
