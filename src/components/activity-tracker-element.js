@@ -1,4 +1,4 @@
-import { html, css, nothing} from 'lit';
+import { html, css } from 'lit';
 import { BaseComponent } from './base-component';
 import Gauge from 'svg-gauge';
 import { styleMap } from 'lit-html/directives/style-map.js';
@@ -14,41 +14,46 @@ export class ActivityTrackerElement extends BaseComponent {
     return {
     }
   }
+  constructor() {
+    super();
 
+    this.hasDom = false;
+    this.gauges = new Map();
+  }
   setConfig(config) {
     this.config = Object.assign(ActivityTrackerElement.getDefaults(), config);
     if(!config.entity) throw new Error("You need to define an entity");
   }
+  gauge(name, value, goal) {
+    let gauge = this.gauges.get(name);
+    if(!gauge) {
+      gauge = Gauge(this.shadowRoot.getElementById(name), {
+        color: value => {
+          return value < goal ? 'var(--color-text-secondary)' : 'var(--color-success)';
+        }
+      });
+      this.gauges.set(name, gauge);
+    }
+    gauge.setMaxValue(Math.round(Math.max(goal, value)));
+    gauge.setValueAnimated(Math.round(value), 1);
+  }
   set hass(hass) {
-    if(this.config && this.config.entity) {
-      //this.weightAndSize = hass.states[this.config.entity].attributes;
-      if(hass.states[this.config.entity]) {
-        const { energy, exercise, steps } = hass.states[this.config.entity].attributes;
-        if(this.energyGauge) this.energyGauge.setValueAnimated(Math.round(energy), 1);
-        if(this.exerciseGauge) this.exerciseGauge.setValueAnimated(Math.round(exercise), 1);
-        if(this.stepsGauge) this.stepsGauge.setValueAnimated(Math.round(steps), 1);
-      }
+    if(this.config && this.config.entity && hass.states && hass.states[this.config.entity] && this.hasDom ) {
+      const { energy, exercise, steps, energy_goal, exercise_goal, step_goal } = hass.states[this.config.entity].attributes;
+      this.gauge('energy', energy, energy_goal);
+      this.gauge('exercise', exercise, exercise_goal);
+      this.gauge('steps', steps, step_goal);
     }
   }
   firstUpdated() {
-    this.log('First Updated');
-
-    this.log(this.config)
-    this.exerciseGauge = Gauge(this.shadowRoot.getElementById("exercise"), {
-      max: this.config.exercise_goal
-    });
-    this.energyGauge = Gauge(this.shadowRoot.getElementById("energy"), {
-      max: this.config.energy_goal
-    });
-    this.stepsGauge = Gauge(this.shadowRoot.getElementById("steps"), {
-      max: this.config.step_goal
-    });
+    this.hasDom = true;
+    // this.log('First Updated');
+    // this.exerciseGauge = Gauge(this.shadowRoot.getElementById("exercise"));
+    // this.energyGauge = Gauge(this.shadowRoot.getElementById("energy"));
+    // this.stepsGauge = Gauge(this.shadowRoot.getElementById("steps"));
   }
   render() {
-    //this.log('Rendering?', !!this.activity);
-    //return this.activity
-    return true
-      ? html`
+    return html`
       <div class="outer">
         <div class="activity">
           <div class="activity-item">
@@ -65,8 +70,7 @@ export class ActivityTrackerElement extends BaseComponent {
           </div>
         </div>
       </div>
-      `
-      : nothing;
+      `;
   }
 
   static get styles() {
