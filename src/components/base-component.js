@@ -18,6 +18,8 @@ export class BaseComponent extends LitElement {
       --color-text-secondary: hsl(0, 0%, 50%);
       --color-text-tertiary: hsl(0, 0%, 40%);
 
+      --color-success: #089c08;
+
       --color-glass: rgba(100, 100, 100, 0.2);
 
       --color-blue: #189aba;

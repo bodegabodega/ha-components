@@ -68,7 +68,7 @@ window.hass = {
       "entity_id": "sensor.activity_nikolai",
       "state": "2023-12-24T21:24:00.485563-05:00",
       "attributes": {
-        "exercise": 16,
+        "exercise": 36,
         "exercise_goal": "30",
         "energy": 547.8469999999999,
         "energy_goal": "800",

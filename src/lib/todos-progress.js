@@ -33,7 +33,7 @@ export const forEntityFromState = (hass, config) => {
   const percentComplete = Math.round((done / total) * 100);
   return {
     lastUpdated,
-    remaining,
+    remaining: todos.length,
     percentComplete,
     tasks
   };
