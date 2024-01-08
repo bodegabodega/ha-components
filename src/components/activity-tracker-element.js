@@ -1,13 +1,15 @@
-import { html, css } from 'lit';
+import { html, css, nothing } from 'lit';
 import { BaseComponent } from './base-component';
 import Gauge from 'svg-gauge';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export class ActivityTrackerElement extends BaseComponent {
   static get properties() {
     return {
-      config: { type: Object }
+      config: { type: Object },
+      updatedAt: { type: String, attribute: false }
     }
   }
   static getDefaults() {
@@ -26,31 +28,30 @@ export class ActivityTrackerElement extends BaseComponent {
   }
   gauge(name, value, goal) {
     let gauge = this.gauges.get(name);
-    if(!gauge) {
+    if(!gauge && this.shadowRoot.getElementById(name)) {
       gauge = Gauge(this.shadowRoot.getElementById(name), {
         color: value => {
           return value < goal ? 'var(--color-text-secondary)' : 'var(--color-success)';
         }
       });
       this.gauges.set(name, gauge);
+    } else {
+      return;
     }
     gauge.setMaxValue(Math.round(Math.max(goal, value)));
     gauge.setValueAnimated(Math.round(value), 1);
   }
   set hass(hass) {
-    if(this.config && this.config.entity && hass.states && hass.states[this.config.entity] && this.hasDom ) {
-      const { energy, exercise, steps, energy_goal, exercise_goal, step_goal } = hass.states[this.config.entity].attributes;
+    if(this.config && this.config.entity && hass.states && hass.states[this.config.entity]) {
+      const entity = hass.states[this.config.entity];
+      const { energy, exercise, steps, energy_goal, exercise_goal, step_goal } = entity.attributes;
       this.gauge('energy', energy, energy_goal);
       this.gauge('exercise', exercise, exercise_goal);
       this.gauge('steps', steps, step_goal);
+
+      const updatedDate = dayjs(entity.state);
+      this.updatedAt = updatedDate.fromNow();
     }
-  }
-  firstUpdated() {
-    this.hasDom = true;
-    // this.log('First Updated');
-    // this.exerciseGauge = Gauge(this.shadowRoot.getElementById("exercise"));
-    // this.energyGauge = Gauge(this.shadowRoot.getElementById("energy"));
-    // this.stepsGauge = Gauge(this.shadowRoot.getElementById("steps"));
   }
   render() {
     return html`
@@ -69,6 +70,7 @@ export class ActivityTrackerElement extends BaseComponent {
             <div class="activity-item-label">Steps</div>
           </div>
         </div>
+        <div class="updated-at">${ this.updatedAt || "Loading" }</div>
       </div>
       `;
   }
@@ -94,6 +96,7 @@ export class ActivityTrackerElement extends BaseComponent {
         width: 100px;
         height: 100px;
         display: block;
+        margin: 0 auto;
       }
       .gauge-container > .gauge .dial {
         stroke: var(--color-text-tertiary);
@@ -114,6 +117,12 @@ export class ActivityTrackerElement extends BaseComponent {
         margin-top: -15px;
 
         color: var(--color-text-secondary);
+        text-transform: uppercase;
+      }
+      .updated-at {
+        font-size: 12px;
+        
+        color: var(--color-text-tertiary);
         text-transform: uppercase;
       }
     `];
