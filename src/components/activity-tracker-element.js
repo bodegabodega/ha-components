@@ -28,7 +28,7 @@ export class ActivityTrackerElement extends BaseComponent {
   }
   gauge(name, value, goal) {
     let gauge = this.gauges.get(name);
-    if(!gauge && this.shadowRoot.getElementById(name)) {
+    if(!gauge && this.shadowRoot && this.shadowRoot.getElementById(name)) {
       gauge = Gauge(this.shadowRoot.getElementById(name), {
         color: value => {
           return value < goal ? 'var(--color-text-secondary)' : 'var(--color-success)';
