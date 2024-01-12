@@ -61,11 +61,13 @@ export class WeightAndSizeElement extends BaseComponent {
       BaseComponent.styles,
       css`
       :host {
-
+        display: flex;
+        align-items: center;
       }
       .outer {
-        margin: 40px 0 20px 0;
+        margin-top: 8px;
         text-align: center;
+        width: 100%;
       }
       .weight {
       }

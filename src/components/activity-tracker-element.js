@@ -19,7 +19,6 @@ export class ActivityTrackerElement extends BaseComponent {
   constructor() {
     super();
 
-    this.hasDom = false;
     this.gauges = new Map();
   }
   setConfig(config) {
@@ -80,17 +79,17 @@ export class ActivityTrackerElement extends BaseComponent {
       BaseComponent.styles,
       css`
       :host {
-
+        display: flex;
+        align-items: center;
       }
       .outer {
-        margin: 40px 0 20px 0;
+        width: 100%;
         text-align: center;
       }
       .activity {
         display: flex;
-        flex-direction: row;
         justify-content: space-evenly;
-        padding: 10px;
+        margin-bottom: 20px;
       }
       .gauge-container {
         width: 100px;
