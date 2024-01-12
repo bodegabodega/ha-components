@@ -7,7 +7,7 @@ export class QuitSmokingElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      progress: { type: Object, attribute: false }
+      progress: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
   static getDefaults() {
@@ -72,7 +72,7 @@ export class QuitSmokingElement extends BaseComponent {
       .next-achievement {
         font-size: 14px;
         line-height: 16px;
-        color: var(--color-text-tertiary);
+        color: var(--color-text-secondary);
 
         margin-top: 5px;
       }
