@@ -21,37 +21,49 @@ export class TwoColumnFullViewport extends LitElement {
       });
       return html`
           <div class="sidebar">
-              ${sidebar.map((card) => html`<div>${card}</div>`)}
+              ${sidebar.map((card) => html`${card}`)}
           </div>
           <div class="main">
-              ${main.map((card) => html`<div>${card}</div>`)}
+              ${main.map((card) => html`${card}`)}
           </div>
       `
   }
   static get styles() {
       return css`
-          :host {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-              height: 100vh;
-              display: grid;
-              grid-template-columns: 1fr 2fr;
-          }
+        :host {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          height: 100vh;
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+        }
+        .sidebar > * {
+          padding: 20px 0;
+        }
+        
+        @media (min-width: 1024px) {
+          .container {
+            height: 100vh;
+        
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+          }          
           .sidebar {
-              display: grid;
-              place-items: stretch;
+            display: grid;
+            place-items: stretch;
           }
-          .main {
-              display: flex;
-              flex-direction: column;
-              height: 100vh;
-              overflow: scroll;
+          .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            overflow: scroll;
           }
-          .main > * {
-              flex-grow: 1;
+          .column > * {
+            flex-grow: 1;
           }
-      `
+        }`
   }
 }
 

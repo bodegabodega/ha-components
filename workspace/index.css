@@ -11,6 +11,39 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+.sidebar > * {
+  padding: 20px 0;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    height: 100vh;
+  
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  
+  
+  
+  .sidebar {
+    display: grid;
+    place-items: stretch;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    overflow: scroll;
+  }
+  
+  .column > * {
+    flex-grow: 1;
+  }
+}
+
+/*
 .container {
   height: 100vh;
 
@@ -18,9 +51,7 @@ body {
   grid-template-columns: 1fr 2fr;
 }
 
-.sidebar > .ha-component {
-  border-top: 1px solid hsl(0, 0%, 90%);
-}
+
 
 .sidebar {
   display: grid;
@@ -37,6 +68,11 @@ body {
 
 .column > * {
   flex-grow: 1;
+}
+*/
+
+.sidebar > .ha-component {
+  /* border-top: 1px solid hsl(0, 0%, 90%); */
 }
 
 .sidebar {
