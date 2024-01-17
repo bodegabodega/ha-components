@@ -1,5 +1,6 @@
 import { html, css, nothing} from 'lit';
 import { BaseComponent } from './base-component';
+import { forEntityFromState } from './../lib/quit-smoking-progress';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
@@ -20,14 +21,8 @@ export class QuitSmokingElement extends BaseComponent {
     if(!config.entity) throw new Error("You need to define an entity");
   }
   set hass(hass) {
-    if(this.config && this.config.entity) {
-      const daysWithout = hass.states[this.config.entity].state;
-      const { achievement, next_achievement } = hass.states[this.config.entity].attributes;
-      this.progress = {
-        daysWithout,
-        achievement,
-        nextAchievement: next_achievement
-      }
+    if(this.config) {
+      this.progress = forEntityFromState(this.config, hass);
     }
   }
   

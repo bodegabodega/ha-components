@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "dependencies": {
     "color-scales": "^3.0.2",
@@ -16,6 +17,7 @@
     "svg-gauge": "^1.0.7"
   },
   "devDependencies": {
-    "vite": "^4.4.5"
+    "vite": "^5.0.11",
+    "vitest": "^1.2.0"
   }
 }
