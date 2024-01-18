@@ -32,7 +32,21 @@ export class QuitSmokingElement extends BaseComponent {
       ? html`
       <div class="outer">
         <div class="current-achievement">${this.progress.achievement}</div>
-        <div class="days-without">${this.progress.daysWithout}<br />without a cigarette</div>
+        <div class="days-without">${this.progress.friendlyDaysWithout}<br />without a cigarette</div>
+        <div>
+        ${this.progress.moneySaved
+          ? html`${this.progress.moneySaved} saved`
+          : nothing
+        }
+        ${this.progress.moneySaved && this.progress.skippedCigarettesCount
+          ? html` ∙ `
+          : nothing
+        }
+        ${this.progress.skippedCigarettesCount
+          ? html`${this.progress.skippedCigarettesCount} skipped cigarettes`
+          : nothing
+        }
+        </div>
         <div class="next-achievement">${this.progress.nextAchievement}</div>
       </div>
       `
