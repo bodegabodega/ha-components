@@ -1,6 +1,13 @@
 import {LitElement, css} from 'lit';
+import globals from '../globals.json';
 
 export class BaseComponent extends LitElement {
+  constructor() {
+    super();
+
+    console.log(`${this.constructor.name} ∙ ${globals.version}`)
+  }
+
   log() {
     if(this._config && !this._config.debug) { return };
     const args = [this.constructor.name, ...arguments]

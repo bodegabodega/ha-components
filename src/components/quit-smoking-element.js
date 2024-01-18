@@ -1,5 +1,6 @@
 import { html, css, nothing} from 'lit';
 import { BaseComponent } from './base-component';
+import { forEntityFromState } from './../lib/quit-smoking-progress';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
@@ -20,14 +21,8 @@ export class QuitSmokingElement extends BaseComponent {
     if(!config.entity) throw new Error("You need to define an entity");
   }
   set hass(hass) {
-    if(this.config && this.config.entity) {
-      const daysWithout = hass.states[this.config.entity].state;
-      const { achievement, next_achievement } = hass.states[this.config.entity].attributes;
-      this.progress = {
-        daysWithout,
-        achievement,
-        nextAchievement: next_achievement
-      }
+    if(this.config) {
+      this.progress = forEntityFromState(this.config, hass);
     }
   }
   
@@ -37,7 +32,21 @@ export class QuitSmokingElement extends BaseComponent {
       ? html`
       <div class="outer">
         <div class="current-achievement">${this.progress.achievement}</div>
-        <div class="days-without">${this.progress.daysWithout}<br />without a cigarette</div>
+        <div class="days-without">${this.progress.friendlyDaysWithout}<br />without a cigarette</div>
+        <div>
+        ${this.progress.moneySaved
+          ? html`${this.progress.moneySaved} saved`
+          : nothing
+        }
+        ${this.progress.moneySaved && this.progress.skippedCigarettesCount
+          ? html` ∙ `
+          : nothing
+        }
+        ${this.progress.skippedCigarettesCount
+          ? html`${this.progress.skippedCigarettesCount} skipped cigarettes`
+          : nothing
+        }
+        </div>
         <div class="next-achievement">${this.progress.nextAchievement}</div>
       </div>
       `

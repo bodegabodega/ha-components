@@ -6,6 +6,30 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "input_datetime.smoke_free_nikolai" : {
+      "entity_id": "input_datetime.smoke_free_nikolai",
+      "state": "2024-01-01 23:00:00",
+      "attributes": {
+        "has_date": true,
+        "has_time": true,
+        "editable": true,
+        "year": 2024,
+        "month": 1,
+        "day": 1,
+        "hour": 23,
+        "minute": 0,
+        "second": 0,
+        "timestamp": 1704168000,
+        "friendly_name": "smoke_free_nikolai"
+      },
+      "context": {
+        "id": "01HKZWM3SNE4V0TPBVTSFTD8QX",
+        "parent_id": null,
+        "user_id": null
+      },
+      "last_changed": "2024-01-12T22:28:01.461Z",
+      "last_updated": "2024-01-12T22:28:01.461Z"
+    },
     "my.todays_reminders": {
       "entity_id": "my.todays_reminders",
       "state": "2023-12-30T08:00:05.033865",
