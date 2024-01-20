@@ -6,6 +6,116 @@ const future = today.add(3, 'day').minute(0);
 
 window.hass = {
   "states": {
+    "my.step_count": {
+      "entity_id": "my.step_count",
+      "state": "4819",
+      "attributes": {
+        "friendly_name": "Step Count",
+        "updated_date": "2024-01-20T13:27:41.252863"
+      },
+      "context": {
+        "id": "01HMM21SJMZTPAMSWXNXVWK3Q1",
+        "parent_id": null,
+        "user_id": "f2a22e16e6034df9bc1e8cfb0277911b"
+      },
+      "last_changed": "2024-01-20T18:25:52.835Z",
+      "last_updated": "2024-01-20T18:27:41.268Z"
+    },
+    "my.active_energy_in_kcal": {
+      "entity_id": "my.active_energy_in_kcal",
+      "state": "350.196",
+      "attributes": {
+        "friendly_name": "Active Energy In Kcal",
+        "updated_date": "2024-01-20T13:27:41.209200"
+      },
+      "context": {
+        "id": "01HMM21SH8X5229JZEFWHEY08R",
+        "parent_id": null,
+        "user_id": "f2a22e16e6034df9bc1e8cfb0277911b"
+      },
+      "last_changed": "2024-01-20T18:25:52.789Z",
+      "last_updated": "2024-01-20T18:27:41.224Z"
+    },
+    "my.exercise_minutes": {
+      "entity_id": "my.exercise_minutes",
+      "state": "6",
+      "attributes": {
+        "friendly_name": "Exercise Minutes",
+        "updated_date": "2024-01-20T13:27:41.230996"
+      },
+      "context": {
+        "id": "01HMM21SHY8BCHT8TABQCN7SZT",
+        "parent_id": null,
+        "user_id": "f2a22e16e6034df9bc1e8cfb0277911b"
+      },
+      "last_changed": "2024-01-20T17:42:44.638Z",
+      "last_updated": "2024-01-20T18:27:41.246Z"
+    },
+    "input_number.nikolai_step_goal": {
+      "entity_id": "input_number.nikolai_step_goal",
+      "state": "10000.0",
+      "attributes": {
+        "initial": null,
+        "editable": true,
+        "min": 0,
+        "max": 1000000,
+        "step": 1,
+        "mode": "box",
+        "unit_of_measurement": "Steps",
+        "icon": "mdi:foot-print",
+        "friendly_name": "nikolai_step_goal"
+      },
+      "context": {
+        "id": "01HMKJ3R4TYXR25KQVR4ZN4BGK",
+        "parent_id": null,
+        "user_id": "faf3326d8e17448c846c97f62eb5be83"
+      },
+      "last_changed": "2024-01-20T13:49:08.124Z",
+      "last_updated": "2024-01-20T13:49:08.124Z"
+    },
+    "input_number.nikolai_exercise_goal": {
+      "entity_id": "input_number.nikolai_exercise_goal",
+      "state": "30.0",
+      "attributes": {
+        "initial": null,
+        "editable": true,
+        "min": 0,
+        "max": 1000,
+        "step": 1,
+        "mode": "box",
+        "unit_of_measurement": "Minutes",
+        "icon": "mdi:run",
+        "friendly_name": "nikolai_exercise_goal"
+      },
+      "context": {
+        "id": "01HMKJ8AAT5G29S7DT0GBFM92K",
+        "parent_id": null,
+        "user_id": "faf3326d8e17448c846c97f62eb5be83"
+      },
+      "last_changed": "2024-01-20T13:51:37.820Z",
+      "last_updated": "2024-01-20T13:51:37.820Z"
+    },
+    "input_number.nikolai_energy_goal": {
+      "entity_id": "input_number.nikolai_energy_goal",
+      "state": "800.0",
+      "attributes": {
+        "initial": null,
+        "editable": true,
+        "min": 0,
+        "max": 800,
+        "step": 1,
+        "mode": "box",
+        "icon": "mdi:lightning-bolt",
+        "friendly_name": "nikolai_energy_goal"
+      },
+      "context": {
+        "id": "01HMKJ64XXVVPYVAREDBRYZ4YH",
+        "parent_id": null,
+        "user_id": "faf3326d8e17448c846c97f62eb5be83"
+      },
+      "last_changed": "2024-01-20T13:50:26.751Z",
+      "last_updated": "2024-01-20T13:50:26.751Z"
+    },
     "input_datetime.smoke_free_nikolai" : {
       "entity_id": "input_datetime.smoke_free_nikolai",
       "state": "2024-01-01 23:00:00",

@@ -9,69 +9,67 @@ export class ActivityTrackerElement extends BaseComponent {
   static get properties() {
     return {
       config: { type: Object },
-      updatedAt: { type: String, attribute: false }
+      activityItems: { type: Array, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
   static getDefaults() {
     return {
     }
   }
-  constructor() {
-    super();
-
-    this.gauges = new Map();
-  }
   setConfig(config) {
     this.config = Object.assign(ActivityTrackerElement.getDefaults(), config);
-    if(!config.entity) throw new Error("You need to define an entity");
-  }
-  gauge(name, value, goal) {
-    let gauge = this.gauges.get(name);
-    if(!gauge && this.shadowRoot && this.shadowRoot.getElementById(name)) {
-      gauge = Gauge(this.shadowRoot.getElementById(name), {
-        color: value => {
-          return value < goal ? 'var(--color-text-secondary)' : 'var(--color-success)';
-        }
+    if(!config.entities || config.entities.length == 0) throw new Error("You need to define at least one entity as `entities`");
+    this.activityItems = [];
+    this.config.entities.forEach(entity => {
+      const { name, progress, goal } = entity;
+      if(!name) throw new Error("You need to define a name for each activity");
+      if(!progress) throw new Error("You need to define a progress entity for each activity");
+      if(!goal) throw new Error("You need to define a goal entity for each activity");
+      this.activityItems.push({
+        id: (Math.random() + 1).toString(36).substring(7), // random enough
+        name,
+        progress,
+        goal
       });
-      this.gauges.set(name, gauge);
-    } else {
-      return;
+    })
+  }
+  gauge(hass) {
+    return (item) => {
+      const { id, progress, goal } = item;
+      const value = hass.states[progress].state;
+      const target = hass.states[goal].state;
+      if(!item.gauge && this.shadowRoot && this.shadowRoot.getElementById(id)) {
+        item.gauge = Gauge(this.shadowRoot.getElementById(id), {
+          color: value => {
+            return value < target ? 'var(--color-text-secondary)' : 'var(--color-success)';
+          }
+        });
+      } else {
+        return;
+      }
+      item.gauge.setMaxValue(Math.round(Math.max(target, value)));
+      item.gauge.setValueAnimated(Math.round(value), 1);
     }
-    gauge.setMaxValue(Math.round(Math.max(goal, value)));
-    gauge.setValueAnimated(Math.round(value), 1);
   }
   set hass(hass) {
-    if(this.config && this.config.entity && hass.states && hass.states[this.config.entity]) {
-      const entity = hass.states[this.config.entity];
-      const { energy, exercise, steps, energy_goal, exercise_goal, step_goal } = entity.attributes;
-      this.gauge('energy', energy, energy_goal);
-      this.gauge('exercise', exercise, exercise_goal);
-      this.gauge('steps', steps, step_goal);
-
-      const updatedDate = dayjs(entity.state);
-      this.updatedAt = updatedDate.fromNow();
+    if(this.activityItems) {
+      this.activityItems.forEach(this.gauge(hass));
     }
   }
   render() {
-    return html`
-      <div class="outer">
-        <div class="activity">
-          <div class="activity-item">
-            <div id="exercise" class="gauge-container"></div>
-            <div class="activity-item-label">Exercise</div>
+    return this.activityItems && this.activityItems.length > 0
+      ? html`
+        <div class="outer">
+          <div class="activity">
+            ${ this.activityItems.map(item => html`
+              <div class="activity-item">
+                <div id="${ item.id }" class="gauge-container"></div>
+                <div class="activity-item-label">${ item.name }</div>
+              </div>
+            `)}
           </div>
-          <div class="activity-item">
-            <div id="energy" class="gauge-container"></div>
-            <div class="activity-item-label">Energy</div>
-          </div>
-          <div class="activity-item">
-            <div id="steps" class="gauge-container"></div>
-            <div class="activity-item-label">Steps</div>
-          </div>
-        </div>
-        <div class="updated-at">${ this.updatedAt || "Loading" }</div>
-      </div>
-      `;
+        </div>`
+      : nothing;
   }
 
   static get styles() {
