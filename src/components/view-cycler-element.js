@@ -5,7 +5,7 @@ export class ViewCyclerElement extends BaseComponent {
   constructor() {
     super();
     this._viewIndex = -1;
-    this.entityState = undefined;
+    this._entityState = undefined;
   }
   static get properties() {
     return {
@@ -16,36 +16,37 @@ export class ViewCyclerElement extends BaseComponent {
     return {
     }
   }
-
+  getSelectedViewIndex() {
+    let index = -1;
+    const n = this.views.length;
+    for (let i = 0; i < n; i++) {
+      const element = this.views[i];
+      if(element.getAttribute("aria-selected") === "true") {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
   setConfig(config) {
     this.config = Object.assign(ViewCyclerElement.getDefaults(), config);
     if(!config.entity) throw new Error("You need to define an entity");
-    this.entityState = undefined;
+    this._entityState = sessionStorage.getItem(`view-cycler-${this.config.entity}`);
+    this.log(`Entity state from sessionStrorage: '${this.entityState}'`);
+    this._viewIndex = this.getSelectedViewIndex();
+    this.log(`View index from DOM: ${this._viewIndex}`);
   }
   get views() {
-    this.log('Getting views')
-    this.log(this._views)
     if(!this._views) {
-      const homeAssistant = document.querySelector('home-assistant');
-      const root = homeAssistant.shadowRoot.querySelector('home-assistant-main').shadowRoot;
-      const sidebarRoot = root.querySelector('ha-sidebar').shadowRoot;
-      const sidebarListbox = sidebarRoot.querySelector('paper-listbox');
-      const panel = root.querySelector('ha-panel-lovelace')
-      // const root = this.dig([
-      //   ['home-assistant', true],
-      //   ['home-assistant-main', true]
-      // ]);
-      // const panel = root.querySelector('ha-panel-lovelace')
-      if(panel == document) { return []; }
-      const uiRoot = panel.shadowRoot.querySelector('hui-root')
-      if(!uiRoot) { return []; }
-      const isEditing = uiRoot.shadowRoot.querySelector('.edit-mode');
-      if(isEditing) { return []; }
-      let tabs = uiRoot.shadowRoot.querySelector('ha-tabs');
-      if(!tabs) {
-        tabs = uiRoot.shadowRoot.querySelector('paper-tabs');
+      try {
+        this._views = document.querySelector('home-assistant').shadowRoot
+                .querySelector('home-assistant-main').shadowRoot
+                .querySelector('ha-panel-lovelace').shadowRoot
+                .querySelector('hui-root').shadowRoot
+                .querySelectorAll('paper-tab');
+      } catch (error) {
+        return [];
       }
-      this._views = tabs.querySelectorAll('paper-tab');
     }
     return this._views;
   }
@@ -59,9 +60,21 @@ export class ViewCyclerElement extends BaseComponent {
   get viewIndex() {
     return this._viewIndex;
   }
+  set entityState(state) {
+    this._entityState = state;
+    sessionStorage.setItem(`view-cycler-${this.config.entity}`, state);
+  }
+  get entityState() {
+    return this._entityState;
+  }
   set hass(hass) {
     if(this.config) {
       const incomingState = hass.states[this.config.entity].state;
+      if(this.entityState == null) {
+        this.log(`Entity state not set. Setting to ${incomingState} and returning.`)
+        this.entityState = incomingState;
+        return;
+      }
       if(incomingState !== this.entityState) {
         this.log(`Entity state changed: was '${this.entityState}' now '${incomingState}'`)
         const asNumber = parseInt(incomingState);
@@ -70,7 +83,7 @@ export class ViewCyclerElement extends BaseComponent {
           this.viewIndex = asNumber;
         } else {
           this.log(`Entity is not number in view count bounds. Cycling view index.`)
-          this.viewIndex = this.viewIndex > this.views.length - 1 ? 0 : this.viewIndex + 1;
+          this.viewIndex = this.viewIndex == this.views.length - 1 ? 0 : this.viewIndex + 1;
         }
         this.entityState = incomingState;
       } else {
