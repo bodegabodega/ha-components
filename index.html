@@ -15,6 +15,7 @@
     <script type="module" src="/src/components/activity-tracker-element.js"></script>
     <script type="module" src="/src/components/quit-smoking-element.js"></script>
     <script type="module" src="/src/components/todos-progress-element.js"></script>
+    <script type="module" src="/src/components/view-cycler-element.js"></script>
     <script type="module" src="/src/layouts/two-column-full-viewport.js"></script>
     <!-- dev only assets -->
     <script type="module" src="/workspace/hass.js"></script>
@@ -23,6 +24,7 @@
   <body>
     <div class="container">
       <div class="sidebar">
+        <view-cycler class="ha-component" config='{"mode": "development", "debug": true, "entity": "input_number.nikolai_step_goal"}'></view-cycler>
         <!--date-and-time class="ha-component" config='{"mode": "development", "debug": true, "entity": "none"}'></date-and-time-->
         <weight-and-size class="ha-component" config='{"mode": "development", "debug": false, "entity": "sensor.weight_and_size_nikolai"}'></weight-and-size>
         <!--current-conditions class="ha-component" config='{"mode": "development", "debug": true, "entity": "weather.tomorrow_io_garden_street_daily", "unit": "°"}'></current-conditions-->

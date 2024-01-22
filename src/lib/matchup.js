@@ -13,9 +13,9 @@ const earliestEvent = ( entities, hass ) => {
       if (!event) return earliest;
       if (!earliest) return event;
       const now = dayjs();
-      console.log('event diff', Math.abs(dayjs(event.attributes.date).diff(now)))
-      console.log('earliest diff', Math.abs(dayjs(earliest.attributes.date).diff(now)))
-      console.log('earliest is not', entity )
+      this.log('event diff', Math.abs(dayjs(event.attributes.date).diff(now)))
+      this.log('earliest diff', Math.abs(dayjs(earliest.attributes.date).diff(now)))
+      this.log('earliest is not', entity )
       return Math.abs(dayjs(event.attributes.date).diff(now)) < Math.abs(dayjs(earliest.attributes.date).diff(now)) ? event : earliest;
     },
     null
