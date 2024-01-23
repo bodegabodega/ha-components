@@ -5,6 +5,25 @@ const tomorrow = today.add(1, 'day').minute(0);
 const future = today.add(3, 'day').minute(0);
 
 window.hass = {
+  "user": {
+    "id": "faf3326d8e17448c846c97f62eb5be83",
+    "name": "Nikolai",
+    "is_owner": true,
+    "is_admin": true,
+    "credentials": [
+      {
+        "auth_provider_type": "homeassistant",
+        "auth_provider_id": null
+      }
+    ],
+    "mfa_modules": [
+      {
+        "id": "totp",
+        "name": "Authenticator app",
+        "enabled": true
+      }
+    ]
+  },
   "states": {
     "my.step_count": {
       "entity_id": "my.step_count",
