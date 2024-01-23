@@ -14,6 +14,7 @@ export class ViewCyclerElement extends BaseComponent {
   }
   static getDefaults() {
     return {
+      "users": []
     }
   }
   getSelectedViewIndex() {
@@ -68,7 +69,7 @@ export class ViewCyclerElement extends BaseComponent {
     return this._entityState;
   }
   set hass(hass) {
-    if(this.config) {
+    if(this.config && (this.config.users.length == 0 || this.config.users.includes(hass.user.name))) {
       const incomingState = hass.states[this.config.entity].state;
       if(this.entityState == null) {
         this.log(`Entity state not set. Setting to ${incomingState} and returning.`)
@@ -89,6 +90,8 @@ export class ViewCyclerElement extends BaseComponent {
       } else {
         this.log(`Entity state not changed: '${this.entityState}'`)
       }
+    } else {
+      this.log(`No config or user '${hass.user.name}' not in list of allowed users: ${this.config.users}`)
     }
   }
   dig(query, root = document) {
