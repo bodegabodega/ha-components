@@ -6,6 +6,10 @@ export class ViewCyclerElement extends BaseComponent {
     super();
     this._viewIndex = -1;
     this._entityState = undefined;
+    this._delay = undefined;
+    this._interval = undefined;
+    this._lastCycle = undefined;
+    this._setHass = () => {};
   }
   static get properties() {
     return {
@@ -31,9 +35,20 @@ export class ViewCyclerElement extends BaseComponent {
   }
   setConfig(config) {
     this.config = Object.assign(ViewCyclerElement.getDefaults(), config);
-    if(!config.entity) throw new Error("You need to define an entity");
-    this._entityState = sessionStorage.getItem(`view-cycler-${this.config.entity}`);
-    this.log(`Entity state from sessionStrorage: '${this.entityState}'`);
+    if(!config.entity && !config.delay) throw new Error("You need to define an entity or delay");
+    if(config.entity && config.delay) throw new Error("You can't define both an entity and a delay");
+    if(config.entity) {
+      this._entityState = sessionStorage.getItem(`view-cycler-${this.config.entity}`);
+      this.log(`Entity state from sessionStrorage: '${this.entityState}'`);
+      this._setHass = this.entityStateTracker.bind(this);
+    } else {
+      this._delay = config.delay;
+      this.log(`Delay from config: '${this._delay}'`);
+      if (this._interval) clearInterval(this._interval);
+      this._interval = setInterval(this.considerCycle.bind(this), 1000);
+      this._lastCycle = Date.now();
+      window.addEventListener("focus", this.onFocus.bind(this));
+    }
     this._viewIndex = this.getSelectedViewIndex();
     this.log(`View index from DOM: ${this._viewIndex}`);
   }
@@ -70,43 +85,45 @@ export class ViewCyclerElement extends BaseComponent {
   }
   set hass(hass) {
     if(this.config && (this.config.users.length == 0 || this.config.users.includes(hass.user.name))) {
-      const incomingState = hass.states[this.config.entity].state;
-      if(this.entityState == null) {
-        this.log(`Entity state not set. Setting to ${incomingState} and returning.`)
-        this.entityState = incomingState;
-        return;
-      }
-      if(incomingState !== this.entityState) {
-        this.log(`Entity state changed: was '${this.entityState}' now '${incomingState}'`)
-        const asNumber = parseInt(incomingState);
-        if(!isNaN(asNumber) && (asNumber >= 0 && asNumber < this.views.length)) {
-          this.log(`Entity is number in view count bounds. Setting view index to ${asNumber}`)
-          this.viewIndex = asNumber;
-        } else {
-          this.log(`Entity is not number in view count bounds. Cycling view index.`)
-          this.viewIndex = this.viewIndex == this.views.length - 1 ? 0 : this.viewIndex + 1;
-        }
-        this.entityState = incomingState;
-      } else {
-        this.log(`Entity state not changed: '${this.entityState}'`)
-      }
+      
     } else {
       this.log(`No config or user '${hass.user.name}' not in list of allowed users: ${this.config.users}`)
     }
   }
-  dig(query, root = document) {
-    return query.reduce(
-      (accumulator, [selector, shadow]) => {
-        const node = accumulator.querySelector(selector);
-        return !node ? accumulator : shadow ? node.shadowRoot : node;
-      },
-      root
-    );
+  entityStateTracker(hass) {
+    const incomingState = hass.states[this.config.entity].state;
+    if(this.entityState == null) {
+      this.log(`Entity state not set. Setting to ${incomingState} and returning.`)
+      this.entityState = incomingState;
+      return;
+    }
+    if(incomingState !== this.entityState) {
+      this.log(`Entity state changed: was '${this.entityState}' now '${incomingState}'`)
+      const asNumber = parseInt(incomingState);
+      if(!isNaN(asNumber) && (asNumber >= 0 && asNumber < this.views.length)) {
+        this.log(`Entity is number in view count bounds. Setting view index to ${asNumber}`)
+        this.viewIndex = asNumber;
+      } else {
+        this.log(`Entity is not number in view count bounds. Cycling view index.`)
+        this.viewIndex = this.viewIndex == this.views.length - 1 ? 0 : this.viewIndex + 1;
+      }
+      this.entityState = incomingState;
+    } else {
+      this.log(`Entity state not changed: '${this.entityState}'`)
+    }
   }
-  
-  // render() {
-  //   return nothing;
-  // }
+  considerCycle() {
+    const now = Date.now();
+    const diff = now - this._lastCycle;
+    if(diff > (this._delay * 1000)) {
+      this.log(`Delay has passed. Cycling view index.`)
+      this.viewIndex = this.viewIndex == this.views.length - 1 ? 0 : this.viewIndex + 1;
+      this._lastCycle = now;
+    }
+  }
+  onFocus() {
+    this._lastCycle = Date.now();
+  }
 
   static get styles() {
     return css`
