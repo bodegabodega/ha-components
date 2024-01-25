@@ -2,14 +2,38 @@ import {LitElement, css} from 'lit';
 import globals from '../globals.json';
 
 export class BaseComponent extends LitElement {
+  static get properties() {
+    return {
+      config: { type: Object }
+    }
+  }
   constructor() {
     super();
 
     console.log(`${this.constructor.name} ∙ ${globals.version}`)
+    this._hass = undefined;
+  }
+
+  get isForUser() {
+    let forUser = false;
+    if(!this.config) {
+      this.log('No config, so not for user');
+    } else if(!this.config.users) {
+      this.log('No users in config, so for user');
+      forUser = true;
+    } else if(this.config.users && !this.config.users.includes(this.hass.user.id)) {
+      this.log('User not in config, so not for user');
+    };
+    return forUser;
+    // return ((this.config && !this.config.users)) || (this.config && this.config.users && this.config.users.includes(this.hass.user.id));
+  }
+
+  set hass(hass) {
+    this._hass = hass;
   }
 
   log() {
-    if(this._config && !this._config.debug) { return };
+    if(this.config && !this.config.debug) { return };
     const args = [this.constructor.name, ...arguments]
     console.log.apply(null, args);
   }

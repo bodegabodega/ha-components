@@ -24,18 +24,18 @@
   <body>
     <div class="container">
       <div class="sidebar">
-        <view-cycler class="ha-component" config='{"mode": "development", "debug": true, "delay": 10, "users": ["Nikolai"]}'></view-cycler>
+        <!--view-cycler class="ha-component" config='{"mode": "development", "debug": true, "delay": 10, "users": ["Nikolai"]}'></view-cycler-->
         <!--date-and-time class="ha-component" config='{"mode": "development", "debug": true, "entity": "none"}'></date-and-time-->
-        <weight-and-size class="ha-component" config='{"mode": "development", "debug": false, "entity": "sensor.weight_and_size_nikolai"}'></weight-and-size>
+        <!--weight-and-size class="ha-component" config='{"mode": "development", "debug": false, "entity": "sensor.weight_and_size_nikolai"}'></weight-and-size-->
         <!--current-conditions class="ha-component" config='{"mode": "development", "debug": true, "entity": "weather.tomorrow_io_garden_street_daily", "unit": "°"}'></current-conditions-->
-        <activity-tracker class="ha-component" config='{"mode": "development", "debug": true, "entities":[{"name":"Exercise","progress":"my.exercise_minutes","goal":"input_number.nikolai_exercise_goal"},{"name":"Energy","progress":"my.active_energy_in_kcal","goal":"input_number.nikolai_energy_goal"},{"name":"Steps","progress":"my.step_count","goal":"input_number.nikolai_step_goal"}]}'></activity-tracker> 
+        <!--activity-tracker class="ha-component" config='{"mode": "development", "debug": true, "entities":[{"name":"Exercise","progress":"my.exercise_minutes","goal":"input_number.nikolai_exercise_goal"},{"name":"Energy","progress":"my.active_energy_in_kcal","goal":"input_number.nikolai_energy_goal"},{"name":"Steps","progress":"my.step_count","goal":"input_number.nikolai_step_goal"}]}'></activity-tracker-->
         <!--hourly-forecast class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.tomorrow_io_garden_street_hourly"}'></hourly-forecast-->
-        <quit-smoking class="ha-component" config='{"mode": "development", "debug": false, "entity": "input_datetime.smoke_free_nikolai", "cigarettes_per_day": 10, "price_per_pack": 14, "price_unit": "$", "cigarettes_per_pack": 15}'></quit-smoking>
+        <!--quit-smoking class="ha-component" config='{"mode": "development", "debug": false, "entity": "input_datetime.smoke_free_nikolai", "cigarettes_per_day": 10, "price_per_pack": 14, "price_unit": "$", "cigarettes_per_pack": 15}'></quit-smoking-->
         <!--daily-forecast class="ha-component" config='{"mode": "development", "debug": true, "entity": "weather.tomorrow_io_garden_street_daily"}'></daily-forecast-->
       </div>
       <div class="column">
-        <team-tracker class="ha-component" config='{"mode": "development", "debug": false, "spoilers": false, "entities": ["sensor.arsenal_team_tracker_not_found", "sensor.arsenal_cl_team_tracker"]}'></team-tracker>
-        <todos-progress class="ha-component" config='{"mode": "development", "debug": false, "entity": "my.todays_reminders"}'></todos-progress>
+        <team-tracker class="ha-component" config='{"mode": "development", "debug": true, "spoilers": false, "entities": ["sensor.arsenal_team_tracker_not_found", "sensor.arsenal_cl_team_tracker"]}'></team-tracker>
+        <!--todos-progress class="ha-component" config='{"mode": "development", "debug": false, "entity": "my.todays_reminders"}'></todos-progress-->
         <!--calendar-events class="ha-component" config='{"mode": "development", "debug": true, "entity": "sensor.dashboard_calendar_events"}'></calendar-events-->
       </div>
     </div>

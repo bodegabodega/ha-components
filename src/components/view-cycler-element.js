@@ -35,14 +35,14 @@ export class ViewCyclerElement extends BaseComponent {
   }
   setConfig(config) {
     this.config = Object.assign(ViewCyclerElement.getDefaults(), config);
-    if(!config.entity && !config.delay) throw new Error("You need to define an entity or delay");
-    if(config.entity && config.delay) throw new Error("You can't define both an entity and a delay");
-    if(config.entity) {
+    if(!this.config.entity && !this.config.delay) throw new Error("You need to define an entity or delay");
+    if(this.config.entity && this.config.delay) throw new Error("You can't define both an entity and a delay");
+    if(this.config.entity) {
       this._entityState = sessionStorage.getItem(`view-cycler-${this.config.entity}`);
       this.log(`Entity state from sessionStrorage: '${this.entityState}'`);
       this._setHass = this.entityStateTracker.bind(this);
     } else {
-      this._delay = config.delay;
+      this._delay = this.config.delay;
       this.log(`Delay from config: '${this._delay}'`);
       if (this._interval) clearInterval(this._interval);
       this._interval = setInterval(this.considerCycle.bind(this), 1000);
@@ -85,7 +85,7 @@ export class ViewCyclerElement extends BaseComponent {
   }
   set hass(hass) {
     if(this.config && (this.config.users.length == 0 || this.config.users.includes(hass.user.name))) {
-      
+      this._setHass(hass);
     } else {
       this.log(`No config or user '${hass.user.name}' not in list of allowed users: ${this.config.users}`)
     }

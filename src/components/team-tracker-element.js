@@ -6,7 +6,6 @@ import {forEntitiesFromState} from './../lib/matchup';
 export class TeamTrackerElement extends BaseComponent {
   static get properties() {
     return {
-      config: { type: Object },
       matchup: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
     }
   }
@@ -15,10 +14,11 @@ export class TeamTrackerElement extends BaseComponent {
       spoilers: true
     }
   }
-  set hass(h) {
+  set hass(hass) {
+    super.hass = hass;
     if (this.config && this.config.entities) {
       this.log('Getting Matchup for Entities State');
-      this.matchup = forEntitiesFromState(this.config, h);
+      this.matchup = forEntitiesFromState(this.config, this._hass);
     }
   }
   setConfig(config) {
