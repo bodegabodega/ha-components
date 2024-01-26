@@ -21,7 +21,6 @@ export class TeamTrackerElement extends BaseElement {
   }
   setConfig(config) {
     if (!config.entities) throw new Error("You need to define entities");
-    this.log('Setting Config', this.config)
     this.config = Object.assign(TeamTrackerElement.getDefaults(), config);
   }
   render() {

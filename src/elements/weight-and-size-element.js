@@ -2,12 +2,12 @@ import { html, css, nothing} from 'lit';
 import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
+import { stringified } from '../lib/utilities/has-changed';
 
 export class WeightAndSizeElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      weightAndSize: { type: Object, attribute: false,  }
+      weightAndSize: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
@@ -16,18 +16,16 @@ export class WeightAndSizeElement extends BaseElement {
   }
 
   setConfig(config) {
-    this.config = Object.assign(WeightAndSizeElement.getDefaults(), config);
     if(!config.entity) throw new Error("You need to define an entity");
+    this.config = Object.assign(WeightAndSizeElement.getDefaults(), config);
   }
-  set hass(hass) {
-    if(this.config && this.config.entity) {
-      this.weightAndSize = hass.states[this.config.entity].attributes;
-    }
+  validate() {
+    this.weightAndSize = hass.states[this.config.entity].attributes;
   }
   
   render() {
-    this.log('Rendering?', !!this.weightAndSize);
-    return this.weightAndSize
+    this.log('Rendering?', !!(this.weightAndSize && this.visibleToUser));
+    return this.weightAndSize && this.visibleToUser
       ? html`
       <div class="outer">
         <div class="weight">
