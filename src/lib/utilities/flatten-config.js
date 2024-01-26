@@ -1,10 +1,10 @@
 export default function( config, state ) {
-  if (!config.users) {
+  if (!config.users) { // no users config
     return {
       visibleToUser: true,
       ...config
     };
-  } else if(!state) {
+  } else if(!state) { // no state
     return {
       visibleToUser: !(Object.keys(config.users).length === 0),
       ...config
@@ -15,14 +15,14 @@ export default function( config, state ) {
         id
       }
     } = state;
-    if(!id || !config.users.hasOwnProperty(id)) {
+    if(!id || (config.users.hasOwnProperty(id) && !config.users[id])) { // no user or user in config but falsey
       return {
         visibleToUser: false,
         ...config
       };
-    } else if (!config.users[id]) {
+    } else if (!config.users[id]) { // user not in config
       return {
-        visibleToUser: true,
+        visibleToUser: false,
         ...config
       };
     } else {

@@ -35,12 +35,13 @@ export class ViewCyclerElement extends BaseElement {
       } else if( mode == ViewCyclerElement.modes.DELAY ) {
         this._delay = this.config.delay;
         this.log(`Delay from config: '${this._delay}'`);
-        this._interval = setInterval(this.considerCycle.bind(this), 1000);
-        this._lastCycle = Date.now();
+
+        window.__view_cycler_interval__ = setInterval(this.considerCycle.bind(this), 1000);
+        window.__view_cycler_last = Date.now();
         window.addEventListener("focus", this.onFocus.bind(this));
       }
       if( this._mode == ViewCyclerElement.modes.DELAY ) {
-        if (this._interval) clearInterval(this._interval);
+        if (window.__view_cycler_interval__) clearInterval(window.__view_cycler_interval__);
         window.removeEventListener("focus", this.onFocus.bind(this));
       }
     }
@@ -123,11 +124,11 @@ export class ViewCyclerElement extends BaseElement {
   }
   considerCycle() {
     const now = Date.now();
-    const diff = now - this._lastCycle;
+    const diff = now - window.__view_cycler_last;
     if(diff > (this._delay * 1000)) {
       this.log(`Delay has passed. Cycling view index.`)
       this.doCycle();
-      this._lastCycle = now;
+      window.__view_cycler_last = now;
     }
   }
   doCycle() {
@@ -135,7 +136,7 @@ export class ViewCyclerElement extends BaseElement {
     this.viewIndex = ( this.viewIndex == this.views.length - 1 ) ? 0 : this.viewIndex + 1;
   }
   onFocus() {
-    this._lastCycle = Date.now();
+    window.__view_cycler_last = Date.now();
   }
 
   static get styles() {

@@ -63,7 +63,7 @@ describe('flattenConfig', () => {
       }
     })
   })
-  test('current user without user config', () => {
+  test('current user with null value', () => {
     expect(flattenConfig({
       nachos: true,
       users: {
@@ -74,10 +74,46 @@ describe('flattenConfig', () => {
         id: 'one'
       }
     })).toEqual({
-      visibleToUser: true,
+      visibleToUser: false,
       nachos: true,
       users: {
         'one': null
+      }
+    })
+  })
+  test('current user with truthy value', () => {
+    expect(flattenConfig({
+      nachos: true,
+      users: {
+        'one': true
+      }
+    }, {
+      user: {
+        id: 'one'
+      }
+    })).toEqual({
+      visibleToUser: true,
+      nachos: true,
+      users: {
+        'one': true
+      }
+    })
+  })
+  test('current user with explicit false', () => {
+    expect(flattenConfig({
+      nachos: true,
+      users: {
+        'one': false
+      }
+    }, {
+      user: {
+        id: 'one'
+      }
+    })).toEqual({
+      visibleToUser: false,
+      nachos: true,
+      users: {
+        'one': false
       }
     })
   })
