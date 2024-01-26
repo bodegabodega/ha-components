@@ -3,13 +3,13 @@ import { BaseElement } from './base-element';
 import Gauge from 'svg-gauge';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
+import { stringified } from '../lib/utilities/has-changed';
 dayjs.extend(relativeTime);
 
 export class ActivityTrackerElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      activityItems: { type: Array, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _activityItems: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
@@ -17,21 +17,26 @@ export class ActivityTrackerElement extends BaseElement {
     }
   }
   setConfig(config) {
-    this.config = Object.assign(ActivityTrackerElement.getDefaults(), config);
     if(!config.entities || config.entities.length == 0) throw new Error("You need to define at least one entity as `entities`");
-    this.activityItems = [];
-    this.config.entities.forEach(entity => {
-      const { name, progress, goal } = entity;
-      if(!name) throw new Error("You need to define a name for each activity");
-      if(!progress) throw new Error("You need to define a progress entity for each activity");
-      if(!goal) throw new Error("You need to define a goal entity for each activity");
-      this.activityItems.push({
-        id: (Math.random() + 1).toString(36).substring(7), // random enough
-        name,
-        progress,
-        goal
-      });
-    })
+    if(!this._activityItems){
+      this._activityItems = [];
+      config.entities.forEach(entity => {
+        const { name, progress, goal } = entity;
+        if(!name) throw new Error("You need to define a name for each activity");
+        if(!progress) throw new Error("You need to define a progress entity for each activity");
+        if(!goal) throw new Error("You need to define a goal entity for each activity");
+        this._activityItems.push({
+          id: (Math.random() + 1).toString(36).substring(7), // random enough
+          name,
+          progress,
+          goal
+        });
+      })
+    } else {
+      this.log('Activity Items already defined, skipping');
+      this.log('Activity item changes in the config will not be seen until a refresh');
+    }
+    this.config = Object.assign(ActivityTrackerElement.getDefaults(), config);
   }
   gauge(hass) {
     return (item) => {
@@ -51,17 +56,17 @@ export class ActivityTrackerElement extends BaseElement {
       item.gauge.setValueAnimated(Math.round(value), 1);
     }
   }
-  set hass(hass) {
-    if(this.activityItems) {
-      this.activityItems.forEach(this.gauge(hass));
+  validate() {
+    if(this._activityItems) {
+      this._activityItems.forEach(this.gauge(this.hass));
     }
   }
   render() {
-    return this.activityItems && this.activityItems.length > 0
+    return this._activityItems && this._activityItems.length > 0 && this.visibleToUser
       ? html`
         <div class="outer">
           <div class="activity">
-            ${ this.activityItems.map(item => html`
+            ${ this._activityItems.map(item => html`
               <div class="activity-item">
                 <div id="${ item.id }" class="gauge-container"></div>
                 <div class="activity-item-label">${ item.name }</div>

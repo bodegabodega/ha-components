@@ -1,6 +1,5 @@
 import { html, css, nothing} from 'lit';
 import { BaseElement } from './base-element';
-import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
 export class DateAndTimeElement extends BaseElement {

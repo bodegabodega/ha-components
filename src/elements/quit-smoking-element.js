@@ -1,14 +1,12 @@
 import { html, css, nothing} from 'lit';
 import { BaseElement } from './base-element';
 import { forEntityFromState } from '../lib/quit-smoking-progress';
-import { styleMap } from 'lit-html/directives/style-map.js';
-import dayjs from 'dayjs';
+import { stringified } from '../lib/utilities/has-changed';
 
 export class QuitSmokingElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      progress: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _progress: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
@@ -17,37 +15,35 @@ export class QuitSmokingElement extends BaseElement {
   }
 
   setConfig(config) {
-    this.config = Object.assign(QuitSmokingElement.getDefaults(), config);
     if(!config.entity) throw new Error("You need to define an entity");
+    this.config = Object.assign(QuitSmokingElement.getDefaults(), config);
   }
-  set hass(hass) {
-    if(this.config) {
-      this.progress = forEntityFromState(this.config, hass);
-    }
+  validate() {
+    this._progress = forEntityFromState(this.config, this.hass);
   }
-  
   render() {
-    this.log('Rendering?', !!this.progress);
-    return this.progress
+    const { achievement, friendlyDaysWithout, moneySaved, skippedCigarettesCount, nextAchievement } = this._progress || {};
+    this.log('Rendering?', !!(this._progress && this.visibleToUser));
+    return this._progress && this.visibleToUser
       ? html`
       <div class="outer">
-        <div class="current-achievement">${this.progress.achievement}</div>
-        <div class="days-without">${this.progress.friendlyDaysWithout}<br />without a cigarette</div>
+        <div class="current-achievement">${achievement}</div>
+        <div class="days-without">${friendlyDaysWithout}<br />without a cigarette</div>
         <div>
-        ${this.progress.moneySaved
-          ? html`${this.progress.moneySaved} saved`
+        ${moneySaved
+          ? html`${moneySaved} saved`
           : nothing
         }
-        ${this.progress.moneySaved && this.progress.skippedCigarettesCount
+        ${moneySaved && skippedCigarettesCount
           ? html` ∙ `
           : nothing
         }
-        ${this.progress.skippedCigarettesCount
-          ? html`${this.progress.skippedCigarettesCount} skipped cigarettes`
+        ${skippedCigarettesCount
+          ? html`${skippedCigarettesCount} skipped cigarettes`
           : nothing
         }
         </div>
-        <div class="next-achievement">${this.progress.nextAchievement}</div>
+        <div class="next-achievement">${nextAchievement}</div>
       </div>
       `
       : nothing;
