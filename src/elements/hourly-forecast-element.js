@@ -1,13 +1,13 @@
 import { html, css, nothing } from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
+import { stringified } from '../lib/utilities/has-changed';
 
-export class HourlyForecastElement extends BaseComponent {
+export class HourlyForecastElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      forecast: { type: Array, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _forecast: { state: true, hasChanged: stringified}
     }
   }
   static getDefaults() {
@@ -16,31 +16,27 @@ export class HourlyForecastElement extends BaseComponent {
       includeSun: true
     }
   }
-  set hass(h) {
-    if (this._config && this._config.entity) {
-      this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(h, this._config);
-    }
-  }
   setConfig(config) {
-    this._config = Object.assign(HourlyForecastElement.getDefaults(), config);
-    this.log('Setting Config', this._config)
     if (!config.entity) throw new Error("You need to define an entity");
+    this.config = Object.assign(HourlyForecastElement.getDefaults(), config);
   }
-
+  validate() {
+    this.log('Getting Forecast from Entity State');
+    this._forecast = forEntityFromState(this.hass, this.config);
+  }
   render() {
-    this.log('Rendering?', !!this.forecast);
-    return this.forecast
+    this.log('Rendering?', !!(this.forecast && this.visibleToUser));
+    return this._forecast && this.visibleToUser
       ? html`
       <div class="outer">
-        ${this.forecast.map(i => html`
+        ${this._forecast.map(i => html`
         <div class="prediction">
           <div class="hour">${unsafeHTML(i.hour)}</div>
           <div class="icon">${unsafeHTML(i.condition)}</div>
           <div class="temperature">${i.temperature}</div>
           ${i.precipitationProbability > 0
-              ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
-              : nothing
+            ? html`<div class="precipitation-probability">${i.precipitationProbability}%</div>`
+            : nothing
           }
         </div>
         `)}
@@ -51,7 +47,7 @@ export class HourlyForecastElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

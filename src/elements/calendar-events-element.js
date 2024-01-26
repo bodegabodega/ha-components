@@ -1,32 +1,24 @@
 import { html, css, nothing} from 'lit';
 import { forEntityFromState } from '../lib/calendar-events';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
+import { stringified } from '../lib/utilities/has-changed';
 
-export class CalendarEventsElement extends BaseComponent {
+export class CalendarEventsElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      days: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _days: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
     return {
     }
   }
-  set hass(h) {
-    this._hass = h;
-    this.log('Setting Hass', h)
-    this.days = forEntityFromState(h, this.config);
-  }
-  constructor() {
-    super();
-    this._lastUpdate = null;
-    this._service = null;
-  }
   setConfig(config) {
-    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
-    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define a sensor entity");
+    this.config = Object.assign(CalendarEventsElement.getDefaults(), config);
+  }
+  validate() {
+    this._days = forEntityFromState(this.hass, this.config);
   }
   getEventList(label, events) {
     return events && events.length > 0
@@ -63,17 +55,17 @@ export class CalendarEventsElement extends BaseComponent {
   }
 
   render() {
-    this.log('Rendering?', !!this.days);
-    return this.days
-      ? this.days.map(day => this.getEventList(day.label, day.events))
-      : this.days && this.days.length == 0
-      ? html` <h3>No upcoming events</h3> `
-      : html` <h3>INITIALIZING</h3> `;
+    this.log('Rendering?', !!(this._days && this.visibleToUser));
+    return this._days && this.visibleToUser
+      ? this._days.map(day => this.getEventList(day.label, day.events))
+      : this._days && this._days.length == 0
+      ? nothing
+      : nothing;
   }
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         font-size: 18px;

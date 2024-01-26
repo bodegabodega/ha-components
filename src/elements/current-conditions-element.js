@@ -1,55 +1,56 @@
 import { html, css, nothing} from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { currentConditionsForState } from '../lib/current-conditions';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
+import { stringified } from '../lib/utilities/has-changed';
 
-export class CurrentConditionsElement extends BaseComponent {
+export class CurrentConditionsElement extends BaseElement {
   static get properties() {
     return {
-      hass: { type: Object }
+      _conditions: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
     return {}
   }
   setConfig(config) {
-    this.config = Object.assign(CurrentConditionsElement.getDefaults(), config);
-    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define an entity");
+    this.config = Object.assign(CurrentConditionsElement.getDefaults(), config);
+  }
+  validate() {
+    this._conditions = currentConditionsForState(this.hass.states[this.config.entity]);
   }
   render() {
-    const entityState = this.hass.states[this.config.entity];
-    const { current, low, high, unit, description } = currentConditionsForState(entityState);
-    const currentPercentage = Math.round(((current - low) / (high - low)) * 95); // 95 is a magic number because gauge is 100px and size of point is 5px .. could be better
-    return entityState
+    const { current, low, high, unit, description } = this._conditions || {};
+    return this.conditions && this.visibleToUser
       ? html`
       <div class="outer">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree">${this.config.unit || unit}</span>
+          <span class="number">${current}</span><span class="degree"></span>
         </div>
         <div class="condition">${asAdjective(description)}</div>
         <div class="lowhigh">
-          <div>${low}°</div>
+          <div>${low}${this.config.unit || unit}</div>
           <div class="gauge">
             <div class="background" style=${styleMap({
               backgroundImage: `linear-gradient(90deg, ${hexForTemperature(low)}, ${hexForTemperature(high)})`
             })}></div>
             <div class="point" style=${styleMap({
-              left: `${currentPercentage}px`
+              left: `${Math.round(((current - low) / (high - low)) * 95)}px` // 95 is a magic number because gauge is 100px and size of point is 5px .. could be better
             })}></div>
           </div>
-          <div>${high}°</div>
+          <div>${high}${this.config.unit || unit}</div>
         </div>
       </div>
       `
-      : html` <div class="not-found">Entity ${this.config.entity} not found.</div> `;
+      : nothing;
   }
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

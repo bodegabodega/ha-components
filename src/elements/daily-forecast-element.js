@@ -1,37 +1,34 @@
 import { html, css, nothing } from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {forEntityFromState} from '../lib/daily-forecast';
+import { stringified } from '../lib/utilities/has-changed';
 
-export class DailyForecastElement extends BaseComponent {
+export class DailyForecastElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      forecast: { type: Array, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _forecast: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
-    return { }
-  }
-  set hass(h) {
-    if (this.config && this.config.entity) {
-      this.log('Getting Forecast from Entity State');
-      this.forecast = forEntityFromState(this.config.entity, h);
-    }
+    return {}
   }
   setConfig(config) {
-    this.config = Object.assign(DailyForecastElement.getDefaults(), config);
-    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define an entity");
+    this.config = Object.assign(DailyForecastElement.getDefaults(), config);
+  }
+  validate() {
+    this.log('Getting Forecast from Entity State');
+    this._forecast = forEntityFromState(this.config.entity, this.hass);
   }
   render() {
-    this.log('Rendering?', !!this.forecast);
-    return this.forecast
+    this.log('Rendering?', !!(this._forecast && this.visibleToUser));
+    return this._forecast && this.visibleToUser
       ? html`
       <div class="outer">
-        ${this.forecast.map(i => html`
-          <div class="prediction">            
+        ${this._forecast.map(i => html`
+          <div class="prediction">
             <div class="day">${i.day}</div>
             <div class="high">${i.high}°</div>
             <div class="temperature">
@@ -51,12 +48,12 @@ export class DailyForecastElement extends BaseComponent {
         `)}
       </div>
       `
-      : html` <div class="not-found">No forecast found.</div> `;
+      : nothing;
   }
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

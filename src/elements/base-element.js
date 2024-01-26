@@ -1,15 +1,42 @@
 import {LitElement, css} from 'lit';
 import globals from '../globals.json';
+import { stringified } from '../lib/utilities/has-changed';
+import flattenConfig from '../lib/utilities/flatten-config';
 
-export class BaseComponent extends LitElement {
+export class BaseElement extends LitElement {
+  static get properties() {
+    return {
+      config: { state: true, hasChanged: stringified }
+    }
+  }
   constructor() {
     super();
 
     console.log(`${this.constructor.name} ∙ ${globals.version}`)
   }
-
+  get visibleToUser() {
+    return this.config ? this.config.visibleToUser : true;
+  }
+  set config(value) {
+    const was = this._config;
+    this._config = flattenConfig(value, this.hass);
+    this.requestUpdate('config', was);
+  }
+  get config() {
+    return this._config;
+  }
+  set hass(hass) {
+    this._hass = hass;
+    if(this.config) this.validate();
+  }
+  get hass() {
+    return this._hass;
+  }
+  validate() {
+    // Override this method to validate possible state changes
+  }
   log() {
-    if(this._config && !this._config.debug) { return };
+    if(this.config && !this.config.debug) { return };
     const args = [this.constructor.name, ...arguments]
     console.log.apply(null, args);
   }
