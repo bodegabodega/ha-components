@@ -1,13 +1,13 @@
 import { html, css, nothing} from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { BaseComponent } from './base-component';
-import {forEntitiesFromState} from './../lib/matchup';
+import { BaseElement } from './base-element';
+import { stringified } from '../lib/utilities/has-changed';
+import { forEntitiesFromState } from '../lib/matchup';
 
-export class TeamTrackerElement extends BaseComponent {
+export class TeamTrackerElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      matchup: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _matchup: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
@@ -15,47 +15,43 @@ export class TeamTrackerElement extends BaseComponent {
       spoilers: true
     }
   }
-  set hass(h) {
-    if (this.config && this.config.entities) {
-      this.log('Getting Matchup for Entities State');
-      this.matchup = forEntitiesFromState(this.config, h);
-    }
+  validate() {
+    this.log('Getting Matchup for Entities State');
+    this._matchup = forEntitiesFromState(this.config, this.hass);
   }
   setConfig(config) {
-    this.config = Object.assign(TeamTrackerElement.getDefaults(), config);
-    this.log('Setting Config', this.config)
     if (!config.entities) throw new Error("You need to define entities");
+    this.config = Object.assign(TeamTrackerElement.getDefaults(), config);
   }
-
   render() {
-    this.log('Rendering?', !!this.matchup);
-    return this.matchup
+    this.log('Rendering?', !!(this._matchup && this.visibleToUser));
+    return this._matchup && this.visibleToUser
       ? html`
       <div class="outer">
         <div class="row">
-          <div class="detail">${this.matchup.date}</div>
-          <div class="detail">${this.matchup.league}</div>
+          <div class="detail">${this._matchup.date}</div>
+          <div class="detail">${this._matchup.league}</div>
         </div>
         <div class="row opponents">
           <div class="home" style=${styleMap({
-              borderColor: `${this.matchup.home.color}`
+              borderColor: `${this._matchup.home.color}`
             })}>
-            <div>${this.matchup.home.abbreviation}</div>
-            <div class="detail">${this.matchup.home.record}</div>
+            <div>${this._matchup.home.abbreviation}</div>
+            <div class="detail">${this._matchup.home.record}</div>
           </div>
           <div class="score">
-            <div>${this.matchup.score}</div>
-            <div class="detail">${this.matchup.clock}</div>
+            <div>${this._matchup.score}</div>
+            <div class="detail">${this._matchup.clock}</div>
           </div>
           <div class="away" style=${styleMap({
-              borderColor: `${this.matchup.away.color}`
+              borderColor: `${this._matchup.away.color}`
             })}>
-            <div>${this.matchup.away.abbreviation}</div>
-            <div class="detail">${this.matchup.away.record}</div>
+            <div>${this._matchup.away.abbreviation}</div>
+            <div class="detail">${this._matchup.away.record}</div>
           </div>
         </div>
         <div class="details">
-          <div class="detail">${this.matchup.location}</div>
+          <div class="detail">${this._matchup.location}</div>
         </div>
       </div>
       `
@@ -64,7 +60,7 @@ export class TeamTrackerElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

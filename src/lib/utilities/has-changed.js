@@ -1,0 +1,1 @@
+export const stringified = (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }

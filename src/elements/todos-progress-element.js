@@ -1,46 +1,42 @@
 import { html, css, nothing} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import {forEntityFromState} from './../lib/todos-progress';
 import check from './../assets/check.svg?raw';
+import { stringified } from '../lib/utilities/has-changed';
 
-export class TodosProgressElement extends BaseComponent {
+export class TodosProgressElement extends BaseElement {
   static get properties() {
     return {
-      config: { type: Object },
-      tasks: { type: Object, attribute: false, hasChanged: (n, o) => { return JSON.stringify(n) !== JSON.stringify(o) }}
+      _tasks: { state: true, hasChanged: stringified }
     }
   }
   static getDefaults() {
     return {
     }
   }
-  set hass(h) {
-    this._hass = h;
-    this.log('Setting Hass', h)
-    this.tasks = forEntityFromState(h, this.config);
-  }
   setConfig(config) {
-    this.config = Object.assign(TodosProgressElement.getDefaults(), config);
-    this.log('Setting Config', this.config)
     if (!config.entity) throw new Error("You need to define a sensor entity");
+    this.config = Object.assign(TodosProgressElement.getDefaults(), config);
   }
-
+  validate() {
+    this._tasks = forEntityFromState(this.hass, this.config);
+  }
   render() {
-    this.log('Rendering?', !!this.days);
-    return this.tasks
+    this.log('Rendering?', !!(this._tasks && this.visibleToUser));
+    return this._tasks && this.visibleToUser
       ? html`
         <div class="outer">
-          <h3>TODO<span class="detail">${this.tasks.remaining} Remaining</span></h3>
+          <h3>TODO<span class="detail">${this._tasks.remaining} Remaining</span></h3>
           <div class="progress">
-            <div class="background" />
+            <div class="background"></div>
             <div class="foreground" style=${styleMap({
-              width: `${this.tasks.percentComplete}%`
-            })} />
+              width: `${this._tasks.percentComplete}%`
+            })}></div>
           </div>
           <div class="todo-list-container">
-            ${this.tasks.tasks.map(task => html`
+            ${this._tasks.tasks.map(task => html`
             <div class="todo${task.complete ? ' completed' : ''}">
               <div class="details">
                 <div class="summary">${task.title}</div>
@@ -60,16 +56,16 @@ export class TodosProgressElement extends BaseComponent {
               }
             </div>
             `)}
-            <div class="last-updated">Updated ${this.tasks.lastUpdated}</div>
+            <div class="last-updated">Updated ${this._tasks.lastUpdated}</div>
           </div>
         </div>
       `
-      : html` <h3>Nothing To Do</h3> `
+      : nothing;
   }
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         font-size: 18px;
