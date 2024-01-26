@@ -1,10 +1,10 @@
 import { html, css, nothing} from 'lit';
-import { BaseComponent } from './base-component';
-import { forEntityFromState } from './../lib/quit-smoking-progress';
+import { BaseElement } from './base-element';
+import { forEntityFromState } from '../lib/quit-smoking-progress';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
-export class QuitSmokingElement extends BaseComponent {
+export class QuitSmokingElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -55,7 +55,7 @@ export class QuitSmokingElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

@@ -1,9 +1,9 @@
 import { html, css} from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
-export class DateAndTimeElement extends BaseComponent {
+export class DateAndTimeElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -58,7 +58,7 @@ export class DateAndTimeElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

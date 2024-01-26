@@ -1,11 +1,11 @@
 import { html, css, nothing} from 'lit';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import {forEntityFromState} from './../lib/todos-progress';
 import check from './../assets/check.svg?raw';
 
-export class TodosProgressElement extends BaseComponent {
+export class TodosProgressElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -69,7 +69,7 @@ export class TodosProgressElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         font-size: 18px;

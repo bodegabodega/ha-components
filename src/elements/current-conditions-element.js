@@ -1,11 +1,11 @@
 import { html, css, nothing} from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { currentConditionsForState } from '../lib/current-conditions';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
 
-export class CurrentConditionsElement extends BaseComponent {
+export class CurrentConditionsElement extends BaseElement {
   static get properties() {
     return {
       hass: { type: Object }
@@ -49,7 +49,7 @@ export class CurrentConditionsElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

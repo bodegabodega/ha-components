@@ -1,11 +1,11 @@
 import { html, css, nothing } from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import Gauge from 'svg-gauge';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-export class ActivityTrackerElement extends BaseComponent {
+export class ActivityTrackerElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -74,7 +74,7 @@ export class ActivityTrackerElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

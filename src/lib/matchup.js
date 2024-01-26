@@ -42,8 +42,7 @@ export const forEntitiesFromState = ( config, hass ) => {
   const badGuys = {
     name: attributes.opponent_name,
     abbreviation: attributes.opponent_abbr,
-    // record: attributes.opponent_record.replace(/-/g, ' • '),
-    record: Math.random() > 0.5 ? '1-0-0' : '0-1-0', // just to test changes must be removed
+    record: attributes.opponent_record.replace(/-/g, ' • ')
   }
   if (attributes.team_homeaway == 'home') {
     out.home = { color: attributes.team_colors[0], ...goodGuys };

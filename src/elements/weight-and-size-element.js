@@ -1,9 +1,9 @@
 import { html, css, nothing} from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import dayjs from 'dayjs';
 
-export class WeightAndSizeElement extends BaseComponent {
+export class WeightAndSizeElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -58,7 +58,7 @@ export class WeightAndSizeElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         display: flex;

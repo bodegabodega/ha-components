@@ -1,8 +1,8 @@
 import { html, css, nothing} from 'lit';
 import { forEntityFromState } from '../lib/calendar-events';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 
-export class CalendarEventsElement extends BaseComponent {
+export class CalendarEventsElement extends BaseElement {
   static get properties() {
     return {
       config: { type: Object },
@@ -73,7 +73,7 @@ export class CalendarEventsElement extends BaseComponent {
 
   static get styles() {
     return [
-      BaseComponent.styles,
+      BaseElement.styles,
       css`
       :host {
         font-size: 18px;

@@ -1,7 +1,7 @@
 import { css } from 'lit';
-import { BaseComponent } from './base-component';
+import { BaseElement } from './base-element';
 
-export class ViewCyclerElement extends BaseComponent {
+export class ViewCyclerElement extends BaseElement {
   constructor() {
     super();
     this._viewIndex = -1;
