@@ -24,7 +24,7 @@ export class CurrentConditionsElement extends BaseElement {
   }
   render() {
     const { current, low, high, unit, description } = this._conditions || {};
-    return this.conditions && this.visibleToUser
+    return this._conditions && this.visibleToUser
       ? html`
       <div class="outer">
         <div class="temperature">

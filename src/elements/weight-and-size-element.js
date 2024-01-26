@@ -20,7 +20,7 @@ export class WeightAndSizeElement extends BaseElement {
     this.config = Object.assign(WeightAndSizeElement.getDefaults(), config);
   }
   validate() {
-    this.weightAndSize = hass.states[this.config.entity].attributes;
+    this.weightAndSize = this.hass.states[this.config.entity].attributes;
   }
   
   render() {
