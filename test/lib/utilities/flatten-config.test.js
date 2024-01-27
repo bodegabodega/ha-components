@@ -117,6 +117,25 @@ describe('flattenConfig', () => {
       }
     })
   })
+  test('current user with explicit false after set to true', () => {
+    expect(flattenConfig({
+      visibleToUser: true,
+      nachos: true,
+      users: {
+        'one': false
+      }
+    }, {
+      user: {
+        name: 'one'
+      }
+    })).toEqual({
+      visibleToUser: false,
+      nachos: true,
+      users: {
+        'one': false
+      }
+    })
+  })
   test('current user with user config', () => {
     expect(flattenConfig({
       nachos: true,

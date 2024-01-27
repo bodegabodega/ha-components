@@ -16,6 +16,9 @@ export class TodosProgressElement extends BaseElement {
     return {
     }
   }
+  constructor() {
+    super('Todos Progress');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define a sensor entity");
     this.config = Object.assign(TodosProgressElement.getDefaults(), config);

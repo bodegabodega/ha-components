@@ -13,7 +13,9 @@ export class QuitSmokingElement extends BaseElement {
     return {
     }
   }
-
+  constructor() {
+    super('Quit Smoking');
+  }
   setConfig(config) {
     if(!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(QuitSmokingElement.getDefaults(), config);

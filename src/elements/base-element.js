@@ -2,6 +2,8 @@ import {LitElement, css} from 'lit';
 import globals from '../globals.json';
 import { stringified } from '../lib/utilities/has-changed';
 import flattenConfig from '../lib/utilities/flatten-config';
+import log from 'loglevel';
+import randomEnough from '../lib/utilities/random-enough';
 
 export class BaseElement extends LitElement {
   static get properties() {
@@ -9,25 +11,36 @@ export class BaseElement extends LitElement {
       config: { state: true, hasChanged: stringified }
     }
   }
-  constructor() {
+  constructor(name) {
     super();
 
-    console.log(`${this.constructor.name} ∙ ${globals.version}`)
+    this._name = name || this.constructor.name;
+
+    this.initialise();
   }
+  get trace() { return this._trace; }
+  get debug() { return this._debug; }
+  get info() { return this._info; }
+  get log() { return this._log; }
+  get warn() { return this._warn; }
+  get error() { return this._error; }
+
   get visibleToUser() {
     return this.config ? this.config.visibleToUser : true;
   }
   set config(value) {
-    const was = this._config;
     this._config = flattenConfig(value, this.hass);
+    const lvl = this._config.debug == true ? log.levels.TRACE : log.levels.WARN;
+    this._logger.setLevel(lvl, false);
     this.log('Actualized Config:', this._config)
-    this.requestUpdate('config', was);
   }
   get config() {
     return this._config;
   }
   set hass(hass) {
+    const wasnt = (this._hass == undefined);
     this._hass = hass;
+    if(wasnt) this.config = this._config;
     if(this.config) this.validate();
   }
   get hass() {
@@ -35,11 +48,6 @@ export class BaseElement extends LitElement {
   }
   validate() {
     // Override this method to validate possible state changes
-  }
-  log() {
-    if(this.config && !this.config.debug) { return };
-    const args = [this.constructor.name, ...arguments]
-    console.log.apply(null, args);
   }
 
   static styles = css`
@@ -93,4 +101,24 @@ export class BaseElement extends LitElement {
       color: red;
     }
   `;
+  level(fn) {
+    return (...args) => {
+      const arg = [this._name, ...args]
+      fn.apply(null, arg);
+    }
+  }
+  initialise() {
+    console.log()
+    this._logger = log.getLogger(randomEnough());
+
+    this._trace = this.level(this._logger.trace);
+    this._debug = this.level(this._logger.debug);
+    this._log = this.level(this._logger.info);
+    this._info = this.level(this._logger.info);
+    this._warn = this.level(this._logger.warn);
+    this._error = this.level(this._logger.error);
+
+    this.info(`${this._name} ∙ ${globals.version}`)
+  }
+
 }

@@ -15,6 +15,9 @@ export class CurrentConditionsElement extends BaseElement {
   static getDefaults() {
     return {}
   }
+  constructor() {
+    super('Calendar Events');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(CurrentConditionsElement.getDefaults(), config);

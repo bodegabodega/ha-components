@@ -13,6 +13,9 @@ export class CalendarEventsElement extends BaseElement {
     return {
     }
   }
+  constructor() {
+    super('Calendar Events');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define a sensor entity");
     this.config = Object.assign(CalendarEventsElement.getDefaults(), config);

@@ -16,6 +16,9 @@ export class HourlyForecastElement extends BaseElement {
       includeSun: true
     }
   }
+  constructor() {
+    super('Hourly Forecast');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(HourlyForecastElement.getDefaults(), config);
@@ -25,7 +28,7 @@ export class HourlyForecastElement extends BaseElement {
     this._forecast = forEntityFromState(this.hass, this.config);
   }
   render() {
-    this.log('Rendering?', !!(this.forecast && this.visibleToUser));
+    this.log('Rendering?', !!(this._forecast && this.visibleToUser));
     return this._forecast && this.visibleToUser
       ? html`
       <div class="outer">
@@ -42,7 +45,7 @@ export class HourlyForecastElement extends BaseElement {
         `)}
       </div>
       `
-      : html` <div class="not-found">No forecast found.</div> `;
+      : nothing;
   }
 
   static get styles() {

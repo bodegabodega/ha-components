@@ -3,7 +3,7 @@ import { BaseElement } from './base-element';
 
 export class ViewCyclerElement extends BaseElement {
   constructor() {
-    super();
+    super('View Cycler');
     this._mode = ViewCyclerElement.modes.UNKOWN;
     this._viewIndex = -1;
   }
@@ -15,7 +15,8 @@ export class ViewCyclerElement extends BaseElement {
     return {
       UNKOWN: 'unknown',
       ENTITY_TRACKING: 'entity-tracking',
-      DELAY: 'delay'
+      DELAY: 'delay',
+      DISABLED: 'disabled'
     }
   }
   static getDefaults() {
@@ -37,10 +38,11 @@ export class ViewCyclerElement extends BaseElement {
         this.log(`Delay from config: '${this._delay}'`);
 
         window.__view_cycler_interval__ = setInterval(this.considerCycle.bind(this), 1000);
-        window.__view_cycler_last = Date.now();
+        window.__view_cycler_last__ = Date.now();
         window.addEventListener("focus", this.onFocus.bind(this));
       }
       if( this._mode == ViewCyclerElement.modes.DELAY ) {
+        this.log(`Clearing interval and removing event listener cause no longer ${this._mode} mode.`)
         if (window.__view_cycler_interval__) clearInterval(window.__view_cycler_interval__);
         window.removeEventListener("focus", this.onFocus.bind(this));
       }
@@ -99,7 +101,9 @@ export class ViewCyclerElement extends BaseElement {
     return this._entityState;
   }
   validate() {
-    if(this.mode == ViewCyclerElement.modes.ENTITY_TRACKING && this.visibleToUser) {
+    if(!this.visibleToUser) {
+      this.mode = ViewCyclerElement.modes.DISABLED;
+    } else if(this.mode == ViewCyclerElement.modes.ENTITY_TRACKING) {
       const incomingState = this.hass.states[this.config.entity].state;
       if(this.entityState == null) {
         this.log(`Entity state not set. Setting to ${incomingState} and returning.`)
@@ -124,11 +128,11 @@ export class ViewCyclerElement extends BaseElement {
   }
   considerCycle() {
     const now = Date.now();
-    const diff = now - window.__view_cycler_last;
+    const diff = now - window.__view_cycler_last__;
     if(diff > (this._delay * 1000)) {
       this.log(`Delay has passed. Cycling view index.`)
       this.doCycle();
-      window.__view_cycler_last = now;
+      window.__view_cycler_last__ = now;
     }
   }
   doCycle() {
@@ -136,7 +140,7 @@ export class ViewCyclerElement extends BaseElement {
     this.viewIndex = ( this.viewIndex == this.views.length - 1 ) ? 0 : this.viewIndex + 1;
   }
   onFocus() {
-    window.__view_cycler_last = Date.now();
+    window.__view_cycler_last__ = Date.now();
   }
 
   static get styles() {

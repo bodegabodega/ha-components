@@ -14,6 +14,9 @@ export class DateAndTimeElement extends BaseElement {
     return {
     }
   }
+  constructor() {
+    super('Date and Time');
+  }
   connectedCallback() {
     this.log('Connected Callback')
     super.connectedCallback()

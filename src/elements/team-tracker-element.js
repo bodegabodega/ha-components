@@ -15,6 +15,9 @@ export class TeamTrackerElement extends BaseElement {
       spoilers: true
     }
   }
+  constructor() {
+    super('Team Tracker');
+  }
   validate() {
     this.log('Getting Matchup for Entities State');
     this._matchup = forEntitiesFromState(this.config, this.hass);

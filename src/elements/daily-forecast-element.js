@@ -14,6 +14,9 @@ export class DailyForecastElement extends BaseElement {
   static getDefaults() {
     return {}
   }
+  constructor() {
+    super('Daily Forecast');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(DailyForecastElement.getDefaults(), config);
