@@ -20,6 +20,7 @@ export class BaseElement extends LitElement {
   set config(value) {
     const was = this._config;
     this._config = flattenConfig(value, this.hass);
+    this.log('Actualized Config:', this._config)
     this.requestUpdate('config', was);
   }
   get config() {
