@@ -12,15 +12,15 @@ export default function( config, state ) {
   } else {
     const {
       user: {
-        id
+        name
       }
     } = state;
-    if(!id || (config.users.hasOwnProperty(id) && !config.users[id])) { // no user or user in config but falsey
+    if(!name || (config.users.hasOwnProperty(name) && !config.users[name])) { // no user or user in config but falsey
       return {
         visibleToUser: false,
         ...config
       };
-    } else if (!config.users[id]) { // user not in config
+    } else if (!config.users[name]) { // user not in config
       return {
         visibleToUser: false,
         ...config
@@ -29,7 +29,7 @@ export default function( config, state ) {
       return {
         visibleToUser: true,
         ...config,
-        ...config.users[id]
+        ...config.users[name]
       };
     }
   }

@@ -53,7 +53,7 @@ describe('flattenConfig', () => {
       }
     }, {
       user: {
-        id: 'two'
+        name: 'two'
       }
     })).toEqual({
       visibleToUser: false,
@@ -71,7 +71,7 @@ describe('flattenConfig', () => {
       }
     }, {
       user: {
-        id: 'one'
+        name: 'one'
       }
     })).toEqual({
       visibleToUser: false,
@@ -89,7 +89,7 @@ describe('flattenConfig', () => {
       }
     }, {
       user: {
-        id: 'one'
+        name: 'one'
       }
     })).toEqual({
       visibleToUser: true,
@@ -107,7 +107,7 @@ describe('flattenConfig', () => {
       }
     }, {
       user: {
-        id: 'one'
+        name: 'one'
       }
     })).toEqual({
       visibleToUser: false,
@@ -128,7 +128,7 @@ describe('flattenConfig', () => {
       }
     }, {
       user: {
-        id: 'one'
+        name: 'one'
       }
     })).toEqual({
       visibleToUser: true,
