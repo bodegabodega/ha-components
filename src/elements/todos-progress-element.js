@@ -5,6 +5,7 @@ import { BaseElement } from './base-element';
 import {forEntityFromState} from './../lib/todos-progress';
 import check from './../assets/check.svg?raw';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class TodosProgressElement extends BaseElement {
   static get properties() {
@@ -15,6 +16,9 @@ export class TodosProgressElement extends BaseElement {
   static getDefaults() {
     return {
     }
+  }
+  constructor() {
+    super('Todos Progress');
   }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define a sensor entity");
@@ -60,7 +64,7 @@ export class TodosProgressElement extends BaseElement {
           </div>
         </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

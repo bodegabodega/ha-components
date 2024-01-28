@@ -1,8 +1,7 @@
-import { html, css, nothing} from 'lit';
+import { html, css } from 'lit';
 import { BaseElement } from './base-element';
-import { styleMap } from 'lit-html/directives/style-map.js';
-import dayjs from 'dayjs';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class WeightAndSizeElement extends BaseElement {
   static get properties() {
@@ -14,7 +13,9 @@ export class WeightAndSizeElement extends BaseElement {
     return {
     }
   }
-
+  constructor() {
+    super('Weight and Size');
+  }
   setConfig(config) {
     if(!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(WeightAndSizeElement.getDefaults(), config);
@@ -51,7 +52,7 @@ export class WeightAndSizeElement extends BaseElement {
         </div>
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

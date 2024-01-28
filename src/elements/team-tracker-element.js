@@ -1,8 +1,9 @@
-import { html, css, nothing} from 'lit';
+import { html, css } from 'lit';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { BaseElement } from './base-element';
 import { stringified } from '../lib/utilities/has-changed';
 import { forEntitiesFromState } from '../lib/matchup';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class TeamTrackerElement extends BaseElement {
   static get properties() {
@@ -14,6 +15,9 @@ export class TeamTrackerElement extends BaseElement {
     return {
       spoilers: true
     }
+  }
+  constructor() {
+    super('Team Tracker');
   }
   validate() {
     this.log('Getting Matchup for Entities State');
@@ -55,7 +59,7 @@ export class TeamTrackerElement extends BaseElement {
         </div>
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

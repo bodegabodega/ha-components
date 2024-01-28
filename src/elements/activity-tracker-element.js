@@ -1,9 +1,11 @@
-import { html, css, nothing } from 'lit';
+import { html, css } from 'lit';
 import { BaseElement } from './base-element';
 import Gauge from 'svg-gauge';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import { stringified } from '../lib/utilities/has-changed';
+import randomEnough from '../lib/utilities/random-enough';
+import { hostDisplayNone } from '../lib/utilities/dom';
 dayjs.extend(relativeTime);
 
 export class ActivityTrackerElement extends BaseElement {
@@ -16,6 +18,9 @@ export class ActivityTrackerElement extends BaseElement {
     return {
     }
   }
+  constructor() {
+    super('Activity Tracker');
+  }
   setConfig(config) {
     if(!config.entities || config.entities.length == 0) throw new Error("You need to define at least one entity as `entities`");
     if(!this._activityItems){
@@ -26,7 +31,7 @@ export class ActivityTrackerElement extends BaseElement {
         if(!progress) throw new Error("You need to define a progress entity for each activity");
         if(!goal) throw new Error("You need to define a goal entity for each activity");
         this._activityItems.push({
-          id: (Math.random() + 1).toString(36).substring(7), // random enough
+          id: randomEnough(), // random enough
           name,
           progress,
           goal
@@ -74,7 +79,7 @@ export class ActivityTrackerElement extends BaseElement {
             `)}
           </div>
         </div>`
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

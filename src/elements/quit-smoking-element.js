@@ -2,6 +2,7 @@ import { html, css, nothing} from 'lit';
 import { BaseElement } from './base-element';
 import { forEntityFromState } from '../lib/quit-smoking-progress';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class QuitSmokingElement extends BaseElement {
   static get properties() {
@@ -13,7 +14,9 @@ export class QuitSmokingElement extends BaseElement {
     return {
     }
   }
-
+  constructor() {
+    super('Quit Smoking');
+  }
   setConfig(config) {
     if(!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(QuitSmokingElement.getDefaults(), config);
@@ -46,7 +49,7 @@ export class QuitSmokingElement extends BaseElement {
         <div class="next-achievement">${nextAchievement}</div>
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

@@ -1,6 +1,7 @@
-import { html, css, nothing} from 'lit';
+import { html, css } from 'lit';
 import { BaseElement } from './base-element';
 import dayjs from 'dayjs';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class DateAndTimeElement extends BaseElement {
   static get properties() {
@@ -13,6 +14,9 @@ export class DateAndTimeElement extends BaseElement {
   static getDefaults() {
     return {
     }
+  }
+  constructor() {
+    super('Date and Time');
   }
   connectedCallback() {
     this.log('Connected Callback')
@@ -43,7 +47,7 @@ export class DateAndTimeElement extends BaseElement {
       <div class="time">${this._time}<span class="meridian">${this._meridian}</span></div>
     </div>
     `
-    : nothing;
+    : hostDisplayNone;
   }
 
   static get styles() {

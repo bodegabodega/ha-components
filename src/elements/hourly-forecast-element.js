@@ -3,6 +3,7 @@ import { BaseElement } from './base-element';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class HourlyForecastElement extends BaseElement {
   static get properties() {
@@ -16,6 +17,9 @@ export class HourlyForecastElement extends BaseElement {
       includeSun: true
     }
   }
+  constructor() {
+    super('Hourly Forecast');
+  }
   setConfig(config) {
     if (!config.entity) throw new Error("You need to define an entity");
     this.config = Object.assign(HourlyForecastElement.getDefaults(), config);
@@ -25,7 +29,7 @@ export class HourlyForecastElement extends BaseElement {
     this._forecast = forEntityFromState(this.hass, this.config);
   }
   render() {
-    this.log('Rendering?', !!(this.forecast && this.visibleToUser));
+    this.log('Rendering?', !!(this._forecast && this.visibleToUser));
     return this._forecast && this.visibleToUser
       ? html`
       <div class="outer">
@@ -42,7 +46,7 @@ export class HourlyForecastElement extends BaseElement {
         `)}
       </div>
       `
-      : html` <div class="not-found">No forecast found.</div> `;
+      : hostDisplayNone;
   }
 
   static get styles() {
