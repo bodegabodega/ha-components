@@ -2,6 +2,7 @@ import { html, css, nothing} from 'lit';
 import { BaseElement } from './base-element';
 import { forEntityFromState } from '../lib/quit-smoking-progress';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class QuitSmokingElement extends BaseElement {
   static get properties() {
@@ -48,7 +49,7 @@ export class QuitSmokingElement extends BaseElement {
         <div class="next-achievement">${nextAchievement}</div>
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

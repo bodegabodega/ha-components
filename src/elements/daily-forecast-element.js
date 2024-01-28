@@ -4,6 +4,7 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import {forEntityFromState} from '../lib/daily-forecast';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class DailyForecastElement extends BaseElement {
   static get properties() {
@@ -51,7 +52,7 @@ export class DailyForecastElement extends BaseElement {
         `)}
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

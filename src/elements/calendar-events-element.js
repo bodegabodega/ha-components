@@ -2,6 +2,7 @@ import { html, css, nothing} from 'lit';
 import { forEntityFromState } from '../lib/calendar-events';
 import { BaseElement } from './base-element';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class CalendarEventsElement extends BaseElement {
   static get properties() {
@@ -54,7 +55,7 @@ export class CalendarEventsElement extends BaseElement {
           </div>
         </div>
       `
-    : nothing;
+    : hostDisplayNone;
   }
 
   render() {

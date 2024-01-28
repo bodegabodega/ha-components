@@ -3,6 +3,7 @@ import { BaseElement } from './base-element';
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {forEntityFromState} from './../lib/hourly-forecast';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class HourlyForecastElement extends BaseElement {
   static get properties() {
@@ -45,7 +46,7 @@ export class HourlyForecastElement extends BaseElement {
         `)}
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

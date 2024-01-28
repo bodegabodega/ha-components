@@ -1,10 +1,11 @@
-import { html, css, nothing} from 'lit';
+import { html, css } from 'lit';
 import { BaseElement } from './base-element';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import { currentConditionsForState } from '../lib/current-conditions';
 import { asAdjective } from '../lib/weather-condition';
 import { hexForTemperature } from '../lib/temperature-color';
 import { stringified } from '../lib/utilities/has-changed';
+import { hostDisplayNone } from '../lib/utilities/dom';
 
 export class CurrentConditionsElement extends BaseElement {
   static get properties() {
@@ -48,7 +49,7 @@ export class CurrentConditionsElement extends BaseElement {
         </div>
       </div>
       `
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {

@@ -1,10 +1,11 @@
-import { html, css, nothing } from 'lit';
+import { html, css } from 'lit';
 import { BaseElement } from './base-element';
 import Gauge from 'svg-gauge';
 import dayjs from 'dayjs';
 import relativeTime from "dayjs/plugin/relativeTime";
 import { stringified } from '../lib/utilities/has-changed';
 import randomEnough from '../lib/utilities/random-enough';
+import { hostDisplayNone } from '../lib/utilities/dom';
 dayjs.extend(relativeTime);
 
 export class ActivityTrackerElement extends BaseElement {
@@ -78,7 +79,7 @@ export class ActivityTrackerElement extends BaseElement {
             `)}
           </div>
         </div>`
-      : nothing;
+      : hostDisplayNone;
   }
 
   static get styles() {
