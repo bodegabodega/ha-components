@@ -34,22 +34,19 @@ export class TwoColumnFullViewport extends LitElement {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          height: 100vh;
           display: grid;
           grid-template-columns: 1fr 2fr;
         }
         .sidebar > * {
-          padding: 20px 0;
         }
         
         @media (min-width: 1024px) {
           .container {
-            height: 100vh;
-        
             display: grid;
             grid-template-columns: 1fr 2fr;
           }          
           .sidebar {
+            height: 100vh;
             display: grid;
             place-items: stretch;
           }
