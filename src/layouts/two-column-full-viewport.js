@@ -23,7 +23,7 @@ export class TwoColumnFullViewport extends LitElement {
           <div class="sidebar">
               ${sidebar.map((card) => html`${card}`)}
           </div>
-          <div class="main">
+          <div class="column">
               ${main.map((card) => html`${card}`)}
           </div>
       `
