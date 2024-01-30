@@ -17,8 +17,6 @@ body {
 
 @media (min-width: 1024px) {
   .container {
-    height: 100vh;
-  
     display: grid;
     grid-template-columns: 1fr 2fr;
   }
@@ -26,12 +24,13 @@ body {
   
   
   .sidebar {
-    /* display: grid;
+    height: 100vh;
+    display: grid;
     place-items: stretch;
-     */
-     display: flex;
+    
+     /* display: flex;
       flex-direction: column;
-     justify-content: space-around;
+     justify-content: space-around; */
   }
   
   .column {

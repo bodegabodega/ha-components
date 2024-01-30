@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<style>
+  body {
+    background-color: black;
+  }
+</style>
+</head>
+<body>
+<script type="text/javascript">
+  /**
+     * Creates and loads an image element by url.
+     * @param  {String} url
+     * @return {Promise} promise that resolves to an image element or
+     *                   fails to an Error.
+     */
+     function request_image(url) {
+        return new Promise(function(resolve, reject) {
+            var img = new Image();
+            img.onload = function() { resolve(img); };
+            img.onerror = function() { reject(url); };
+            img.src = url + '?random-no-cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+        });
+    }
+
+    /**
+     * Pings a url.
+     * @param  {String} url
+     * @param  {Number} multiplier - optional, factor to adjust the ping by.  0.3 works well for HTTP servers.
+     * @return {Promise} promise that resolves to a ping (ms, float).
+     */
+    function ping(url, multiplier) {
+        return new Promise(function(resolve, reject) {
+            var start = (new Date()).getTime();
+            var response = function(wat) { 
+                console.log(wat)
+                var delta = ((new Date()).getTime() - start);
+                delta *= (multiplier || 1);
+                resolve(delta); 
+            };
+            try {
+              request_image(url)            
+            } catch (error) {
+              console.log(error)
+            }
+            
+            // Set a timeout for max-pings, 5s.
+            setTimeout(function() { reject(Error('Timeout')); }, 5000);
+        });
+    }
+    // (async () => {
+    //   console.log('doi it')
+    //   try {
+    //     console.log('doing')
+    //     let r = await request_image('http://homeassistant.local:8123')
+    //     console.log(r)
+    //   } catch (error) {
+    //     console.log('error')
+    //     console.log(error)
+    //   }
+    // })();
+    function trackError(e) {
+      console.log('trackerror')
+        var ie = window.event || {};
+        var errMsg = e.message || ie.errorMessage || "404 error on " + window.location;
+        var errSrc = (e.filename || ie.errorUrl) + ': ' + (e.lineno || ie.errorLine);
+        // mailme([errMsg, errSrc]);
+    }
+
+    // Triggering an error in the console:
+    // You have to use something like setTimeout(function() { notThere(); }, 0);
+    window.addEventListener('error', trackError, true);
+
+
+    var img = new Image();
+    // img.onload = function() { console.log('onload') };
+    // img.onerror = function(err) { console.log('onerror'); console.log(err) };
+    img.src = 'http://homeassistant.locale:8123?random-no-cache=' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
+</script>
+</body>
+</html>
