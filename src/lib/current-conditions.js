@@ -1,10 +1,10 @@
 const parsers = new Map([
   ['default', state => ({
-    description: state.state,
+    description: state.attributes.description,
     current: state.attributes.temperature,
-    low: state.attributes.forecast[0].templow,
-    high: state.attributes.forecast[0].temperature,
-    unit: state.attributes.temperature_unit
+    low: state.attributes.low,
+    high: state.attributes.high,
+    unit: state.attributes.unit
   })]
 ])
 
