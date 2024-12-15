@@ -9,7 +9,7 @@ const isAllDay = (date) => {
   return dayRegex.test(date);
 }
 
-export const forEntityFromState = (hass, config) => {
+export const forEntityFromState = (hass, config, numberOfDays = undefined) => {
   if(!hass || !config || !config.entity || !hass.states || !hass.states[config.entity]) return null;
 
   const events = [];
@@ -37,6 +37,7 @@ export const forEntityFromState = (hass, config) => {
           event.duration = event.durationInMinutes;
           event.durationUnit = 'MIN';
         }
+        event.startTimeShort = event.startDateTime.minute() == 0 ? event.startDateTime.format('hA').slice(0, -1) : event.startDateTime.format('h:mmA').slice(0, -1);
       } else {
         event.duration = event.endDateTime.diff(event.startDateTime, 'day');
         event.durationUnit = event.duration == 1 ? 'DAY' : 'DAYS';
@@ -72,5 +73,26 @@ export const forEntityFromState = (hass, config) => {
     }
     days[dayIntoFuture].events.push(event);
   })
+  if(numberOfDays) {
+    let daysOfWeek = [];
+    for (let i = 0; i < numberOfDays; i++) {
+      const day = days[i];
+      const date = today.add(i, 'day');
+      if(!day) {
+        days[i] = {
+          label: date.format('dddd'),
+          dayNumber: date.format('D'),
+          events: []
+        }
+      } else {
+        day.dayNumber = day.events[0].startDateTime.format('D');
+      }
+      daysOfWeek.push(date.format('ddd'));
+    }
+    return {
+      daysOfWeek: daysOfWeek.slice(0, 7),
+      days
+    }
+  }
   return days;
 }
