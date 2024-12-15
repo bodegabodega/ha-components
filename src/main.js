@@ -4,6 +4,7 @@ import { DailyForecastElement } from "./elements/daily-forecast-element";
 import { DateAndTimeElement } from "./elements/date-and-time-element";
 import { HourlyForecastElement } from "./elements/hourly-forecast-element";
 import { TwoColumnFullViewport } from "./layouts/two-column-full-viewport";
+import { ThreeColumnFullViewport } from "./layouts/three-column-full-viewport";
 import { TeamTrackerElement } from "./elements/team-tracker-element";
 import { WeightAndSizeElement } from "./elements/weight-and-size-element";
 import { ActivityTrackerElement } from "./elements/activity-tracker-element";
