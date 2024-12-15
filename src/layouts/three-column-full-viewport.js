@@ -30,13 +30,13 @@ export class ThreeColumnFullViewport extends LitElement {
       });
       return html`
           <div class="sidebar">
-              ${sidebar.map((card) => html`${card}`)}
+              ${containers.sidebar.map((card) => html`${card}`)}
           </div>
           <div class="column">
-              ${main.map((card) => html`${card}`)}
+              ${containers.main.map((card) => html`${card}`)}
           </div>
           <div class="column">
-              ${endbar.map((card) => html`${card}`)}
+              ${containers.endbar.map((card) => html`${card}`)}
           </div>
       `
   }
