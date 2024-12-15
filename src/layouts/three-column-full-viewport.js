@@ -76,4 +76,4 @@ export class ThreeColumnFullViewport extends LitElement {
   }
 }
 
-customElements.define("two-column-full-viewport", ThreeColumnFullViewport);
+customElements.define("three-column-full-viewport", ThreeColumnFullViewport);
