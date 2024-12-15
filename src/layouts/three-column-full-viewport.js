@@ -43,11 +43,12 @@ export class ThreeColumnFullViewport extends LitElement {
   static get styles() {
       return css`
         :host {
-          margin: 0;
+          margin: 1%;
           padding: 0;
           box-sizing: border-box;
           display: grid;
-          grid-template-columns: 1fr 2fr;
+          grid-template-columns: 1fr 2fr 1fr;
+          column-gap: 1%;
         }
         .sidebar > * {
         }
@@ -55,7 +56,7 @@ export class ThreeColumnFullViewport extends LitElement {
         @media (min-width: 1024px) {
           .container {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr 2fr 1fr;
           }          
           .sidebar {
             height: 100vh;
