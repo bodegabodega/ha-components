@@ -14,7 +14,9 @@ export class CurrentConditionsElement extends BaseElement {
     }
   }
   static getDefaults() {
-    return {}
+    return {
+      size: "medium"
+    }
   }
   constructor() {
     super('Calendar Events');
@@ -28,11 +30,11 @@ export class CurrentConditionsElement extends BaseElement {
   }
   render() {
     const { current, low, high, unit, description } = this._conditions || {};
-    return this._conditions && this.visibleToUser
+    return this.config && this._conditions && this.visibleToUser
       ? html`
-      <div class="outer">
+      <div class="outer ${this.config.size}">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree"></span>
+          <span class="number">${current}</span><span class="degree">${this.config.unit || unit}</span>
         </div>
         <div class="condition">${asAdjective(description)}</div>
         <div class="lowhigh">
@@ -74,25 +76,17 @@ export class CurrentConditionsElement extends BaseElement {
       }
       .temperature .number {
         color: var(--color-text-primary);
-        font-size: 96px;
 
         display: inline-block;
         vertical-align: middle;
-        line-height: 84px;
       }
       .degree {
         color: var(--color-text-tertiary);
+        position: absolute;
 
         font-weight: 400;
-        font-size: 54px;
-        vertical-align: baseline;
-
-        display: inline-block;
-        line-height: normal;
       }
       .condition {
-        font-size: 28px;
-        line-height: 36px;
         color: var(--color-text-primary);
         text-align: center;
       }
@@ -121,6 +115,28 @@ export class CurrentConditionsElement extends BaseElement {
         height: 5px;
         width: 5px;
         border-radius: 10px;
+      }
+      .outer.medium .temperature .number {
+        font-size: 96px;
+        line-height: 84px;
+      }
+      .outer.medium .degree {
+        font-size: 54px;
+      }
+      .outer.medium .condition {
+        font-size: 28px;
+        line-height: 36px;
+      }
+      .outer.large .temperature .number {
+        font-size: 124px;
+        line-height: 108px;
+      }
+      .outer.large .degree {
+        font-size: 72px;
+      }
+      .outer.large .condition {
+        font-size: 36px;
+        line-height: 42px;
       }
       .not-found {
         color: red;
