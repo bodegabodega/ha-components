@@ -13,6 +13,8 @@ export class DateAndTimeElement extends BaseElement {
   }
   static getDefaults() {
     return {
+      format: "dddd, MMMM D|h:mm|a",
+      size: "medium"
     }
   }
   constructor() {
@@ -32,17 +34,19 @@ export class DateAndTimeElement extends BaseElement {
   }
   updateState() {
     this.log('Updating State')
-    const [d, t, m] = dayjs().format('dddd, MMMM D|h:mm|a').split('|');
+    if (!this.config) return
+    const [d, t, m] = dayjs().format(this.config.format).split('|');
     this._date = d;
     this._time = t;
     this._meridian = m;
   }
   setConfig(config) {
     this.config = Object.assign(DateAndTimeElement.getDefaults(), config);
+    this.updateState();
   }
   render() {
-    return this.visibleToUser ? html`
-    <div class="outer">
+    return this.config && this.visibleToUser ? html`
+    <div class="outer ${this.config.size}">
       <div class="date">${this._date}</div>
       <div class="time">${this._time}<span class="meridian">${this._meridian}</span></div>
     </div>
@@ -64,13 +68,10 @@ export class DateAndTimeElement extends BaseElement {
       }
       .date {
         color: var(--color-text-secondary);
-        font-size: 12px;
         font-weight: 700;
         text-transform: uppercase;
       }
       .time {
-        font-size: 48px;
-        line-height: 40px;
         color: var(--color-text-primary);
 
         display: inline-block;
@@ -81,6 +82,34 @@ export class DateAndTimeElement extends BaseElement {
         text-transform: uppercase;
 
         display: inline-block;
+      }
+      .outer.small .date {
+        font-size: 10px;
+      }
+      .outer.small .time {
+        font-size: 40px;
+        line-height: 36px;
+      }
+      .outer.medium .date {
+        font-size: 12px;
+      }
+      .outer.medium .time {
+        font-size: 48px;
+        line-height: 40px;
+      }
+      .outer.large .date {
+        font-size: 16px;
+      }
+      .outer.large .time {
+        font-size: 62px;
+        line-height: 48px;
+      }
+      .outer.xlarge .date {
+        font-size: 24px;
+      }
+      .outer.xlarge .time {
+        font-size: 84px;
+        line-height: 64px;
       }
     `];
   }

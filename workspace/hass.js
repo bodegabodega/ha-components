@@ -25,6 +25,41 @@ window.hass = {
     ]
   },
   "states": {
+    "sensor.garden_street_weather_comparison": {
+      "entity_id": "sensor.garden_street_weather_comparison",
+      "state": "2025-01-07T13:54:58.150520-05:00",
+      "attributes": {
+          "role": "assistant",
+          "content": "Today is mostly sunny with no precipitation, while yesterday was snowy with a high chance of precipitation.",
+          "friendly_name": "Garden Street Weather Comparison"
+      },
+      "context": {
+          "id": "01JH11XF36KCKXH68592YJAABV",
+          "parent_id": null,
+          "user_id": null
+      },
+      "last_changed": "2025-01-07T18:54:58.150Z",
+      "last_updated": "2025-01-07T18:54:58.150Z"
+    },
+    "sensor.tio_garden_st_current_weather": {
+      "entity_id": "sensor.tio_garden_st_current_weather",
+      "state": "2025-01-07T16:35:00.211094-05:00",
+      "attributes": {
+          "description": "sunny",
+          "temperature": 29,
+          "low": 20,
+          "high": 31,
+          "unit": "°F",
+          "friendly_name": "TIO Garden St Current Weather"
+      },
+      "context": {
+          "id": "01JH1B2G3MRYWD9VF19Y77B3YG",
+          "parent_id": null,
+          "user_id": null
+      },
+      "last_changed": "2025-01-07T21:35:00.212Z",
+      "last_updated": "2025-01-07T21:35:00.212Z"
+    },
     "my.step_count": {
       "entity_id": "my.step_count",
       "state": "4819",
