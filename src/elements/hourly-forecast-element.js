@@ -14,7 +14,8 @@ export class HourlyForecastElement extends BaseElement {
   static getDefaults() {
     return {
       numPredictions: 7,
-      includeSun: true
+      includeSun: true,
+      size: 'medium'
     }
   }
   constructor() {
@@ -30,9 +31,9 @@ export class HourlyForecastElement extends BaseElement {
   }
   render() {
     this.log('Rendering?', !!(this._forecast && this.visibleToUser));
-    return this._forecast && this.visibleToUser
+    return this.config && this._forecast && this.visibleToUser
       ? html`
-      <div class="outer">
+      <div class="outer ${this.config.size}">
         ${this._forecast.map(i => html`
         <div class="prediction">
           <div class="hour">${unsafeHTML(i.hour)}</div>
@@ -57,8 +58,6 @@ export class HourlyForecastElement extends BaseElement {
         display: flex;
         flex-direction: column;
         justify-content: center;
-
-        font-size: 12px;
       }
       .outer {
         display: flex;
@@ -67,10 +66,30 @@ export class HourlyForecastElement extends BaseElement {
 
         margin: 10px 0;
       }
+      .outer.small {
+        font-size: 10px;
+      }
+      .outer.medium {
+        font-size: 12px;
+      }
+      .outer.large {
+        font-size: 16px;
+      }
+      .outer.xlarge {
+        font-size: 20px;
+      }
       .feather {
         stroke: var(--color-text-primary);
         height: 16px;
         width: 16px;
+      }
+      .outer.large .feather {
+        height: 20px;
+        width: 20px;
+      }
+      .outer.xlarge .feather {
+        height: 24px;
+        width: 24px;
       }
       .prediction {
         display: flex;
@@ -79,6 +98,12 @@ export class HourlyForecastElement extends BaseElement {
         text-align: center;
         font-weight: 700;
         color: var(--color-text-secondary);
+      }
+      .outer.large .prediction,
+      .outer.xlarge .prediction,
+      .outer.large .temperature,
+      .outer.xlarge .temperature {
+        font-weight: 500;
       }
       .icon {
         padding-bottom: 5px;
@@ -93,7 +118,16 @@ export class HourlyForecastElement extends BaseElement {
       }
       .precipitation-probability {
         color: var(--color-blue);
+      }
+      .outer.small .precipitation-probability,
+      .outer.medium .precipitation-probability {
         font-size: 10px;
+      }
+      .outer.large .precipitation-probability {
+        font-size: 14px;
+      }
+      .outer.xlarge .precipitation-probability {
+        font-size: 18px;
       }
       .not-found {
         text-align: center;

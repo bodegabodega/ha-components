@@ -13,7 +13,9 @@ export class DailyForecastElement extends BaseElement {
     }
   }
   static getDefaults() {
-    return {}
+    return {
+      size: "large"
+    }
   }
   constructor() {
     super('Daily Forecast');
@@ -28,9 +30,9 @@ export class DailyForecastElement extends BaseElement {
   }
   render() {
     this.log('Rendering?', !!(this._forecast && this.visibleToUser));
-    return this._forecast && this.visibleToUser
+    return this.config && this._forecast && this.visibleToUser
       ? html`
-      <div class="outer">
+      <div class="outer ${this.config.size}">
         ${this._forecast.map(i => html`
           <div class="prediction">
             <div class="day">${i.day}</div>
@@ -64,7 +66,6 @@ export class DailyForecastElement extends BaseElement {
         flex-direction: column;
         justify-content: center;
 
-        font-size: 12px;
         font-weight: 400;
       }
       .outer {
@@ -73,10 +74,32 @@ export class DailyForecastElement extends BaseElement {
         justify-content: space-evenly;
         margin: 14px 0;
       }
+      .outer.small {
+        font-size: 10px;
+        font-weight: 700;
+      }
+      .outer.medium {
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .outer.large {
+        font-size: 16px;
+      }
+      .outer.xlarge {
+        font-size: 20px;
+      }
       .feather {
         stroke: var(--color-text-primary);
         height: 16px;
         width: 16px;
+      }
+      .outer.large .feather {
+        height: 20px;
+        width: 20px;
+      }
+      .outer.xlarge .feather {
+        height: 24px;
+        width: 24px;
       }
       .prediction {
         display: flex;
@@ -85,7 +108,6 @@ export class DailyForecastElement extends BaseElement {
 
         color: var(--color-text-secondary);
         text-align: center;
-        font-weight: 700;
       }
       .day {
         text-align: center;
@@ -113,6 +135,10 @@ export class DailyForecastElement extends BaseElement {
       .precipitation-probability {
         color: var(--color-blue);
         font-size: 10px;
+      }
+      outer.large .precipitation-probability,
+      outer.xlarge .precipitation-probability {
+        font-size: 14px;
       }
       .not-found {
         font-size: 24px;
