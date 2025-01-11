@@ -11,3 +11,4 @@ import { ActivityTrackerElement } from "./elements/activity-tracker-element";
 import { QuitSmokingElement } from "./elements/quit-smoking-element";
 import { TodosProgressElement } from "./elements/todos-progress-element";
 import { ViewCyclerElement } from "./elements/view-cycler-element";
+import { TextLabelElement } from "./elements/text-label-element";
