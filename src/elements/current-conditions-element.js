@@ -34,7 +34,11 @@ export class CurrentConditionsElement extends BaseElement {
       ? html`
       <div class="outer ${this.config.size}">
         <div class="temperature">
-          <span class="number">${current}</span><span class="degree">${this.config.unit || unit}</span>
+          <span class="number" style=${styleMap({
+              background: `linear-gradient(105deg, ${hexForTemperature(low)}, ${hexForTemperature(high)})`,
+              '-webkit-background-clip': 'text',
+              '-webkit-text-fill-color': 'transparent'
+            })}>${current}</span><span class="degree">${this.config.unit || unit}</span>
         </div>
         <div class="condition">${asAdjective(description)}</div>
         <div class="lowhigh">
