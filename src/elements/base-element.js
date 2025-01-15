@@ -52,6 +52,8 @@ export class BaseElement extends LitElement {
 
   static styles = css`
     :host {
+      font-family: 'Montserrat', sans-serif;
+
       --color-bg: hsl(0, 0%, 7%);
       --color-bg-secondary: hsl(0, 0%, 10%);
       --color-fg: hsl(0, 0%, 98%);
