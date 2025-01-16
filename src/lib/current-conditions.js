@@ -4,7 +4,8 @@ const parsers = new Map([
     current: state.attributes.temperature,
     low: state.attributes.low,
     high: state.attributes.high,
-    unit: state.attributes.unit
+    unit: state.attributes.unit,
+    feelsLike: Math.round(state.attributes.feels_like)
   })]
 ])
 

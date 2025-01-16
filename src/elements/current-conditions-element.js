@@ -29,7 +29,7 @@ export class CurrentConditionsElement extends BaseElement {
     this._conditions = currentConditionsForState(this.hass.states[this.config.entity]);
   }
   render() {
-    const { current, low, high, unit, description } = this._conditions || {};
+    const { current, low, high, unit, description, feelsLike } = this._conditions || {};
     return this.config && this._conditions && this.visibleToUser
       ? html`
       <div class="outer ${this.config.size}">
@@ -41,6 +41,7 @@ export class CurrentConditionsElement extends BaseElement {
             })}>${current}</span><span class="degree">${this.config.unit || unit}</span>
         </div>
         <div class="condition">${asAdjective(description)}</div>
+        <div class="feels-like">Feels like ${feelsLike}${this.config.unit || unit}</div>
         <div class="lowhigh">
           <div>${low}${this.config.unit || unit}</div>
           <div class="gauge">
@@ -94,13 +95,17 @@ export class CurrentConditionsElement extends BaseElement {
         color: var(--color-text-primary);
         text-align: center;
       }
+      .feels-like {
+        color: var(--color-text-secondary);
+        text-transform: uppercase;
+      }
       .lowhigh {
         color: var(--color-text-secondary);
 
         display: flex;
         justify-content: center;
         gap: 8px;
-        margin-top: 8px;
+        margin-top: 6px;
       }
       .gauge {
         width: 100px;
@@ -131,6 +136,10 @@ export class CurrentConditionsElement extends BaseElement {
         font-size: 28px;
         line-height: 36px;
       }
+      .outer.medium .feels-like {
+        font-size: 22px;
+        line-height: 30px;
+      }
       .outer.large .temperature .number {
         font-size: 124px;
         line-height: 108px;
@@ -141,6 +150,10 @@ export class CurrentConditionsElement extends BaseElement {
       .outer.large .condition {
         font-size: 36px;
         line-height: 42px;
+      }
+      .outer.large .feels-like {
+        font-size: 28px;
+        line-height: 36px;
       }
       .not-found {
         color: red;

@@ -20,7 +20,6 @@ export class TwoColumnFullViewport extends LitElement {
           container.push(this.cards[index]);
       });
       return html`
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap">
           <div class="sidebar">
               ${sidebar.map((card) => html`${card}`)}
           </div>

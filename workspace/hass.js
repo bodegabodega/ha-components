@@ -50,6 +50,7 @@ window.hass = {
           "low": 20,
           "high": 31,
           "unit": "°F",
+          "feels_like": 29,
           "friendly_name": "TIO Garden St Current Weather"
       },
       "context": {
