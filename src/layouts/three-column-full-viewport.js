@@ -18,8 +18,8 @@ export class ThreeColumnFullViewport extends BaseElement {
   validate() {
     const entityName = this.config.backgroundImageEntityName;
     const states = this.hass.states;
-    if(entityName && states[entityName]) {
-      this._backgroundImageUrl = states[entityName];
+    if(entityName && states[entityName] && states[entityName].state) {
+      this._backgroundImageUrl = states[entityName].state;
     }
   }
   render() {
