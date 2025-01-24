@@ -1,4 +1,4 @@
-import { html, css } from "lit";
+import { html, css, nothing } from "lit";
 import { BaseElement } from './../elements/base-element';
 
 export class ThreeColumnFullViewport extends BaseElement {
@@ -41,7 +41,7 @@ export class ThreeColumnFullViewport extends BaseElement {
         }
       }
     });
-    const backgroundImage = this._backgroundImageUrl ? `<img class="background-image" src="${this._backgroundImageUrl}" />` : "";
+    const backgroundImage = this._backgroundImageUrl ? html`<img class="background-image" src="${this._backgroundImageUrl}" />` : nothing;
     return html`
       ${backgroundImage}
       <div class="sidebar">
