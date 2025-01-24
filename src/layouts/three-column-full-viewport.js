@@ -1,8 +1,13 @@
 import { LitElement, html, css } from "lit";
 
 export class ThreeColumnFullViewport extends LitElement {
+  static getDefaults() {
+    return {
+      "mode": ""
+    }
+  }
   setConfig(config) {
-      this._config = config;
+    this.config = Object.assign(ThreeColumnFullViewport.getDefaults(), config);
   }
   static get properties() {
       return {
@@ -10,7 +15,7 @@ export class ThreeColumnFullViewport extends LitElement {
       };
   }
   render() {
-      if(!this.cards || !this._config) {
+      if(!this.cards || !this.config) {
           return html``;
       }
       const containers = {
@@ -18,7 +23,7 @@ export class ThreeColumnFullViewport extends LitElement {
         main: [],
         endbar: []
       }
-      this._config.cards.forEach((card, index) => {
+      this.config.cards.forEach((card, index) => {
         if (card.view_layout) {
           const container = containers[card.view_layout.placement];
           if (container) {
@@ -29,6 +34,7 @@ export class ThreeColumnFullViewport extends LitElement {
         }
       });
       return html`
+        <div class="${this.config.mode}">
           <div class="sidebar">
               ${containers.sidebar.map((card) => html`${card}`)}
           </div>
@@ -38,10 +44,22 @@ export class ThreeColumnFullViewport extends LitElement {
           <div class="column">
               ${containers.endbar.map((card) => html`${card}`)}
           </div>
+        </div>
       `
   }
   static get styles() {
       return css`
+        :host {
+          --color-bg: hsl(0, 0%, 98%);
+        }
+        @media (prefers-color-scheme: dark) {
+          :host {
+            --color-bg: hsl(0, 0%, 7%);
+          }
+        }
+        :host .dark {
+          --color-bg: hsl(0, 0%, 7%);
+        }
         :host {
           margin: 1%;
           padding: 0;
@@ -49,6 +67,8 @@ export class ThreeColumnFullViewport extends LitElement {
           display: grid;
           grid-template-columns: 1fr 2fr 1fr;
           column-gap: 1%;
+
+          background-color: var(--color-bg);
         }
         .sidebar > * {
         }
