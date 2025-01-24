@@ -1,44 +1,59 @@
-import { LitElement, html, css } from "lit";
+import { html, css } from "lit";
+import { BaseElement } from './../elements/base-element';
 
-export class ThreeColumnFullViewport extends LitElement {
-  setConfig(config) {
-      this._config = config;
-  }
+export class ThreeColumnFullViewport extends BaseElement {
   static get properties() {
       return {
-          cards: {type: Array, attribute: false}
+          _cards: {type: Array, attribute: false},
+          _backgroundImageUrl: {type: String, state: true}
       };
   }
+  static getDefaults() {
+    return {
+    }
+  }
+  setConfig(config) {
+    this.config = Object.assign(ThreeColumnFullViewport.getDefaults(), config);
+  }
+  validate() {
+    const entityName = this.config.backgroundImageEntityName;
+    const states = this.hass.states;
+    if(entityName && states[entityName]) {
+      this._backgroundImageUrl = states[entityName];
+    }
+  }
   render() {
-      if(!this.cards || !this._config) {
-          return html``;
-      }
-      const containers = {
-        sidebar: [],
-        main: [],
-        endbar: []
-      }
-      this._config.cards.forEach((card, index) => {
-        if (card.view_layout) {
-          const container = containers[card.view_layout.placement];
-          if (container) {
-            container.push(this.cards[index]);
-          } else {
-            console.error(`Invalid placement ${card.view_layout.placement}`);
-          }
+    if(!this._cards || !this.config) {
+        return html``;
+    }
+    const containers = {
+      sidebar: [],
+      main: [],
+      endbar: []
+    }
+    this.config._cards.forEach((card, index) => {
+      if (card.view_layout) {
+        const container = containers[card.view_layout.placement];
+        if (container) {
+          container.push(this._cards[index]);
+        } else {
+          console.error(`Invalid placement ${card.view_layout.placement}`);
         }
-      });
-      return html`
-          <div class="sidebar">
-              ${containers.sidebar.map((card) => html`${card}`)}
-          </div>
-          <div class="column">
-              ${containers.main.map((card) => html`${card}`)}
-          </div>
-          <div class="column">
-              ${containers.endbar.map((card) => html`${card}`)}
-          </div>
-      `
+      }
+    });
+    const backgroundImage = this._backgroundImageUrl ? `<img class="background-image" src="${this._backgroundImageUrl}" />` : "";
+    return html`
+      ${backgroundImage}
+      <div class="sidebar">
+          ${containers.sidebar.map((card) => html`${card}`)}
+      </div>
+      <div class="column">
+          ${containers.main.map((card) => html`${card}`)}
+      </div>
+      <div class="column">
+          ${containers.endbar.map((card) => html`${card}`)}
+      </div>
+    `
   }
   static get styles() {
       return css`
@@ -52,7 +67,15 @@ export class ThreeColumnFullViewport extends LitElement {
         }
         .sidebar > * {
         }
-        
+        .background-image {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          z-index: -1;
+          object-fit: cover;
+        }
         @media (min-width: 1024px) {
           .container {
             display: grid;
