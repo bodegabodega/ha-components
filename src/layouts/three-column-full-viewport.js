@@ -4,7 +4,7 @@ import { BaseElement } from './../elements/base-element';
 export class ThreeColumnFullViewport extends BaseElement {
   static get properties() {
       return {
-          _cards: {type: Array, attribute: false},
+          cards: {type: Array, attribute: false},
           _backgroundImageUrl: {type: String, state: true}
       };
   }
@@ -23,7 +23,7 @@ export class ThreeColumnFullViewport extends BaseElement {
     }
   }
   render() {
-    if(!this._cards || !this.config) {
+    if(!this.cards || !this.config) {
         return html``;
     }
     const containers = {
@@ -31,11 +31,11 @@ export class ThreeColumnFullViewport extends BaseElement {
       main: [],
       endbar: []
     }
-    this.config._cards.forEach((card, index) => {
+    this.config.cards.forEach((card, index) => {
       if (card.view_layout) {
         const container = containers[card.view_layout.placement];
         if (container) {
-          container.push(this._cards[index]);
+          container.push(this.cards[index]);
         } else {
           console.error(`Invalid placement ${card.view_layout.placement}`);
         }
