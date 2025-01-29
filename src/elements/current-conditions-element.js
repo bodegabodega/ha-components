@@ -15,7 +15,8 @@ export class CurrentConditionsElement extends BaseElement {
   }
   static getDefaults() {
     return {
-      size: "medium"
+      size: "medium",
+      mode: ""
     }
   }
   constructor() {
@@ -32,7 +33,7 @@ export class CurrentConditionsElement extends BaseElement {
     const { current, low, high, unit, description, feelsLike } = this._conditions || {};
     return this.config && this._conditions && this.visibleToUser
       ? html`
-      <div class="outer ${this.config.size}">
+      <div class="outer ${this.config.size} ${this.config.mode}">
         <div class="temperature">
           <span class="number" style=${styleMap({
               background: `linear-gradient(105deg, ${hexForTemperature(low)}, ${hexForTemperature(high)})`,
@@ -81,12 +82,14 @@ export class CurrentConditionsElement extends BaseElement {
       }
       .temperature .number {
         color: var(--color-text-primary);
+        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
 
         display: inline-block;
         vertical-align: middle;
       }
       .degree {
         color: var(--color-text-tertiary);
+        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
         position: absolute;
 
         font-weight: 400;

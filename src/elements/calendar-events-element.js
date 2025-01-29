@@ -12,6 +12,7 @@ export class CalendarEventsElement extends BaseElement {
   }
   static getDefaults() {
     return {
+      "mode": ""
     }
   }
   constructor() {
@@ -27,7 +28,7 @@ export class CalendarEventsElement extends BaseElement {
   getEventList(label, events) {
     return events && events.length > 0
     ? html`
-      <div class="event-list-container">
+      <div class="event-list-container ${this.config.mode}">
         <h3>${label}</h3>
           <div class="event-list">
           ${events.map(event => html`

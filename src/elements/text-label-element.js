@@ -15,7 +15,8 @@ export class TextLabelElement extends BaseElement {
   }
   static getDefaults() {
     return {
-      size: "medium"
+      size: "medium",
+      mode: ""
     }
   }
   constructor() {
@@ -33,7 +34,7 @@ export class TextLabelElement extends BaseElement {
   render() {
     return this.config && this.visibleToUser
       ? html`
-      <div class="outer ${this.config.size}">
+      <div class="outer ${this.config.size} ${this.config.mode}">
         ${this._text}
       </div>
       `

@@ -14,7 +14,8 @@ export class DateAndTimeElement extends BaseElement {
   static getDefaults() {
     return {
       format: "dddd, MMMM D|h:mm|a",
-      size: "medium"
+      size: "medium",
+      mode: ""
     }
   }
   constructor() {
@@ -46,7 +47,7 @@ export class DateAndTimeElement extends BaseElement {
   }
   render() {
     return this.config && this.visibleToUser ? html`
-    <div class="outer ${this.config.size}">
+    <div class="outer ${this.config.size} ${this.config.mode}">
       <div class="date">${this._date}</div>
       <div class="time">${this._time}<span class="meridian">${this._meridian}</span></div>
     </div>
