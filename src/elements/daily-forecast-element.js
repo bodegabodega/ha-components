@@ -14,7 +14,8 @@ export class DailyForecastElement extends BaseElement {
   }
   static getDefaults() {
     return {
-      size: "large"
+      size: "large",
+      mode: ""
     }
   }
   constructor() {
@@ -32,7 +33,7 @@ export class DailyForecastElement extends BaseElement {
     this.log('Rendering?', !!(this._forecast && this.visibleToUser));
     return this.config && this._forecast && this.visibleToUser
       ? html`
-      <div class="outer ${this.config.size}">
+      <div class="outer ${this.config.size} ${this.config.mode}">
         ${this._forecast.map(i => html`
           <div class="prediction">
             <div class="day">${i.day}</div>

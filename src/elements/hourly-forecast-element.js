@@ -15,7 +15,8 @@ export class HourlyForecastElement extends BaseElement {
     return {
       numPredictions: 7,
       includeSun: true,
-      size: 'medium'
+      size: 'medium',
+      mode: ''
     }
   }
   constructor() {
@@ -33,7 +34,7 @@ export class HourlyForecastElement extends BaseElement {
     this.log('Rendering?', !!(this._forecast && this.visibleToUser));
     return this.config && this._forecast && this.visibleToUser
       ? html`
-      <div class="outer ${this.config.size}">
+      <div class="outer ${this.config.size} ${this.config.mode}">
         ${this._forecast.map(i => html`
         <div class="prediction">
           <div class="hour">${unsafeHTML(i.hour)}</div>
