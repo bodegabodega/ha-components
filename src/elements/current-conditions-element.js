@@ -82,15 +82,14 @@ export class CurrentConditionsElement extends BaseElement {
       }
       .temperature .number {
         color: var(--color-text-primary);
-        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+        filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.5));
 
         display: inline-block;
         vertical-align: middle;
+        padding-left: 20px;
       }
       .degree {
         color: var(--color-text-tertiary);
-        filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
-        position: absolute;
 
         font-weight: 400;
       }

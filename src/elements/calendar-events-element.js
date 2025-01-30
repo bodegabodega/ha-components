@@ -94,6 +94,7 @@ export class CalendarEventsElement extends BaseElement {
         margin-bottom: 10px;
 
         background-color: var(--color-glass);
+        backdrop-filter: blur(8px);
 
         border-radius: 8px;
       }
