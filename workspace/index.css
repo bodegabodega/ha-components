@@ -59,10 +59,10 @@ body {
 
 @media (prefers-color-scheme: dark) {
   .sidebar {
-    background-color: hsl(0, 0%, 2%);;
+    background-color: hsl(0, 0%, 2%);
   }
 
   .column {
-    background-color: hsl(0, 0%, 4%);;
+    background-color: hsl(0, 0%, 4%);
   }
 }
