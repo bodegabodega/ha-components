@@ -1,4 +1,5 @@
 import { CalendarEventsElement } from "./elements/calendar-events-element";
+import { TodayAndTomorrowElement } from "./elements/today-and-tomorrow-element";
 import { CurrentConditionsElement } from "./elements/current-conditions-element";
 import { DailyForecastElement } from "./elements/daily-forecast-element";
 import { DateAndTimeElement } from "./elements/date-and-time-element";
