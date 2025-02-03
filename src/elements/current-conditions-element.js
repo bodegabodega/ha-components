@@ -157,6 +157,28 @@ export class CurrentConditionsElement extends BaseElement {
         font-size: 28px;
         line-height: 36px;
       }
+      .outer.xlarge .temperature .number {
+        font-size: 164px;
+        line-height: 132px;
+      }
+      .outer.xlarge .degree {
+        font-size: 86px;
+      }
+      .outer.xlarge .condition {
+        font-size: 48px;
+        line-height: 58px;
+      }
+      .outer.xlarge .feels-like {
+        font-size: 36px;
+        line-height: 36px;
+      }
+      .outer.xlarge .lowhigh {
+        font-size: 24px;
+      }
+
+      .outer.xlarge .gauge .point {
+        top: 33%;
+      }
       .not-found {
         color: red;
       }
