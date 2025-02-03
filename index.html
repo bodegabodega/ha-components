@@ -6,6 +6,7 @@
     <title>Elements</title>
     <link rel="stylesheet" href="./workspace/index.css" />
     <script type="module" src="/src/elements/calendar-events-element.js"></script>
+    <script type="module" src="/src/elements/today-and-tomorrow-element.js"></script>
     <script type="module" src="/src/elements/daily-forecast-element.js"></script>
     <script type="module" src="/src/elements/hourly-forecast-element.js"></script>
     <script type="module" src="/src/elements/current-conditions-element.js"></script>
@@ -28,7 +29,7 @@
         <!--view-cycler class="ha-component" config='{"debug": true, "delay": 10, "users": {"Nikolai": null}}'></view-cycler-->
         <date-and-time class="ha-component" config='{"debug": false, "entity": "none", "size": "large"}'></date-and-time>
         <!--weight-and-size class="ha-component" config='{"debug": true, "entity": "sensor.weight_and_size_nikolai"}'></weight-and-size-->
-        <current-conditions class="ha-component" config='{"debug": false, "entity": "sensor.tio_garden_st_current_weather", "unit": "°", "size": "medium"}'></current-conditions>
+        <current-conditions class="ha-component" config='{"debug": false, "entity": "sensor.tio_garden_st_current_weather", "unit": "°", "size": "xlarge"}'></current-conditions>
         <text-label class="ha-component" config='{"debug": true, "entity": "sensor.garden_street_weather_comparison", "attribute": "content", "size": "large"}'></text-label>
         <!--activity-tracker class="ha-component" config='{"debug": false, "entities":[{"name":"Exercise","progress":"my.exercise_minutes","goal":"input_number.nikolai_exercise_goal"},{"name":"Energy","progress":"my.active_energy_in_kcal","goal":"input_number.nikolai_energy_goal"},{"name":"Steps","progress":"my.step_count","goal":"input_number.nikolai_step_goal"}]}'></activity-tracker-->
         <hourly-forecast class="ha-component" config='{"debug": true, "entity": "sensor.tomorrow_io_garden_street_hourly", "size": "large"}'></hourly-forecast>
@@ -36,9 +37,10 @@
         <daily-forecast class="ha-component" config='{"debug": false, "entity": "weather.tomorrow_io_garden_street_daily"}'></daily-forecast>
       </div>
       <div class="column">
-        <team-tracker class="ha-component" config='{"debug": false, "spoilers": false, "entities": ["sensor.arsenal_team_tracker_not_found", "sensor.arsenal_cl_team_tracker"]}'></team-tracker>
+        <!--team-tracker class="ha-component" config='{"debug": false, "spoilers": false, "entities": ["sensor.arsenal_team_tracker_not_found", "sensor.arsenal_cl_team_tracker"]}'></team-tracker-->
         <!--todos-progress class="ha-component" config='{"debug": false, "entity": "my.todays_reminders"}'></todos-progress-->
-        <calendar-events class="ha-component" config='{"debug": false, "entity": "sensor.dashboard_calendar_events"}'></calendar-events>
+        <!--calendar-events class="ha-component" config='{"debug": false, "entity": "sensor.dashboard_calendar_events"}'></calendar-events-->
+        <today-and-tomorrow class="ha-component" config='{"debug": false, "entity": "sensor.dashboard_calendar_events"}'></today-and-tomorrow>
       </div>
       <div class="column">
         
