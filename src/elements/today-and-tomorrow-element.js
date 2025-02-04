@@ -70,6 +70,7 @@ export class TodayAndTomorrowElement extends BaseElement {
       css`
       :host {
         font-size: 36px;
+        line-height: normal;
       }
       .event-list-container {
         margin: 20px 10px 20px 10px;
@@ -87,7 +88,7 @@ export class TodayAndTomorrowElement extends BaseElement {
         justify-content: space-between;
         align-items: center;
 
-        padding: 10px;
+        padding: 20px 10px;
         margin-bottom: 20px;
 
         background-color: var(--color-glass);
