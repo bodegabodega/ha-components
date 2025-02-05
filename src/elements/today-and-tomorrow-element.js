@@ -24,7 +24,7 @@ export class TodayAndTomorrowElement extends BaseElement {
   }
   validate() {
     const allDays = forEntityFromState(this.hass, this.config);
-    this._days = Array.isArray(allDays) ? allDays.splice(0, 2) : allDays;
+    this._days = Array.isArray(allDays) ? allDays.filter(day => !!day).splice(0, 2) : allDays;
   }
   getEventList(label, events) {
     return events && events.length > 0
