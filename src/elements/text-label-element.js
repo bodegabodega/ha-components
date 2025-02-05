@@ -49,6 +49,8 @@ export class TextLabelElement extends BaseElement {
         display: flex;
         justify-content: center;
         align-items: center;
+
+        line-height: normal;
       }
       .outer {
         padding: 20px;
